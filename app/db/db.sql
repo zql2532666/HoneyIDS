@@ -18,6 +18,28 @@ USE `HoneyIDS`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `nodes`
+--
+
+DROP TABLE IF EXISTS `nodes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `nodes` (
+  `node_id` int NOT NULL AUTO_INCREMENT,
+  `honeynode_name` varchar(45) NOT NULL,
+  `ip_addr` varchar(45) NOT NULL,
+  `subnet_mask` varchar(45) NOT NULL,
+  `honeypot_type` varchar(45) DEFAULT NULL,
+  `nids_type` varchar(45) DEFAULT NULL,
+  `no_of_attacks` int NOT NULL,
+  `date_deployed` datetime NOT NULL,
+  `heartbeat_status` varchar(45) NOT NULL,
+  `token` varchar(45) NOT NULL,
+  PRIMARY KEY (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `nodes`
 --
 
@@ -43,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-17  1:52:20
+-- Dump completed on 2020-11-17  2:19:40
