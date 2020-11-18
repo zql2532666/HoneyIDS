@@ -35,8 +35,9 @@ CREATE TABLE `nodes` (
   `date_deployed` datetime NOT NULL,
   `heartbeat_status` varchar(45) NOT NULL,
   `token` varchar(45) NOT NULL,
-  PRIMARY KEY (`node_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`node_id`),
+  UNIQUE KEY `token_UNIQUE` (`token`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-17  2:19:40
+-- Dump completed on 2020-11-18  4:36:45
