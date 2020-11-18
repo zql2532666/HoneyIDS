@@ -1,0 +1,4 @@
+Reorganise web templates:
+    separate nav/footer sections from body
+
+Logic for deployment page
