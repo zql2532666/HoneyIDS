@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Project Add</title>
+  <title>AdminLTE 3 | Honeypot Deployment</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -146,11 +146,11 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="../../index3.html" class="brand-link">
-      <img src="../../dist/img/AdminLTELogo.png"
-           alt="AdminLTE Logo"
-           class="brand-image img-circle elevation-3"
+      <img style="margin-top:1px"src="../../dist/img/honeyids.png"
+           alt="HoneyIDS"
+           class="brand-image"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span style="color:#F0BA11; font-size: 120%; margin-bottom: 100px;" class="brand-text font-weight-light">HoneyIDS</span>
     </a>
 
     <!-- Sidebar -->
@@ -708,12 +708,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Project Add</h1>
+            <h1>Honeypot Deployment</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Project Add</li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Honeypot Deployment</li>
             </ol>
           </div>
         </div>
@@ -724,40 +724,27 @@
     <section class="content">
       <div class="row">
         <div class="col-md-6">
-          <div class="card card-primary">
+          <div class="card card-secondary">
             <div class="card-header">
-              <h3 class="card-title">General</h3>
+              <h3 class="card-title">Select Script</h3>
 
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fas fa-minus"></i></button>
-              </div>
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="inputName">Project Name</label>
-                <input type="text" id="inputName" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="inputDescription">Project Description</label>
-                <textarea id="inputDescription" class="form-control" rows="4"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="inputStatus">Status</label>
+                <label for="inputStatus">Operating System</label>
                 <select class="form-control custom-select">
                   <option selected disabled>Select one</option>
-                  <option>On Hold</option>
-                  <option>Canceled</option>
-                  <option>Success</option>
+                  <option>Ubuntu</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="inputClientCompany">Client Company</label>
-                <input type="text" id="inputClientCompany" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="inputProjectLeader">Project Leader</label>
-                <input type="text" id="inputProjectLeader" class="form-control">
+                <label for="inputStatus">Honeypot</label>
+                <select class="form-control custom-select">
+                  <option selected disabled>Select one</option>
+                  <option>Cowrie</option>
+                  <option>Dioaena</option>
+                  <option>Elastichoney</option>
+                </select>
               </div>
             </div>
             <!-- /.card-body -->
@@ -767,25 +754,16 @@
         <div class="col-md-6">
           <div class="card card-secondary">
             <div class="card-header">
-              <h3 class="card-title">Budget</h3>
+              <h3 class="card-title">Activate Honeypot</h3>
 
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fas fa-minus"></i></button>
-              </div>
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="inputEstimatedBudget">Estimated budget</label>
-                <input type="number" id="inputEstimatedBudget" class="form-control">
+                <label for="ip_addr">IP Address</label>
+                <input type="text" id="ip_addr" class="form-control">
               </div>
-              <div class="form-group">
-                <label for="inputSpentBudget">Total amount spent</label>
-                <input type="number" id="inputSpentBudget" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="inputEstimatedDuration">Estimated project duration</label>
-                <input type="number" id="inputEstimatedDuration" class="form-control">
+              <div>
+                <input type="submit" value="Activate" class="btn btn-success float-right">
               </div>
             </div>
             <!-- /.card-body -->
@@ -794,9 +772,29 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
-          <a href="#" class="btn btn-secondary">Cancel</a>
-          <input type="submit" value="Create new Porject" class="btn btn-success float-right">
+        <div class="col-md-6">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Deployment</h3>
+
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="command">Deploy Command</label>
+                <p style="margin:0px;">To deploy, copy and paste this entire command into the terminal of your machine</p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" placeholder="" readonly style="height:auto; margin-top: 0px; margin-bottom: 0px; height: 90px; resize: none;">wget "http://115.66.77.82/api/script/?text=true&script_id=13" -O deploy.sh && sudo bash deploy.sh http://115.66.77.82 X6yHg4D2</textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Virtual Machine</label>
+                <p style="margin:0px;">Download preconfigured virtual machine and import to your VMWare or VitualBox</p>
+                <a href="#" class="btn btn-info">Download</a>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
         </div>
       </div>
     </section>
@@ -821,12 +819,17 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
+<script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
+<script src="dist/js/demo.js"></script>
+<!-- auto textarea expand  -->
+<script src="dist/js/autosize.js"></script>
+<script>
+  autosize(document.querySelectorAll('textarea'));
+</script>
 </body>
 </html>
