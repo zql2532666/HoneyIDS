@@ -23,26 +23,40 @@ app.config['MYSQL_DB'] = db['mysql_db']
 
 mysql = MySQL(app)
 
+# For testing purposes with jinja. Remove later
+# Usage: {{ mdebug("whatever to print here") }}
+@app.context_processor
+def utility_functions():
+    def print_in_console(message):
+        print(str(message))
+
+    return dict(mdebug=print_in_console)
+
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
 
 @app.route("/")
-@app.route("/index.html")
+@app.route("/index")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title="Dashboard V1")
 
-@app.route("/index2.html")
+@app.route("/index2")
 def index2():
-    return render_template("index2.html")
+    return render_template("index2.html", title="Dashboard V2")
 
-@app.route("/index3.html")
+@app.route("/index3")
 def index3():
-    return render_template("index3.html")
+    return render_template("index3.html", title="Dashboard V3")
 
 @app.route("/deploy", methods=['GET', 'POST'])
 def deploy():
-    return render_template("deploy.html")
+    return render_template("deploy.html", title="Honeypot Deployment")
+
+# Uncomment for testing
+# @app.route("/test", methods=['GET', 'POST'])
+# def test():
+#     return render_template("test.html")
 
 # CRUD endpoints
 # Retrieve all honeynodes
