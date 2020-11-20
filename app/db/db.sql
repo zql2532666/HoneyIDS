@@ -35,9 +35,11 @@ CREATE TABLE `nodes` (
   `date_deployed` datetime NOT NULL,
   `heartbeat_status` varchar(45) NOT NULL,
   `token` varchar(45) NOT NULL,
+  `last_heard` datetime NOT NULL,
   PRIMARY KEY (`node_id`),
-  UNIQUE KEY `token_UNIQUE` (`token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `token_UNIQUE` (`token`),
+  UNIQUE KEY `ip_addr_UNIQUE` (`ip_addr`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +48,7 @@ CREATE TABLE `nodes` (
 
 LOCK TABLES `nodes` WRITE;
 /*!40000 ALTER TABLE `nodes` DISABLE KEYS */;
+INSERT INTO `nodes` VALUES (1,'cowrie','192.168.1.200','255.255.255.0','ssh','null',1,'2020-01-01 10:10:10','True','1','2020-01-01 10:10:10'),(3,'dionea','192.168.1.1','255.255.255.0','test','null',123,'2020-01-01 10:10:10','False','2','2020-01-01 10:10:10');
 /*!40000 ALTER TABLE `nodes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,4 +69,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-18  4:36:45
+-- Dump completed on 2020-11-20 17:45:11
