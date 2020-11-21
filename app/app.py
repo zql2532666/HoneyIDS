@@ -80,6 +80,30 @@ def retrieveAllNodes():
 
     return str(json_data)
 
+#Retrieve all honeynodes for heartbeat server
+@app.route("/api/v1/heartbeats/", methods=['GET'])
+def retrieveAllNodesForHeartbeat():
+
+    json_data = {}
+
+    #Mysql connection
+    cur = mysql.connection.cursor()
+
+    sql = "select * from nodes"
+    resultValue = cur.execute(sql)
+    if resultValue > 0:
+        my_query = DbAccess.query_db(cur)
+        json_data = json.loads(json.dumps(my_query, default=DbAccess.myconverter))
+
+    heartbeat_dict = dict()
+    for data in json_data:
+        heartbeat_dict[data.get("token")] = {
+                'heartbeat_status' : data.get("heartbeat_status"),
+                'last_heard' : data.get("last_heard")
+        }
+
+    return heartbeat_dict
+
 #Retrieve single honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['GET'])
 def retrieveNode(token):
