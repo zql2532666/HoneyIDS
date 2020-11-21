@@ -3,7 +3,7 @@ __pycache__/
 
 instance/
 
-**/__pycache___
+/app/__pycache__
 .coverage
 htmlcov/
 
