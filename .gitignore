@@ -3,7 +3,7 @@ __pycache__/
 
 instance/
 
-app/pytest_cache/
+**/__pycache___
 .coverage
 htmlcov/
 
