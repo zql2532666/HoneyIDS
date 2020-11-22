@@ -53,6 +53,10 @@ def deploy():
 def nodes():
     return render_template("nodes.html", title="Nodes")
 
+@app.route("/addnode")
+def add_node():
+    return render_template("addnode.html", title="Add Node")
+
 # Uncomment for testing
 # @app.route("/test", methods=['GET', 'POST'])
 # def test():
@@ -64,6 +68,15 @@ def nodes():
 def retrieveAllNodes():
 
     return db_access.retrieve_all_nodes()
+
+# Retrieve all honeynodes
+@app.route("/api/v1/honeynodes/datatables", methods=['GET'])
+def retrieve_all_nodes_for_datatables():
+
+    datatable_dict = dict()
+    datatable_dict["data"] = json.loads(db_access.retrieve_all_nodes())
+
+    return datatable_dict
 
 #Retrieve all honeynodes for heartbeat server
 @app.route("/api/v1/heartbeats/", methods=['GET'])

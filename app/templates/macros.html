@@ -23,9 +23,20 @@
 {% endif %}
 {% endmacro %}
 
-<!-- Macro for sidebar dropdown menu -->
-{% macro checkDropdown(endpoint) %}
+<!-- Macro for sidebar dropdown menu (dashboard) -->
+{% macro checkDropdownDashboard(endpoint) %}
 {% if endpoint.endswith("index") or endpoint.endswith("index2") or endpoint.endswith("index3") %}
+<li class="nav-item has-treeview menu-open">
+    <a href="#" class="nav-link active">
+{% else %}
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+{% endif %}
+{% endmacro %}
+
+<!-- Macro for sidebar dropdown menu (nodes) -->
+{% macro checkDropdownNodes(endpoint) %}
+{% if endpoint.endswith("nodes") or endpoint.endswith("add_node") %}
 <li class="nav-item has-treeview menu-open">
     <a href="#" class="nav-link active">
 {% else %}
