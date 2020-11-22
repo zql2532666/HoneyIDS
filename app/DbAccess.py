@@ -1,4 +1,6 @@
-import json, datetime
+import json
+import datetime
+from datetime import datetime as dt
 from flask_mysqldb import MySQL
 
 class DbAccess:
@@ -75,7 +77,7 @@ class DbAccess:
         honeypot_type = json['honeypot_type']
         nids_type = json['nids_type']
         no_of_attacks = json['no_of_attacks']
-        date_deployed = json['date_deployed']
+        date_deployed = dt.now().strftime("%Y-%m-%d %H:%M:%S")
         heartbeat_status = json['heartbeat_status']
         last_heard = json['last_heard']
         token = json['token']
