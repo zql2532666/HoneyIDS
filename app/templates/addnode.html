@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block mainContent %}
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Add Node</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="nodename">Node Name</label>
+                  <input type="text" class="form-control" name="nodename">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="ipaddress">IP Address</label>
+                  <input type="text" class="form-control" name="ipaddress">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="honeypottype">Honeypot Type</label>
+                  <input type="text" class="form-control" name="honeypottype">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="nidstype">NIDS Type</label>
+                  <input type="text" class="form-control" name="nidstype">
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block script %}
+<!-- auto textarea expand  -->
+<script src="dist/js/autosize.js"></script>
+<script>
+  autosize(document.querySelectorAll('textarea'));
+</script>
+{% endblock %}
