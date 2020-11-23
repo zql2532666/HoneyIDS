@@ -2,12 +2,13 @@ import yaml, json
 from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
-from flask import Flask, render_template, request, jsonify, abort
+from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash
 
 app = Flask(__name__,
             static_url_path='', 
             static_folder='static',
             template_folder='templates')
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 # Configure DB
 db = yaml.load(open('db.yaml'), Loader=yaml.SafeLoader)
@@ -53,8 +54,22 @@ def deploy():
 def nodes():
     return render_template("nodes.html", title="Nodes")
 
-@app.route("/addnode")
+@app.route("/addnode", methods=['GET', 'POST'])
 def add_node():
+
+    if request.method == 'POST':
+        # do stuff when the form is submitted
+        node_name = request.form['nodename']
+        ip_addr = request.form['ipaddress']
+        
+        if(node_name and ip_addr):
+            flash(u'Node successfully added.', 'success')
+        else:
+            flash(u'Node not added.', 'danger')
+        
+        # redirect to end the POST handling
+        return redirect(url_for('nodes'))
+
     return render_template("addnode.html", title="Add Node")
 
 # Uncomment for testing

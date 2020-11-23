@@ -10,32 +10,39 @@
             <div class="card-header">
               <h3 class="card-title">Add Node</h3>
             </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="nodename">Node Name</label>
-                  <input type="text" class="form-control" name="nodename">
+            <form id="nodeForm" action="addnode" method="POST">
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="nodename">Node Name</label>
+                    <input type="text" class="form-control" name="nodename" 
+                    data-parsley-required-message="Node name is required."
+                    required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="ipaddress">IP Address</label>
+                    <input type="text" class="form-control" name="ipaddress" 
+                    data-parsley-required-message="IP Address is required."
+                    required=""
+                    data-parsley-ip="">
+                  </div>
                 </div>
-                <div class="form-group col-md-6">
-                  <label for="ipaddress">IP Address</label>
-                  <input type="text" class="form-control" name="ipaddress">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="honeypottype">Honeypot Type</label>
+                    <input type="text" class="form-control" name="honeypottype">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="nidstype">NIDS Type</label>
+                    <input type="text" class="form-control" name="nidstype">
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="honeypottype">Honeypot Type</label>
-                  <input type="text" class="form-control" name="honeypottype">
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="nidstype">NIDS Type</label>
-                  <input type="text" class="form-control" name="nidstype">
-                </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Add</button>
               </div>
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-              <button type="submit" class="btn btn-primary">Add</button>
-            </div>
+            </form>
           </div>
           <!-- /.card -->
         </div>
@@ -46,7 +53,47 @@
 {% block script %}
 <!-- auto textarea expand  -->
 <script src="dist/js/autosize.js"></script>
+<!-- parsley validator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
 <script>
   autosize(document.querySelectorAll('textarea'));
+
+  var parsleyConfig = {
+    errorClass: 'has-danger',
+    successClass: 'has-success',
+    classHandler: function (field) {
+        return field.$element.parents('.form-group');
+    },
+    errorsContainer: function (field) {
+        return field.$element.parents('.form-group');
+    },
+    errorsWrapper: '<span class="form-text text-danger">',
+    errorTemplate: '<div></div>'
+  };
+
+  //FORM VALIDATION
+  $(document).ready(function () {
+    // Register custom validators
+    window.Parsley.addValidator('ip', {
+      validateString: function(value) {
+        var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
+        return pattern.test(value);
+      },
+      messages: {
+        en: 'IP address is not valid'
+      }
+    });
+    //window.Parsley.addValidator("email", CustomParsleyValidators.email);
+    //window.Parsley.addValidator("identification", CustomParsleyValidators.identification);
+    //window.Parsley.addValidator("invalidCharacters", CustomParsleyValidators.invalidCharacters);
+    //window.Parsley.addValidator("dateCompare", CustomParsleyValidators.dateCompare);
+    //window.Parsley.addValidator("postalCode", CustomParsleyValidators.postalCode);
+    //window.Parsley.addValidator("phoneNumber", CustomParsleyValidators.phoneNumber);
+    //window.Parsley.addValidator("filemaxsize", CustomParsleyValidators.filemaxsize);
+    //window.Parsley.addValidator("fileMimeTypes", CustomParsleyValidators.fileMimeTypes);
+
+    // Activate parsley
+    $('#nodeForm').parsley(parsleyConfig);
+  });
 </script>
 {% endblock %}
