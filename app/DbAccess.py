@@ -2,6 +2,7 @@ import json
 import datetime
 from datetime import datetime as dt
 from flask_mysqldb import MySQL
+import time 
 
 class DbAccess:
 
@@ -42,12 +43,15 @@ class DbAccess:
         if result_value > 0:
             my_query = self.query_db(cur)
             json_data = json.loads(json.dumps(my_query, default=self.myconverter))
-
         heartbeat_dict = dict()
         for data in json_data:
+            # convert the time format to time since epoch
+            last_heard = data.get("last_heard")
+            last_heard_struct_time_local = time.strptime(last_heard, "%Y-%m-%d %H:%M:%S")
+            last_heard_epoch = time.mktime(last_heard_struct_time_local)
             heartbeat_dict[data.get("token")] = {
                     'heartbeat_status' : data.get("heartbeat_status"),
-                    'last_heard' : data.get("last_heard")
+                    'last_heard' : last_heard_epoch
             }
 
         return heartbeat_dict
