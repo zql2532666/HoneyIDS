@@ -1,11 +1,11 @@
 {% from "macros.html" import nav_link with context %}
-{% from "macros.html" import checkDropdown with context %}
+{% from "macros.html" import checkDropdownNodes with context %}
+{% from "macros.html" import checkDropdownDashboard with context %}
 
 <!-- Brand Logo -->
-<a href="index3.html" class="brand-link">
-    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-         style="opacity: .8">
-    <span class="brand-text font-weight-light">AdminLTE 3</span>
+  <a href="index" class="brand-link">
+    <img style="margin-top:1px" src="../../dist/img/honeyids.png" alt="HoneyIDS" class="brand-image" style="opacity: .8">
+    <span style="color:#F0BA11; font-size: 120%; margin-bottom: 100px;" class="brand-text font-weight-light">HoneyIDS</span>
   </a>
 
   <!-- Sidebar -->
@@ -22,16 +22,31 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
         <li class="nav-item">
           {{ nav_link('deploy', 'Deploy', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
         </li>
-        <li class="nav-item">
-            {{ nav_link('nodes', 'Nodes', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
-          </li>
-        {{ checkDropdown(request.endpoint) }}
+        {{ checkDropdownNodes(request.endpoint) }}
+        <!-- <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active"> -->
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Nodes
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              {{ nav_link('nodes', 'Nodes', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
+            </li>
+            <li class="nav-item">
+              {{ nav_link('add_node', 'Add Node', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
+            </li>
+          </ul>
+        </li>
+        {{ checkDropdownDashboard(request.endpoint) }}
         <!-- <li class="nav-item has-treeview menu-open">
           <a href="#" class="nav-link active"> -->
             <i class="nav-icon fas fa-tachometer-alt"></i>
