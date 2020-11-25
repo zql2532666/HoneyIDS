@@ -136,6 +136,31 @@ class DbAccess:
 
         return result_value
 
+    def update_nodes(self, token, json):
+    
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        heartbeat_status = '' if not json.__contains__('heartbeat_status') else json['heartbeat_status']
+
+        ############### DO EPOCH PARSING HERE ###########################
+        last_heard = '' if not json.__contains__('last_heard') else json['last_heard']
+
+        sql = f"update nodes set \
+            heartbeat_status=IF('{heartbeat_status}' = '', heartbeat_status, '{heartbeat_status}'), \
+            last_heard=IF('{last_heard}' = '', last_heard, '{last_heard}') where token='{token}'"
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
+
     def delete_node(self, token):
 
         # Mysql connection

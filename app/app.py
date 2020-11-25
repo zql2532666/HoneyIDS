@@ -147,6 +147,21 @@ def updateNode(token):
 
     return jsonify({'success': True}), 200
 
+# Update honeynodes for heartbeat
+@app.route("/api/v1/heartbeats", methods=['POST'])
+def update_node_for_heartbeat():
+    
+    if not request.json:
+        abort(400, "Invalid Data")
+    
+    try:
+        for token in request.json:
+            db_access.update_nodes(token, request.json[token])
+
+    except Exception as e:
+        abort(404, e)
+
+    return jsonify({'success': True}), 200
 
 # Delete honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['DELETE'])
