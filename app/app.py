@@ -150,13 +150,17 @@ def updateNode(token):
 # Update honeynodes for heartbeat
 @app.route("/api/v1/heartbeats", methods=['POST'])
 def update_node_for_heartbeat():
-    
+    print("-----heartbeat status is updated----")
+    print(request.json)
     if not request.json:
         abort(400, "Invalid Data")
     
     try:
         for token in request.json:
-            db_access.update_nodes(token, request.json[token])
+            print(token)
+            print(request.json[token])
+            print("\n\n")
+            db_access.update_node_heartbeat_status(token, request.json[token])
 
     except Exception as e:
         abort(404, e)

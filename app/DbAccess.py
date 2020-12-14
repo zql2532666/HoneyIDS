@@ -136,7 +136,7 @@ class DbAccess:
 
         return result_value
 
-    def update_nodes(self, token, json):
+    def update_node_heartbeat_status(self, token, json):
     
         # Mysql connection
         cur = self.mysql.connection.cursor()
@@ -144,8 +144,11 @@ class DbAccess:
         heartbeat_status = '' if not json.__contains__('heartbeat_status') else json['heartbeat_status']
 
         ############### DO EPOCH PARSING HERE ###########################
-        last_heard = '' if not json.__contains__('last_heard') else json['last_heard']
-
+        last_heard_epoch = '' if not json.__contains__('last_heard') else json['last_heard']
+        last_heard_epoch = float(last_heard_epoch)
+        last_heard_struct_time = time.localtime(last_heard_epoch)
+        last_heard = f"{last_heard_struct_time[0]}-{last_heard_struct_time[1]}-{last_heard_struct_time[2]} {last_heard_struct_time[3]}:{last_heard_struct_time[4]}:{last_heard_struct_time[5]}"
+        
         sql = f"update nodes set \
             heartbeat_status=IF('{heartbeat_status}' = '', heartbeat_status, '{heartbeat_status}'), \
             last_heard=IF('{last_heard}' = '', last_heard, '{last_heard}') where token='{token}'"
