@@ -72,6 +72,11 @@ def add_node():
 
     return render_template("addnode.html", title="Add Node")
 
+@app.route("/log", methods=['GET', 'POST'])
+def log():
+
+    return render_template("log.html", title="Logs")
+
 # Uncomment for testing
 # @app.route("/test", methods=['GET', 'POST'])
 # def test():

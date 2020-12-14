@@ -44,3 +44,14 @@
     <a href="#" class="nav-link">
 {% endif %}
 {% endmacro %}
+
+<!-- Macro for sidebar dropdown menu (logs) -->
+{% macro checkDropdownLogs(endpoint) %}
+{% if endpoint.endswith("log") %}
+<li class="nav-item has-treeview menu-open">
+    <a href="#" class="nav-link active">
+{% else %}
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+{% endif %}
+{% endmacro %}

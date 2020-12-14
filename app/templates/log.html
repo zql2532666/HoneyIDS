@@ -22,13 +22,11 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Deployed Date</th>
           <th>Ip Address</th>
           <th>Honeypot Type</th>
           <th>NIDS Type</th>
           <th>Number of Attacks</th>
           <th>Token</th>
-          <th>Status</th>
         </tr>
       </thead>
     </table>
@@ -44,21 +42,6 @@
 <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script>
-
-  var CustomRenders = {
-    status: function (data, type, row, meta) {
-      var button = "";
-      console.log();
-      if(data) {
-        return '<button onmouseover="activateTooltip()" onclick="callActivateAPI(' + row.token + ')" class="statusbutton btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactivate Node">Active</button>'
-      }else {
-        return '<button onmouseover="activateTooltip()" class="statusbutton btn btn-danger">Unactive</button>'
-      }
-    },userImage:function (data, type, full, meta) {
-
-    },
-  };
-
   $(function () {
     $('#example2').DataTable({
       "paging": true,
@@ -71,24 +54,13 @@
       "ajax": "/api/v1/honeynodes/datatables",
       "columns": [
             { "data": "honeynode_name" },
-            { "data": "date_deployed"},
             { "data": "ip_addr" },
             { "data": "honeypot_type" },
             { "data": "nids_type" },
             { "data": "no_of_attacks" },
-            { "data": "token" },
-            { "data": "heartbeat_status", "render":CustomRenders.status}
+            { "data": "token" }
         ]
     });
   });
-
-  function activateTooltip() {
-    console.log();
-    $('.statusbutton').tooltip();
-  }
-
-  function callActivateAPI(token) {
-    console.log(token);
-  }
 </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% from "macros.html" import nav_link with context %}
 {% from "macros.html" import checkDropdownNodes with context %}
 {% from "macros.html" import checkDropdownDashboard with context %}
+{% from "macros.html" import checkDropdownLogs with context %}
 
 <!-- Brand Logo -->
   <a href="index" class="brand-link">
@@ -25,6 +26,27 @@
       <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
+        {{ checkDropdownDashboard(request.endpoint) }}
+        <!-- <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active"> -->
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              {{ nav_link('index', 'Dashboard v1', 'far fa-circle') }}
+            </li>
+            <li class="nav-item">
+              {{ nav_link('index2', 'Dashboard v2', 'far fa-circle') }}
+            </li>
+            <li class="nav-item">
+              {{ nav_link('index3', 'Dashboard v3', 'far fa-circle') }}
+            </li>
+          </ul>
+        </li>
         <li class="nav-item">
           {{ nav_link('deploy', 'Deploy', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
         </li>
@@ -46,25 +68,22 @@
             </li>
           </ul>
         </li>
-        {{ checkDropdownDashboard(request.endpoint) }}
+        {{ checkDropdownLogs(request.endpoint) }}
         <!-- <li class="nav-item has-treeview menu-open">
           <a href="#" class="nav-link active"> -->
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-              Dashboard
+              Logs
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              {{ nav_link('index', 'Dashboard v1', 'far fa-circle') }}
+              {{ nav_link('log', 'Logs', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
             </li>
-            <li class="nav-item">
-              {{ nav_link('index2', 'Dashboard v2', 'far fa-circle') }}
-            </li>
-            <li class="nav-item">
-              {{ nav_link('index3', 'Dashboard v3', 'far fa-circle') }}
-            </li>
+            <!-- <li class="nav-item">
+              {{ nav_link('add_node', 'Add Node', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
+            </li> -->
           </ul>
         </li>
       </ul>
