@@ -1,3 +1,9 @@
 Logic for deployment page
 
 Nodes page
+
+Derek
+Send the "populate" signal to heartbeats server when a new node has been added in.
+The signal will tell heartbeat server to repopulate the nodes list
+The new node should now be inside the list of appproved nodes 
+
