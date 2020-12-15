@@ -1,4 +1,4 @@
-import yaml, json
+import yaml, json, requests
 from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
@@ -77,6 +77,21 @@ def log():
 
     return render_template("log.html", title="Logs")
 
+######################################## API CALLS ############################################
+
+# Deactivate node
+@app.route("/api/v1/deactivate/<string:token>", methods=['PUT'])
+def deactivateNode(token):
+    if token:
+
+        ###### call heartbeat server ######
+
+        return jsonify({'success': True}), 200
+    else:
+        return abort(404, "Token not specified")
+
+    
+
 # Uncomment for testing
 # @app.route("/test", methods=['GET', 'POST'])
 # def test():
@@ -141,7 +156,7 @@ def createNode():
 # Update honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['PUT'])
 def updateNode(token):
-    
+
     if not request.json or not token:
         abort(400)
     

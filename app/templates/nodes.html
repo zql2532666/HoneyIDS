@@ -49,7 +49,7 @@
     status: function (data, type, row, meta) {
       var button = "";
       console.log();
-      if(data) {
+      if(data == "True") {
         return '<button onmouseover="activateTooltip()" onclick="callActivateAPI(' + row.token + ')" class="statusbutton btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactivate Node">Active</button>'
       }else {
         return '<button onmouseover="activateTooltip()" class="statusbutton btn btn-danger">Unactive</button>'
@@ -66,7 +66,7 @@
       "searching": false,
       "ordering": true,
       "info": true,
-      "autoWidth": false,
+      "autoWidth": true,
       "responsive": true,
       "ajax": "/api/v1/honeynodes/datatables",
       "columns": [
@@ -88,7 +88,17 @@
   }
 
   function callActivateAPI(token) {
-    console.log(token);
+    $.ajax({
+      url: "/api/v1/deactivate/" + token,
+      type: "PUT",
+      success: function(result){
+        console.log("done")
+        window.location.reload(true);
+      },
+      error: function(error){
+        alert(`Error ${error}`);
+      }
+    });
   }
 </script>
 {% endblock %}
