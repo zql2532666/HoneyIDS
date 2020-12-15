@@ -15,10 +15,14 @@
   {% endif %}
 {% endwith %}
 <!-- alert end -->
-
+<style>
+  tfoot {
+      display: table-row-group;
+  }
+</style>
 <div class="row">
   <div class="col-12">
-    <table id="example2" class="table table-bordered table-hover">
+    <table id="example" class="table table-bordered table-hover">
       <thead>
         <tr>
           <th>Name</th>
@@ -29,6 +33,16 @@
           <th>Token</th>
         </tr>
       </thead>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Ip Address</th>
+          <th>Honeypot Type</th>
+          <th>NIDS Type</th>
+          <th>Number of Attacks</th>
+          <th>Token</th>
+        </tr>
+    </tfoot>
     </table>
   </div>
   <!-- /.col -->
@@ -43,13 +57,27 @@
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script>
   $(function () {
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
+    $('#example tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    $('#example').DataTable({
+      initComplete: function () {
+          // Apply the search
+          this.api().columns().every( function () {
+              var that = this;
+
+              $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                  if ( that.search() !== this.value ) {
+                      that
+                          .search( this.value )
+                          .draw();
+                  }
+              } );
+          } );
+      },
       "ordering": true,
-      "info": true,
-      "autoWidth": false,
       "responsive": true,
       "ajax": "/api/v1/honeynodes/datatables",
       "columns": [
@@ -62,5 +90,6 @@
         ]
     });
   });
+
 </script>
 {% endblock %}
