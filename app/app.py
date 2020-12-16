@@ -214,32 +214,31 @@ def deleteNode(token):
 API ROUTES FOR DEPLOYMENT SCRIPTS  
 Author: Derek
 """
-
-@app.route("/deployment_script_cowrie")
+@app.route("/api/v1/deployment_script/cowrie", methods=['GET'])
 def send_deployment_script_cowrie():
     return send_file("deployment_scripts/deploy_cowrie.sh")
 
-@app.route("/deployment_script_drupot")
+@app.route("/api/v1/deployment_scripts/drupot", methods=['GET'])
 def send_deployment_script_drupot():
     return send_file("deployment_scripts/deploy_drupot.sh")
 
-@app.route("/deployment_script_elastichoney")
+@app.route("/api/v1/deployment_scripts/elastichoney", methods=['GET'])
 def send_deployment_script_elastichoney():
     return send_file("deployment_scripts/deploy_elastichoney.sh")
 
-@app.route("/deployment_script_shockpot")
+@app.route("/api/v1/deployment_scripts/shockpot", methods=['GET'])
 def send_deployment_script_shockpot():
     return send_file("deployment_scripts/deploy_shockpot.sh")
 
-@app.route("/deployment_script_snort")
+@app.route("/api/v1/deployment_scripts/snort", methods=['GET'])
 def send_deployment_script_snort():
     return send_file("deployment_scripts/deploy_snort.sh")
 
-@app.route("/deployment_script_sticky_elephant")
+@app.route("/api/v1/deployment_scripts/sticky_elephant", methods=['GET'])
 def send_deployment_script_sticky_elephant():
     return send_file("deployment_scripts/deploy_sticky_elephant.sh")
 
-@app.route("/deployment_script_wordpot")
+@app.route("/api/v1/deployment_scripts/wordpot", methods=['GET'])
 def send_deployment_script_wordpot():
     return send_file("deployment_scripts/deploy_wordpot.sh")
 
