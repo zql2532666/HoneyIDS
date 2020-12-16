@@ -33,6 +33,11 @@ def utility_functions():
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
 
+""" 
+API Routes for web pages
+Author: Aaron
+"""
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -78,6 +83,10 @@ def log():
     return render_template("log.html", title="Logs")
 
 ######################################## API CALLS ############################################
+""" 
+API Routes for HoneyNode Operations
+Author: Aaron
+"""
 
 # Deactivate node
 @app.route("/api/v1/deactivate/<string:token>", methods=['PUT'])
