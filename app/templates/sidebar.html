@@ -66,6 +66,9 @@
             <li class="nav-item">
               {{ nav_link('activate_node', 'Activate Node', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
             </li>
+            <li class="nav-item">
+              {{ nav_link('kill_node', 'Deactivate Node', 'fas fa-tachometer-alt', 'New', 'badge-danger') }}
+            </li>
           </ul>
         </li>
         {{ checkDropdownLogs(request.endpoint) }}

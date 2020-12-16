@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block mainContent %}
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Deactivate Node</h3>
+            </div>
+            <form id="nodeForm" action="deactivatenode" method="POST">
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="selectkill">Nodes</label>
+                    <select id="selectkill" name="selectkill" class="form-control custom-select">
+                      <option selected disabled>Select one</option>
+                      {% for node in list_nodes %}
+                        <option>{{ node.honeynode_name }}</option>
+                      {% endfor %}
+                    </select>
+                    <input type="hidden" name="">
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Deactivate</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block script %}
+<!-- auto textarea expand  -->
+<script src="dist/js/autosize.js"></script>
+<!-- parsley validator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
+<script>
+  autosize(document.querySelectorAll('textarea'));
+
+  var parsleyConfig = {
+    errorClass: 'has-danger',
+    successClass: 'has-success',
+    classHandler: function (field) {
+        return field.$element.parents('.form-group');
+    },
+    errorsContainer: function (field) {
+        return field.$element.parents('.form-group');
+    },
+    errorsWrapper: '<span class="form-text text-danger">',
+    errorTemplate: '<div></div>'
+  };
+
+  //FORM VALIDATION
+  $(document).ready(function () {
+    // Register custom validators
+    window.Parsley.addValidator('ip', {
+      validateString: function(value) {
+        var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
+        return pattern.test(value);
+      },
+      messages: {
+        en: 'IP address is not valid'
+      }
+    });
+    //window.Parsley.addValidator("email", CustomParsleyValidators.email);
+    //window.Parsley.addValidator("identification", CustomParsleyValidators.identification);
+    //window.Parsley.addValidator("invalidCharacters", CustomParsleyValidators.invalidCharacters);
+    //window.Parsley.addValidator("dateCompare", CustomParsleyValidators.dateCompare);
+    //window.Parsley.addValidator("postalCode", CustomParsleyValidators.postalCode);
+    //window.Parsley.addValidator("phoneNumber", CustomParsleyValidators.phoneNumber);
+    //window.Parsley.addValidator("filemaxsize", CustomParsleyValidators.filemaxsize);
+    //window.Parsley.addValidator("fileMimeTypes", CustomParsleyValidators.fileMimeTypes);
+
+    // Activate parsley
+    $('#nodeForm').parsley(parsleyConfig);
+  });
+</script>
+{% endblock %}

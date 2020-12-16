@@ -77,6 +77,29 @@ def activate_node():
 
     return render_template("addnode.html", title="Activate Node")
 
+@app.route("/deactivatenode", methods=['GET', 'POST'])
+def kill_node():
+
+    if request.method == 'POST':
+        # do stuff when the form is submitted
+        node_name = request.form['nodename']
+        ip_addr = request.form['ipaddress']
+        
+        if(node_name and ip_addr):
+            flash(u'Node successfully added.', 'success')
+        else:
+            flash(u'Node not added.', 'danger')
+        
+        # redirect to end the POST handling
+        return redirect(url_for('nodes'))
+
+    return render_template("killnode.html", title="Deactivate Node")
+
+@app.context_processor
+def list_nodes_for_web():
+    list_nodes = json.loads(retrieve_all_nodes())
+    return dict(list_nodes=list_nodes)
+
 @app.route("/log", methods=['GET', 'POST'])
 def log():
 

@@ -36,7 +36,7 @@
 
 <!-- Macro for sidebar dropdown menu (nodes) -->
 {% macro checkDropdownNodes(endpoint) %}
-{% if endpoint.endswith("nodes") or endpoint.endswith("activate_node") %}
+{% if endpoint.endswith("nodes") or endpoint.endswith("activate_node") or endpoint.endswith("kill_node")%}
 <li class="nav-item has-treeview menu-open">
     <a href="#" class="nav-link active">
 {% else %}
