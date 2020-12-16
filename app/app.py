@@ -2,7 +2,7 @@ import yaml, json, requests
 from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
-from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash,send_file
 
 app = Flask(__name__,
             static_url_path='', 
@@ -200,6 +200,44 @@ def deleteNode(token):
         abort(404)
 
     return jsonify({'success': True}), 200
+
+""" 
+API ROUTES FOR DEPLOYMENT SCRIPTS  
+Author: Derek
+"""
+
+@app.route("/deployment_script_cowrie")
+def send_deployment_script_cowrie():
+    return send_file("deployment_scripts/deploy_cowrie.sh")
+
+@app.route("/deployment_script_drupot)
+def send_deployment_script_drupot():
+    return send_file("deployment_scripts/deploy_drupot.sh")
+
+@app.route("/deployment_script_elastichoney")
+def send_deployment_script_elastichoney():
+    return send_file("deployment_scripts/deploy_elastichoney.sh")
+
+@app.route("/deployment_script_shockpot")
+def send_deployment_script_shockpot():
+    return send_file("deployment_scripts/deploy_shockpot.sh")
+
+@app.route("/deployment_script_snort")
+def send_deployment_script_snort():
+    return send_file("deployment_scripts/deploy_snort.sh")
+
+@app.route("/deployment_script_sticky_elephant")
+def send_deployment_script_sticky_elephant():
+    return send_file("deployment_scripts/deploy_sticky_elephant.sh")
+
+@app.route("/deployment_script_wordpot")
+def send_deployment_script_wordpot():
+    return send_file("deployment_scripts/deploy_wordpot.sh")
+
+
+
+
+
 
 if __name__ == "__main__":
     try:
