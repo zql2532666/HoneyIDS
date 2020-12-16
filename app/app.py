@@ -210,7 +210,7 @@ Author: Derek
 def send_deployment_script_cowrie():
     return send_file("deployment_scripts/deploy_cowrie.sh")
 
-@app.route("/deployment_script_drupot)
+@app.route("/deployment_script_drupot")
 def send_deployment_script_drupot():
     return send_file("deployment_scripts/deploy_drupot.sh")
 
@@ -233,8 +233,6 @@ def send_deployment_script_sticky_elephant():
 @app.route("/deployment_script_wordpot")
 def send_deployment_script_wordpot():
     return send_file("deployment_scripts/deploy_wordpot.sh")
-
-
 
 
 
