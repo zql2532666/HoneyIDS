@@ -211,8 +211,23 @@ def delete_node(token):
 
 """ 
 API ROUTES FOR DEPLOYMENT SCRIPTS  
+The API Routes are soley dedicated for serving deployment scripts
 Author: Derek
+
+Logical flow should be as follow,
+HTTP GET /api/v1/deployment_script/honeyagent
+HTTP GET /api/v1/deployment_script/honeyagent_configuration_file
+HTTP GET /api/v1/deployment_script/ [HONEYPOT TYPE DESIRED]
+
 """
+@app.route("/api/v1/deployment_script/honeyagent", methods=['GET'])
+def send_deployment_script_honeyagent():
+    return send_file("deployment_scripts/honeyagent.py")
+
+@app.route("/api/v1/deployment_script/honeyagent_configuation_file", methods=['GET'])
+def send_deployment_script_honeyagent():
+    return send_file("deployment_scripts/honeyagent.conf")
+
 @app.route("/api/v1/deployment_script/cowrie", methods=['GET'])
 def send_deployment_script_cowrie():
     return send_file("deployment_scripts/deploy_cowrie.sh")
