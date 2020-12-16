@@ -233,7 +233,7 @@ def send_deployment_script_cowrie():
     return send_file("deployment_scripts/deploy_cowrie.sh")
 
 @app.route("/api/v1/deployment_script/dionaea", methods=['GET'])
-def send_deployment_script_cowrie():
+def send_deployment_script_dionaea():
     return send_file("deployment_scripts/deploy_dionaea.sh")
 
 @app.route("/api/v1/deployment_scripts/drupot", methods=['GET'])
