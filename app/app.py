@@ -90,7 +90,7 @@ Author: Aaron
 
 # Deactivate node
 @app.route("/api/v1/deactivate/<string:token>", methods=['PUT'])
-def deactivateNode(token):
+def deactivate_node(token):
     if token:
 
         ###### call heartbeat server ######
@@ -109,8 +109,7 @@ def deactivateNode(token):
 # CRUD endpoints
 # Retrieve all honeynodes
 @app.route("/api/v1/honeynodes/", methods=['GET'])
-def retrieveAllNodes():
-
+def retrieve_all_nodes():
     return db_access.retrieve_all_nodes()
 
 # Retrieve all honeynodes
@@ -124,13 +123,13 @@ def retrieve_all_nodes_for_datatables():
 
 #Retrieve all honeynodes for heartbeat server
 @app.route("/api/v1/heartbeats/", methods=['GET'])
-def retrieveAllNodesForHeartbeat():
+def retrieve_all_nodes_for_heartbeat():
 
     return db_access.retrieve_all_nodes_for_heartbeat()
 
 #Retrieve single honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['GET'])
-def retrieveNode(token):
+def retrieve_node(token):
 
     return db_access.retrieve_node(token)
 
@@ -150,7 +149,7 @@ def retrieveNode(token):
 #        "token" : "2"
 # }
 @app.route("/api/v1/honeynodes/", methods=['POST'])
-def createNode():
+def create_node():
 
     if not request.json or not 'token' in request.json:
         abort(400)
@@ -164,7 +163,7 @@ def createNode():
 
 # Update honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['PUT'])
-def updateNode(token):
+def update_node(token):
 
     if not request.json or not token:
         abort(400)
@@ -198,7 +197,7 @@ def update_node_for_heartbeat():
 
 # Delete honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['DELETE'])
-def deleteNode(token):
+def delete_node(token):
 
     if not token:
         abort(400)
