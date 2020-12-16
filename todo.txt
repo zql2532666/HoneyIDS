@@ -1,4 +1,5 @@
 Logic for deployment page
+Deactivation mechanism
 
 Derek
 Send the "populate" signal to heartbeats server when a new node has been added in.
