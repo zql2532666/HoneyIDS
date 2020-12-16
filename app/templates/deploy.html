@@ -13,21 +13,26 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="inputStatus">Operating System</label>
-                <select class="form-control custom-select">
-                  <option selected disabled>Select one</option>
-                  <option>Ubuntu</option>
-                </select>
+                <label for="nodeName">Honeynode Name</label>
+                <input id="nodeName" type="text" class="form-control deployment" name="nodeName">
               </div>
               <div class="form-group">
-                <label for="inputStatus">Honeypot</label>
-                <select class="form-control custom-select">
+                <label for="deployScript">Honeypot</label>
+                <select id="deployScript" name="deployScript" class="form-control custom-select deployment">
                   <option selected disabled>Select one</option>
-                  <option>Cowrie</option>
-                  <option>Dioaena</option>
-                  <option>Elastichoney</option>
+                  <option value="cowrie">Cowrie</option>
+                  <option value="dionaea">Dionaea</option>
+                  <option value="drupot">Drupot</option>
+                  <option value="elastichoney">Elastichoney</option>
+                  <option value="shockpot">Shockpot</option>
+                  <option value="snort">Snort</option>
+                  <option value="stickyElephant">Sticky Elephant</option>
+                  <option value="wordpot">Wordpot</option>
                 </select>
               </div>
+            </div>
+            <div class="card-footer">
+              <button id="generate" class="btn btn-primary float-right" disabled="">Generate Command</button>
             </div>
             <!-- /.card-body -->
           </div>
@@ -86,5 +91,13 @@
 <script src="dist/js/autosize.js"></script>
 <script>
   autosize(document.querySelectorAll('textarea'));
+
+  $('.deployment').on('change keyup', function() {
+      if ($("#nodeName").val() != "" && $("#deployScript").val()) {
+          $('#generate').prop('disabled', false);  
+      } else {
+          $('#generate').prop('disabled', 'disabled');
+      }
+  });
 </script>
 {% endblock %}
