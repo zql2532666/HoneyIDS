@@ -216,7 +216,7 @@ Author: Derek
 
 Logical flow should be as follow,
 HTTP GET /api/v1/deployment_script/honeyagent
-HTTP GET /api/v1/deployment_script/honeyagent_configuration_file
+HTTP GET /api/v1/deployment_script/honeyagent_conf_file
 HTTP GET /api/v1/deployment_script/ [HONEYPOT TYPE DESIRED]
 
 """
@@ -224,8 +224,8 @@ HTTP GET /api/v1/deployment_script/ [HONEYPOT TYPE DESIRED]
 def send_deployment_script_honeyagent():
     return send_file("deployment_scripts/honeyagent.py")
 
-@app.route("/api/v1/deployment_script/honeyagent_configuation_file", methods=['GET'])
-def send_deployment_script_honeyagent():
+@app.route("/api/v1/deployment_script/honeyagent_conf_file", methods=['GET'])
+def send_deployment_script_honeyagent_conf():
     return send_file("deployment_scripts/honeyagent.conf")
 
 @app.route("/api/v1/deployment_script/cowrie", methods=['GET'])
