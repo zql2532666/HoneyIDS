@@ -103,7 +103,7 @@ def list_nodes_for_web():
 @app.route("/log", methods=['GET', 'POST'])
 def log():
 
-    return render_template("log.html", title="Logs")
+    return render_template("log.html", title="General Logs")
 
 ######################################## API CALLS ############################################
 """ 
