@@ -2,7 +2,7 @@ import yaml, json, requests
 from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
-from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash,send_file
 import os
 from HpfeedsDB import *
 import subprocess
@@ -32,7 +32,6 @@ db_access = DbAccess(app)
 
 # Initialize Hpfeeds credential database
 hpfeeds_db = HPfeedsDB(app.config['HPFEEDS_DATABASE_PATH'])
-# hpfeeds_db.add_collector_hpfeeds_credentials()
 
 # For testing purposes with jinja. Remove later
 # Usage: {{ mdebug("whatever to print here") }}
@@ -46,6 +45,11 @@ def utility_functions():
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
+
+""" 
+API Routes for web pages
+Author: Aaron
+"""
 
 @app.route("/")
 @app.route("/index")
@@ -68,8 +72,8 @@ def deploy():
 def nodes():
     return render_template("nodes.html", title="Nodes")
 
-@app.route("/addnode", methods=['GET', 'POST'])
-def add_node():
+@app.route("/activatenode", methods=['GET', 'POST'])
+def activate_node():
 
     if request.method == 'POST':
         # do stuff when the form is submitted
@@ -84,7 +88,30 @@ def add_node():
         # redirect to end the POST handling
         return redirect(url_for('nodes'))
 
-    return render_template("addnode.html", title="Add Node")
+    return render_template("addnode.html", title="Activate Node")
+
+@app.route("/deactivatenode", methods=['GET', 'POST'])
+def kill_node():
+
+    if request.method == 'POST':
+        # do stuff when the form is submitted
+        node_name = request.form['nodename']
+        ip_addr = request.form['ipaddress']
+        
+        if(node_name and ip_addr):
+            flash(u'Node successfully added.', 'success')
+        else:
+            flash(u'Node not added.', 'danger')
+        
+        # redirect to end the POST handling
+        return redirect(url_for('nodes'))
+
+    return render_template("killnode.html", title="Deactivate Node")
+
+@app.context_processor
+def list_nodes_for_web():
+    list_nodes = json.loads(retrieve_all_nodes())
+    return dict(list_nodes=list_nodes)
 
 @app.route("/log", methods=['GET', 'POST'])
 def log():
@@ -92,10 +119,14 @@ def log():
     return render_template("log.html", title="Logs")
 
 ######################################## API CALLS ############################################
+""" 
+API Routes for HoneyNode Operations
+Author: Aaron
+"""
 
 # Deactivate node
 @app.route("/api/v1/deactivate/<string:token>", methods=['PUT'])
-def deactivateNode(token):
+def deactivate_node(token):
     if token:
 
         ###### call heartbeat server ######
@@ -114,8 +145,7 @@ def deactivateNode(token):
 # CRUD endpoints
 # Retrieve all honeynodes
 @app.route("/api/v1/honeynodes/", methods=['GET'])
-def retrieveAllNodes():
-
+def retrieve_all_nodes():
     return db_access.retrieve_all_nodes()
 
 # Retrieve all honeynodes
@@ -129,13 +159,13 @@ def retrieve_all_nodes_for_datatables():
 
 #Retrieve all honeynodes for heartbeat server
 @app.route("/api/v1/heartbeats/", methods=['GET'])
-def retrieveAllNodesForHeartbeat():
+def retrieve_all_nodes_for_heartbeat():
 
     return db_access.retrieve_all_nodes_for_heartbeat()
 
 #Retrieve single honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['GET'])
-def retrieveNode(token):
+def retrieve_node(token):
 
     return db_access.retrieve_node(token)
 
@@ -155,14 +185,11 @@ def retrieveNode(token):
 #        "token" : "2"
 # }
 @app.route("/api/v1/honeynodes/", methods=['POST'])
-def createNode():
+def create_node():
 
     if not request.json or not 'token' in request.json:
         abort(400)
-        
-    print(request.json)
 
-    # add the honeynode to mysql database
     resultValue = db_access.create_node(request.json)
 
     if request.json['honeypot_type'] not in hpfeeds_db.hpfeeds_channels.keys():
@@ -182,7 +209,7 @@ def createNode():
 
 # Update honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['PUT'])
-def updateNode(token):
+def update_node(token):
 
     if not request.json or not token:
         abort(400)
@@ -216,7 +243,7 @@ def update_node_for_heartbeat():
 
 # Delete honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['DELETE'])
-def deleteNode(token):
+def delete_node(token):
 
     if not token:
         abort(400)
@@ -228,15 +255,66 @@ def deleteNode(token):
 
     return jsonify({'success': True}), 200
 
+""" 
+API ROUTES FOR DEPLOYMENT SCRIPTS  
+The API Routes are soley dedicated for serving deployment scripts
+Author: Derek
+
+Logical flow should be as follow,
+HTTP GET /api/v1/deployment_script/honeyagent
+HTTP GET /api/v1/deployment_script/honeyagent_conf_file
+HTTP GET /api/v1/deployment_script/ [HONEYPOT TYPE DESIRED]
+
+"""
+@app.route("/api/v1/deployment_script/honeyagent", methods=['GET'])
+def send_deployment_script_honeyagent():
+    return send_file("deployment_scripts/honeyagent.py")
+
+@app.route("/api/v1/deployment_script/honeyagent_conf_file", methods=['GET'])
+def send_deployment_script_honeyagent_conf():
+    return send_file("deployment_scripts/honeyagent.conf")
+
+@app.route("/api/v1/deployment_script/cowrie", methods=['GET'])
+def send_deployment_script_cowrie():
+    return send_file("deployment_scripts/deploy_cowrie.sh")
+
+@app.route("/api/v1/deployment_script/dionaea", methods=['GET'])
+def send_deployment_script_dionaea():
+    return send_file("deployment_scripts/deploy_dionaea.sh")
+
+@app.route("/api/v1/deployment_scripts/drupot", methods=['GET'])
+def send_deployment_script_drupot():
+    return send_file("deployment_scripts/deploy_drupot.sh")
+
+@app.route("/api/v1/deployment_scripts/elastichoney", methods=['GET'])
+def send_deployment_script_elastichoney():
+    return send_file("deployment_scripts/deploy_elastichoney.sh")
+
+@app.route("/api/v1/deployment_scripts/shockpot", methods=['GET'])
+def send_deployment_script_shockpot():
+    return send_file("deployment_scripts/deploy_shockpot.sh")
+
+@app.route("/api/v1/deployment_scripts/snort", methods=['GET'])
+def send_deployment_script_snort():
+    return send_file("deployment_scripts/deploy_snort.sh")
+
+@app.route("/api/v1/deployment_scripts/sticky_elephant", methods=['GET'])
+def send_deployment_script_sticky_elephant():
+    return send_file("deployment_scripts/deploy_sticky_elephant.sh")
+
+@app.route("/api/v1/deployment_scripts/wordpot", methods=['GET'])
+def send_deployment_script_wordpot():
+    return send_file("deployment_scripts/deploy_wordpot.sh")
+
+
+
 
 if __name__ == "__main__":
-
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)
         app.debug = True
         print('Waiting for requests.. ')
         http_server.serve_forever()
-
     except:
         broker_process.terminate()
         print("Exception")

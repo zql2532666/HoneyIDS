@@ -18,6 +18,7 @@ class HPfeedsDB:
             "wordpot": ["wordpot.events"],
             "dionaea": ["dionaea.connections", "dionaea.capture"]
         }
+        self.connection = self.create_connection()
 
 
     def create_connection(self):
@@ -32,32 +33,47 @@ class HPfeedsDB:
 
     def add_honeynode_credentials(self, hpfeeds_identifier, hpfeeds_secret, pubchans):
         sql_statement = "INSERT INTO authkeys (owner, ident, secret, pubchans, subchans) VALUES (?,?,?,?,?)"
-        conn = self.create_connection()
-        curr = conn.cursor()
+        # conn = self.create_connection()
+        curr = self.connection.cursor()
 
         try:
             curr.execute(sql_statement, ('honeyids', hpfeeds_identifier, hpfeeds_secret, json.dumps(pubchans), json.dumps([])))
-            conn.commit()
+            self.connection.commit()
         except Error as e:
             print(e)
 
         return curr.lastrowid
 
+    
+    def delete_credentials(self, hpfeeds_identifier):
+        sql_statement = "delete from authkeys where ident=?"
+        curr = self.connection.cursor()
 
+        try:
+            curr.execute(sql_statement, (hpfeeds_identifier,))
+            self.connection.commit()
+        except Error as e:
+            print(e)
+
+        return curr.lastrowid
+
+    
     def add_collector_hpfeeds_credentials(self):
         sleep(5)
         sql_statement = "INSERT INTO authkeys (owner, ident, secret, pubchans, subchans) VALUES (?,?,?,?,?)"
-        conn = self.create_connection()
-        curr = conn.cursor()
+        curr = self.connection.cursor()
         subchans = [channel for channels in self.hpfeeds_channels.values() for channel in channels]
 
         try:
             curr.execute(sql_statement, ('honeyids', 'collector', 'collector', json.dumps([]), json.dumps(subchans)))
-            conn.commit()
+            self.connection.commit()
         except Error as e:
             print(e)
 
         return curr.lastrowid
+
+    
+
 
 
             
