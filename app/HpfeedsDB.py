@@ -1,0 +1,64 @@
+import sqlite3
+from sqlite3 import Error
+import json
+from time import sleep
+
+
+class HPfeedsDB:
+
+    def __init__(self, path_to_db_file):
+        self.path_to_db_file = path_to_db_file
+        self.hpfeeds_channels = {
+            "cowrie": ["cowrie.sessions"], 
+            "drupot": ["agave.events"],
+            "elastichoney": ["elastichoney.events"],
+            "shockpot": ["shockpot.events"], 
+            "snort": ["snort.alerts"], 
+            "sticky_elephant": ["sticky_elephant.connections", "sticky_elephant.queries"],
+            "wordpot": ["wordpot.events"],
+            "dionaea": ["dionaea.connections", "dionaea.capture"]
+        }
+
+
+    def create_connection(self):
+        conn = None
+        try:
+            conn = sqlite3.connect(self.path_to_db_file)
+        except Error as e:
+            print(e)
+    
+        return conn
+
+
+    def add_honeynode_credentials(self, hpfeeds_identifier, hpfeeds_secret, pubchans):
+        sql_statement = "INSERT INTO authkeys (owner, ident, secret, pubchans, subchans) VALUES (?,?,?,?,?)"
+        conn = self.create_connection()
+        curr = conn.cursor()
+
+        try:
+            curr.execute(sql_statement, ('honeyids', hpfeeds_identifier, hpfeeds_secret, json.dumps(pubchans), json.dumps([])))
+            conn.commit()
+        except Error as e:
+            print(e)
+
+        return curr.lastrowid
+
+
+    def add_collector_hpfeeds_credentials(self):
+        sleep(5)
+        sql_statement = "INSERT INTO authkeys (owner, ident, secret, pubchans, subchans) VALUES (?,?,?,?,?)"
+        conn = self.create_connection()
+        curr = conn.cursor()
+        subchans = [channel for channels in self.hpfeeds_channels.values() for channel in channels]
+
+        try:
+            curr.execute(sql_statement, ('honeyids', 'collector', 'collector', json.dumps([]), json.dumps(subchans)))
+            conn.commit()
+        except Error as e:
+            print(e)
+
+        return curr.lastrowid
+
+
+            
+
