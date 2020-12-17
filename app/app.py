@@ -64,7 +64,7 @@ def activate_node():
 
     if request.method == 'POST':
         # do stuff when the form is submitted
-        node_name = request.form['nodename']
+        #node_name = request.form['nodename']
         ip_addr = request.form['ipaddress']
         
         if(node_name and ip_addr):
