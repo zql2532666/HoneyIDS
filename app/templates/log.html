@@ -25,22 +25,24 @@
     <table id="example" class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Ip Address</th>
-          <th>Honeypot Type</th>
-          <th>NIDS Type</th>
-          <th>Number of Attacks</th>
-          <th>Token</th>
+          <th>Date</th>
+          <th>Honeynode Name</th>
+          <th>Source IP</th>
+          <th>Source Port</th>
+          <th>Destination IP</th>
+          <th>Destination Port</th>
+          <th>Protocol</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
-          <th>Name</th>
-          <th>Ip Address</th>
-          <th>Honeypot Type</th>
-          <th>NIDS Type</th>
-          <th>Number of Attacks</th>
-          <th>Token</th>
+          <th>Date</th>
+          <th>Honeynode Name</th>
+          <th>Source IP</th>
+          <th>Source Port</th>
+          <th>Destination IP</th>
+          <th>Destination Port</th>
+          <th>Protocol</th>
         </tr>
     </tfoot>
     </table>
@@ -80,14 +82,15 @@
       "ordering": true,
       "responsive": true,
       "autoWidth": false,
-      "ajax": "/api/v1/honeynodes/datatables",
+      "ajax": "/api/v1/general_logs/datatables",
       "columns": [
+            { "data": "capture_date" },
             { "data": "honeynode_name" },
-            { "data": "ip_addr" },
-            { "data": "honeypot_type" },
-            { "data": "nids_type" },
-            { "data": "no_of_attacks" },
-            { "data": "token" }
+            { "data": "source_ip" },
+            { "data": "source_port" },
+            { "data": "destination_ip" },
+            { "data": "destination_port" },
+            { "data": "protocol" }
         ]
     });
   });

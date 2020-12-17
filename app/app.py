@@ -122,6 +122,21 @@ def malware_log():
 
 ######################################## API CALLS ############################################
 """ 
+API Routes for Log
+Author: Aaron
+"""
+
+# Retrieve all general logs for datatable
+@app.route("/api/v1/general_logs/datatables", methods=['GET'])
+def retrieve_all_general_logs_for_datatables():
+
+    datatable_dict = dict()
+    datatable_dict["data"] = json.loads(db_access.retrieve_all_general_logs())
+
+    return datatable_dict
+
+
+""" 
 API Routes for HoneyNode Operations
 Author: Aaron
 """
