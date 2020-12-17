@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block mainContent %}
+<!-- Alert after adding node -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+      {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<!-- alert end -->
+<style>
+  tfoot {
+      display: table-row-group;
+  }
+</style>
+<div class="row">
+  <div class="col-12">
+    <table id="example" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Ip Address</th>
+          <th>Honeypot Type</th>
+          <th>NIDS Type</th>
+          <th>Number of Attacks</th>
+          <th>Token</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Ip Address</th>
+          <th>Honeypot Type</th>
+          <th>NIDS Type</th>
+          <th>Number of Attacks</th>
+          <th>Token</th>
+        </tr>
+    </tfoot>
+    </table>
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+{% endblock %}
+{% block script %}
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $('#example tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    $('#example').DataTable({
+      initComplete: function () {
+          // Apply the search
+          this.api().columns().every( function () {
+              var that = this;
+
+              $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                  if ( that.search() !== this.value ) {
+                      that
+                          .search( this.value )
+                          .draw();
+                  }
+              } );
+          } );
+      },
+      "ordering": true,
+      "responsive": true,
+      "autoWidth": false,
+      "ajax": "/api/v1/honeynodes/datatables",
+      "columns": [
+            { "data": "honeynode_name" },
+            { "data": "ip_addr" },
+            { "data": "honeypot_type" },
+            { "data": "nids_type" },
+            { "data": "no_of_attacks" },
+            { "data": "token" }
+        ]
+    });
+  });
+
+</script>
+{% endblock %}

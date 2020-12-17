@@ -105,6 +105,21 @@ def log():
 
     return render_template("log.html", title="General Logs")
 
+@app.route("/sessionlog", methods=['GET', 'POST'])
+def session_log():
+
+    return render_template("sessionlog.html", title="Session Logs")
+
+@app.route("/snortlog", methods=['GET', 'POST'])
+def snort_log():
+
+    return render_template("snortlog.html", title="Snort Logs")
+
+@app.route("/malwarelog", methods=['GET', 'POST'])
+def malware_log():
+
+    return render_template("malwarelog.html", title="Malware Logs")
+
 ######################################## API CALLS ############################################
 """ 
 API Routes for HoneyNode Operations
