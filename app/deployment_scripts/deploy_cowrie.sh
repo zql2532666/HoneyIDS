@@ -14,8 +14,9 @@ SERVER_IP=$1
 TOKEN=$2
 HONEYNODE_NAME=$3
 
-IP_ADDR=$(ip addr show dev ens33 | grep "inet" | awk 'NR==1{print $2}' | cut -d '/' -f 1)
-SUBNET=$(ifconfig ens33 | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2)
+INTERFACE=$(basename -a /sys/class/net/e*)
+IP_ADDR=$(ip addr show dev $INTERFACE | grep "inet" | awk 'NR==1{print $2}' | cut -d '/' -f 1)
+SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2)
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 apt-get update
@@ -142,7 +143,7 @@ sed -i 's/AUTHBIND_ENABLED=no/AUTHBIND_ENABLED=yes/' bin/cowrie
 sed -i 's/DAEMONIZE=""/DAEMONIZE="-n"/' bin/cowrie
 
 
-# Config for supervisor
+# Config for supervisor for cowrie
 cat > /etc/supervisor/conf.d/cowrie.conf <<EOF
 [program:cowrie]
 command=/opt/cowrie/bin/cowrie start
