@@ -3,6 +3,10 @@ from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
 from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash,send_file
+import os
+from HpfeedsDB import *
+import subprocess
+
 
 app = Flask(__name__,
             static_url_path='', 
@@ -10,15 +14,24 @@ app = Flask(__name__,
             template_folder='templates')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 # Configure DB
 db = yaml.load(open('db.yaml'), Loader=yaml.SafeLoader)
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
 app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
+app.config['HPFEEDS_DATABASE_PATH'] = os.path.join(basedir, 'sqlite.db')
+
+# run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
+hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE)
 
 # Initialise Database
 db_access = DbAccess(app)
+
+# Initialize Hpfeeds credential database
+hpfeeds_db = HPfeedsDB(app.config['HPFEEDS_DATABASE_PATH'])
 
 # For testing purposes with jinja. Remove later
 # Usage: {{ mdebug("whatever to print here") }}
@@ -212,7 +225,23 @@ def create_node():
     if resultValue == 0:
         abort(404)
 
+    print(request.json)
+    # abort if 'honeypot_type' and 'nids_type' are not in the request 
+    if not all(x in hpfeeds_db.hpfeeds_channels.keys() for x in [request.json['honeypot_type'], request.json['nids_type']]):
+        abort(400)
+
+    # add the honeynode's hpfeeds credentials to the sqlite database
+    hpfeeds_identifier = request.json['token']
+    hpfeeds_secret = request.json['token']
+    pubchans = hpfeeds_db.hpfeeds_channels[request.json['honeypot_type']] + hpfeeds_db.hpfeeds_channels[request.json['nids_type']]
+    print(pubchans)
+    hpfeeds_update_result = hpfeeds_db.add_honeynode_credentials(hpfeeds_identifier, hpfeeds_secret, pubchans)
+
+    if resultValue == 0 or hpfeeds_update_result is None:
+        abort(404)
+
     return jsonify({'success': True}), 201
+
 
 # Update honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['PUT'])
@@ -323,5 +352,6 @@ if __name__ == "__main__":
         print('Waiting for requests.. ')
         http_server.serve_forever()
     except:
+        hpfeeds_broker_process.terminate()
         print("Exception")
 
