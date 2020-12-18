@@ -34,7 +34,6 @@ class HPfeedsDB:
 
     def add_honeynode_credentials(self, hpfeeds_identifier, hpfeeds_secret, pubchans):
         sql_statement = "INSERT INTO authkeys (owner, ident, secret, pubchans, subchans) VALUES (?,?,?,?,?)"
-        # conn = self.create_connection()
         curr = self.connection.cursor()
 
         try:
