@@ -237,7 +237,7 @@ def create_node():
     print(pubchans)
     hpfeeds_update_result = hpfeeds_db.add_honeynode_credentials(hpfeeds_identifier, hpfeeds_secret, pubchans)
 
-    if resultValue == 0 or hpfeeds_update_result is None:
+    if hpfeeds_update_result is None:
         abort(404)
 
     return jsonify({'success': True}), 201
