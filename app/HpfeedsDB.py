@@ -28,6 +28,7 @@ class HPfeedsDB:
         except Error as e:
             print(e)
     
+        print("hpfeeds database connection created")
         return conn
 
 
@@ -45,7 +46,7 @@ class HPfeedsDB:
         return curr.lastrowid
 
     
-    def delete_credentials(self, hpfeeds_identifier):
+    def delete_honeynode_credentials(self, hpfeeds_identifier):
         sql_statement = "delete from authkeys where ident=?"
         curr = self.connection.cursor()
 

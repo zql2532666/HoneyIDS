@@ -77,7 +77,7 @@ def activate_node():
 
     if request.method == 'POST':
         # do stuff when the form is submitted
-        node_name = request.form['nodename']
+        #node_name = request.form['nodename']
         ip_addr = request.form['ipaddress']
         
         if(node_name and ip_addr):
@@ -116,9 +116,39 @@ def list_nodes_for_web():
 @app.route("/log", methods=['GET', 'POST'])
 def log():
 
-    return render_template("log.html", title="Logs")
+    return render_template("log.html", title="General Logs")
+
+@app.route("/sessionlog", methods=['GET', 'POST'])
+def session_log():
+
+    return render_template("sessionlog.html", title="Session Logs")
+
+@app.route("/snortlog", methods=['GET', 'POST'])
+def snort_log():
+
+    return render_template("snortlog.html", title="Snort Logs")
+
+@app.route("/malwarelog", methods=['GET', 'POST'])
+def malware_log():
+
+    return render_template("malwarelog.html", title="Malware Logs")
 
 ######################################## API CALLS ############################################
+""" 
+API Routes for Log
+Author: Aaron
+"""
+
+# Retrieve all general logs for datatable
+@app.route("/api/v1/general_logs/datatables", methods=['GET'])
+def retrieve_all_general_logs_for_datatables():
+
+    datatable_dict = dict()
+    datatable_dict["data"] = json.loads(db_access.retrieve_all_general_logs())
+
+    return datatable_dict
+
+
 """ 
 API Routes for HoneyNode Operations
 Author: Aaron
@@ -184,6 +214,22 @@ def retrieve_node(token):
 #        "last_heard" : "idk",
 #        "token" : "2"
 # }
+
+# Create honeynode
+# Change accordingly with derek's data
+# Current data format to insert
+# {
+#        "honeynode_name" : "test",
+#        "ip_addr" : "192.168.1.2",
+#        "subnet_mask" : "255.255.255.0",
+#        "honeypot_type" : "test",
+#        "nids_type" : "null",
+#        "no_of_attacks" : "2",
+#        "date_deployed" : "2020-01-01 10:10:10",
+#        "heartbeat_status" : "down",
+#        "last_heard" : "idk",
+#        "token" : "2"
+# }
 @app.route("/api/v1/honeynodes/", methods=['POST'])
 def create_node():
 
@@ -192,13 +238,16 @@ def create_node():
 
     resultValue = db_access.create_node(request.json)
 
-    if request.json['honeypot_type'] not in hpfeeds_db.hpfeeds_channels.keys():
+    print(request.json)
+    # abort if 'honeypot_type' and 'nids_type' are not in the request 
+    if not all(x in hpfeeds_db.hpfeeds_channels.keys() for x in [request.json['honeypot_type'], request.json['nids_type']]):
         abort(400)
 
     # add the honeynode's hpfeeds credentials to the sqlite database
     hpfeeds_identifier = request.json['token']
     hpfeeds_secret = request.json['token']
-    pubchans = hpfeeds_db.hpfeeds_channels[request.json['honeypot_type']]
+    pubchans = hpfeeds_db.hpfeeds_channels[request.json['honeypot_type']] + hpfeeds_db.hpfeeds_channels[request.json['nids_type']]
+    print(pubchans)
 
     hpfeeds_update_result = hpfeeds_db.add_honeynode_credentials(hpfeeds_identifier, hpfeeds_secret, pubchans)
 
@@ -282,23 +331,23 @@ def send_deployment_script_cowrie():
 def send_deployment_script_dionaea():
     return send_file("deployment_scripts/deploy_dionaea.sh")
 
-@app.route("/api/v1/deployment_scripts/drupot", methods=['GET'])
+@app.route("/api/v1/deployment_script/drupot", methods=['GET'])
 def send_deployment_script_drupot():
     return send_file("deployment_scripts/deploy_drupot.sh")
 
-@app.route("/api/v1/deployment_scripts/elastichoney", methods=['GET'])
+@app.route("/api/v1/deployment_script/elastichoney", methods=['GET'])
 def send_deployment_script_elastichoney():
     return send_file("deployment_scripts/deploy_elastichoney.sh")
 
-@app.route("/api/v1/deployment_scripts/shockpot", methods=['GET'])
+@app.route("/api/v1/deployment_script/shockpot", methods=['GET'])
 def send_deployment_script_shockpot():
     return send_file("deployment_scripts/deploy_shockpot.sh")
 
-@app.route("/api/v1/deployment_scripts/snort", methods=['GET'])
+@app.route("/api/v1/deployment_script/snort", methods=['GET'])
 def send_deployment_script_snort():
     return send_file("deployment_scripts/deploy_snort.sh")
 
-@app.route("/api/v1/deployment_scripts/sticky_elephant", methods=['GET'])
+@app.route("/api/v1/deployment_script/sticky_elephant", methods=['GET'])
 def send_deployment_script_sticky_elephant():
     return send_file("deployment_scripts/deploy_sticky_elephant.sh")
 
