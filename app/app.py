@@ -95,13 +95,12 @@ def kill_node():
 
     if request.method == 'POST':
         # do stuff when the form is submitted
-        node_name = request.form['nodename']
-        ip_addr = request.form['ipaddress']
-        
-        if(node_name and ip_addr):
-            flash(u'Node successfully added.', 'success')
+        ip_addr = request.form['selectkill']
+
+        if(ip_addr):
+            flash(u'Node successfully killed.', 'success')
         else:
-            flash(u'Node not added.', 'danger')
+            flash(u'Erorr occurred.', 'danger')
         
         # redirect to end the POST handling
         return redirect(url_for('nodes'))

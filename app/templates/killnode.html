@@ -18,7 +18,7 @@
                     <select id="selectkill" name="selectkill" class="form-control custom-select">
                       <option selected disabled>Select one</option>
                       {% for node in list_nodes %}
-                        <option>{{ node.honeynode_name }}</option>
+                        <option value="{{ node.ip_addr }}">{{ node.honeynode_name }}</option>
                       {% endfor %}
                     </select>
                     <input type="hidden" name="">
@@ -27,7 +27,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Deactivate</button>
+                <button id="submitbtn" type="submit" class="btn btn-primary" disabled="">Deactivate</button>
               </div>
             </form>
           </div>
@@ -82,5 +82,13 @@
     // Activate parsley
     $('#nodeForm').parsley(parsleyConfig);
   });
+
+  $('#selectkill').on('change', function() {
+    if ($("#selectkill").val()) {
+        $('#submitbtn').prop('disabled', false);  
+    } else {
+        $('#submitbtn').prop('disabled', 'disabled');
+    }
+});
 </script>
 {% endblock %}
