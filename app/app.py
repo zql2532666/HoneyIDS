@@ -111,6 +111,16 @@ def kill_node():
         ip_addr = request.form['selectkill']
 
         if(ip_addr):
+            # Signal/Send command to the honey node @ ip_addr to kill 
+            kill_signal= {
+                'command': "KILL"
+            }
+            kill_signal_json = json.dumps(populate_signal)
+            kill_signal_encoded = kill_signal_json.encode('utf-8')
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
+                for _ in range(3):
+                    hbsocket.sendto(kill_signal_encoded, (ip_addr,HONEYNODE_COMMAND_PORT))
+
             flash(u'Node successfully killed.', 'success')
         else:
             flash(u'Erorr occurred.', 'danger')
