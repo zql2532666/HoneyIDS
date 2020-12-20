@@ -338,17 +338,24 @@ def generate_deployment_command():
     # print(type(request.json))
     honeynode_name = request.json['honeynode_name']
     honeypot_type = request.json['honeypot_type']
-    honeypot_script_api = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/{honeypot_type}"
-    honeypot_script_output_file = f"deploy_{honeypot_type}.sh"
-    nids_script_api = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/snort"
-    nids_script_output_file = f"deploy_snort.sh"
+    # honeypot_script_api = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/{honeypot_type}"
+    # honeypot_script_output_file = f"deploy_{honeypot_type}.sh"
+    # nids_script_api = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/snort"
+    # nids_script_output_file = f"deploy_snort.sh"
+
+    main_script_api=f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/main"
+    main_script_output_file = f"main.sh"
     token = uuid.uuid4()
+    # deployment_cmd = f"""
+    # sudo wget {honeypot_script_api} -O {honeypot_script_output_file} &&
+    # sudo wget {nids_script_api} -O {nids_script_output_file} &&
+    # sudo chmod +x {honeypot_script_output_file} {nids_script_output_file} &&
+    # sudo ./{honeypot_script_output_file} {WEB_SERVER_IP} {token} {honeynode_name} &&
+    # sudo ./{nids_script_output_file}
+    # """
+
     deployment_cmd = f"""
-    sudo wget {honeypot_script_api} -O {honeypot_script_output_file} &&
-    sudo wget {nids_script_api} -O {nids_script_output_file} &&
-    sudo chmod +x {honeypot_script_output_file} {nids_script_output_file} &&
-    sudo ./{honeypot_script_output_file} {WEB_SERVER_IP} {token} {honeynode_name} &&
-    sudo ./{nids_script_output_file}
+    sudo wget {main_script_api} -O {main_script_output_file} && sudo bash {main_script_output_file} {WEB_SERVER_IP} {WEB_SERVER_PORT} {token} {honeynode_name} {honeypot_type}
     """
     return jsonify(deployment_cmd.strip()), 200
 
