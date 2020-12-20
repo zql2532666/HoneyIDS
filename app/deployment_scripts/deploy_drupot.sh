@@ -22,6 +22,7 @@ IP_ADDR=$(ip addr show dev $INTERFACE | grep "inet" | awk 'NR==1{print $2}' | cu
 SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2)
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
+sudo apt-get remove unattended-upgrades
 # stop and disable all services that use package management. 
 function killService() {
     service=$1
@@ -70,8 +71,8 @@ export GO111MODULE=on
 # install honeyagent
 mkdir /opt/honeyagent
 cd /opt/honeyagent
-wget http://$SERVER_IP:5000/api/v1/deployment_script/honeyagent -O honeyagent.py
-wget http://$SERVER_IP:5000/api/v1/deployment_script/honeyagent_conf_file -O honeyagent.conf
+wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent -O honeyagent.py
+wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent_conf_file -O honeyagent.conf
 
 # populate the honeyagent config file
 sed -i "s/TOKEN:/TOKEN: $TOKEN/g" honeyagent.conf

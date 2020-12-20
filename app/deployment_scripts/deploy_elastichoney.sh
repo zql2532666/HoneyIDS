@@ -51,14 +51,15 @@ function main() {
 main
 
 apt-get update
+
 apt-get -y install git golang supervisor curl python-pip python3-pip
 pip install configparser
 
 # install honeyagent
 mkdir /opt/honeyagent
 cd /opt/honeyagent
-wget http://$SERVER_IP:5000/api/v1/deployment_script/honeyagent -O honeyagent.py
-wget http://$SERVER_IP:5000/api/v1/deployment_script/honeyagent_conf_file -O honeyagent.conf
+wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent -O honeyagent.py
+wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent_conf_file -O honeyagent.conf
 
 # populate the honeyagent config file
 sed -i "s/TOKEN:/TOKEN: $TOKEN/g" honeyagent.conf
@@ -145,4 +146,4 @@ redirect_stderr=true
 stopsignal=QUIT
 EOF
 
-supervisorctl update
+# supervisorctl update
