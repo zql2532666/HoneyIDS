@@ -51,6 +51,38 @@ INSERT INTO `general_logs` VALUES (1,'2020-01-01 10:10:10','cowrie','192.168.12.
 UNLOCK TABLES;
 
 --
+-- Table structure for table `nids_logs`
+--
+
+DROP TABLE IF EXISTS `nids_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `nids_logs` (
+  `nids_log_id` int NOT NULL AUTO_INCREMENT,
+  `date` datetime DEFAULT NULL,
+  `honeynode_name` varchar(45) DEFAULT NULL,
+  `source_ip` varchar(45) DEFAULT NULL,
+  `source_port` varchar(45) DEFAULT NULL,
+  `destination_ip` varchar(45) DEFAULT NULL,
+  `destination_port` varchar(45) DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `classification` int DEFAULT NULL,
+  `signature` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`nids_log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `nids_logs`
+--
+
+LOCK TABLES `nids_logs` WRITE;
+/*!40000 ALTER TABLE `nids_logs` DISABLE KEYS */;
+INSERT INTO `nids_logs` VALUES (1,'2020-01-01 10:10:10','cowrie','192.168.1.1','123','192.168.2.2','22',2,3,'ET SCAN Suspicious inbound to mySQL port 3306');
+/*!40000 ALTER TABLE `nids_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `nodes`
 --
 
@@ -102,4 +134,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-17 18:26:48
+-- Dump completed on 2020-12-20 20:31:27
