@@ -175,4 +175,4 @@ chmod 755 /etc/cron.daily/update_snort_rules.sh
 /etc/cron.daily/update_snort_rules.sh
 
 
-supervisorctl update
+# supervisorctl update

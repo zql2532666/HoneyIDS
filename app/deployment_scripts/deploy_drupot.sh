@@ -77,7 +77,7 @@ wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent_conf_file
 # populate the honeyagent config file
 sed -i "s/TOKEN:/TOKEN: $TOKEN/g" honeyagent.conf
 sed -i "s/HONEYNODE_NAME:/HONEYNODE_NAME: $HONEYNODE_NAME/g" honeyagent.conf
-sed -i "s/IP:/IP: $IP/g" honeyagent.conf
+sed -i "s/IP:/IP: $IP_ADDR/g" honeyagent.conf
 sed -i "s/SUBNET_MASK:/SUBNET_MASK: $SUBNET/g" honeyagent.conf
 sed -i "s/HONEYPOT_TYPE:/HONEYPOT_TYPE: drupot/g" honeyagent.conf
 sed -i "s/NIDS_TYPE:/NIDS_TYPE: snort/g" honeyagent.conf

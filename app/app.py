@@ -115,7 +115,7 @@ def kill_node():
             kill_signal= {
                 'command': "KILL"
             }
-            kill_signal_json = json.dumps(populate_signal)
+            kill_signal_json = json.dumps(kill_signal)
             kill_signal_encoded = kill_signal_json.encode('utf-8')
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
                 for _ in range(3):
