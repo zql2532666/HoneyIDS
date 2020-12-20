@@ -38,7 +38,7 @@ app.config['MYSQL_DB'] = db['mysql_db']
 app.config['HPFEEDS_DATABASE_PATH'] = os.path.join(basedir, 'sqlite.db')
 
 # run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
-hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE)
+hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
 
 # Initialise Database
 db_access = DbAccess(app)
@@ -121,6 +121,7 @@ def kill_node():
                 for _ in range(3):
                     hbsocket.sendto(kill_signal_encoded, (ip_addr,HONEYNODE_COMMAND_PORT))
 
+            # sleep(DEAD_INTERVAL)
             flash(u'Node successfully killed.', 'success')
         else:
             flash(u'Erorr occurred.', 'danger')
