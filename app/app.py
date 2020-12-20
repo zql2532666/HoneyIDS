@@ -133,7 +133,7 @@ def log():
 @app.route("/sessionlog", methods=['GET', 'POST'])
 def session_log():
 
-    return render_template("sessionlog.html", title="Session Logs")
+    return render_template("sessionlog.html", title="NIDS Logs")
 
 @app.route("/snortlog", methods=['GET', 'POST'])
 def snort_log():
@@ -160,7 +160,15 @@ def retrieve_all_general_logs_for_datatables():
 
     return datatable_dict
 
+# Retrieve all nids logs for datatable
+@app.route("/api/v1/nids_logs/datatables", methods=['GET'])
+def retrieve_all_nids_logs_for_datatables():
 
+    datatable_dict = dict()
+    datatable_dict["data"] = json.loads(db_access.retrieve_all_nids_logs())
+
+    return datatable_dict
+    
 """ 
 API Routes for HoneyNode Operations
 Author: Aaron
