@@ -48,7 +48,7 @@
               <div class="form-group">
                 <label>Virtual Machine</label>
                 <p style="margin:0px;">Download virtual machine and import to your VMWare or VitualBox</p>
-                <a href="#" class="btn btn-info">Download</a>
+                <a href="#" class="btn btn-info" onclick="callDownloadOvaAPI()">Download</a>
               </div>
               <div class="form-group">
                 <label for="command">Deploy Command</label>
@@ -134,5 +134,19 @@
       }
     });
   }
+
+  function callDownloadOvaAPI(){
+    $.ajax({
+      url: "/api/v1/deploy/honeyids-vm",
+      type: "GET",
+      success: function(result){
+        window.location = "/api/v1/deploy/honeyids-vm"
+        console.log("ova download api call successful")
+      },
+      error: function(error){
+        alert(`Error ${error}`);
+      }
+    });
+  };
 </script>
 {% endblock %}
