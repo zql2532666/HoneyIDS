@@ -16,7 +16,7 @@ class HPfeedsDB:
             "snort": ["snort.alerts"], 
             "sticky_elephant": ["sticky_elephant.connections", "sticky_elephant.queries"],
             "wordpot": ["wordpot.events"],
-            "dionaea": ["dionaea.connections", "dionaea.capture"]
+            "dionaea": ["dionaea.connections", "dionaea.capture", "mwbinary.dionaea.sensorunique", "dionaea.capture.anon", "dionaea.caputres"]
         }
         self.connection = self.create_connection()
 
@@ -32,9 +32,10 @@ class HPfeedsDB:
         return conn
 
 
-    def add_honeynode_credentials(self, hpfeeds_identifier, hpfeeds_secret, pubchans):
+    def add_honeynode_credentials(self, hpfeeds_identifier, hpfeeds_secret, honeypot_type, nids_type):
         sql_statement = "INSERT INTO authkeys (owner, ident, secret, pubchans, subchans) VALUES (?,?,?,?,?)"
         curr = self.connection.cursor()
+        pubchans = self.hpfeeds_channels[honeypot_type] + self.hpfeeds_channels[nids_type]
 
         try:
             curr.execute(sql_statement, ('honeyids', hpfeeds_identifier, hpfeeds_secret, json.dumps(pubchans), json.dumps([])))

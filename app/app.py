@@ -17,7 +17,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Configure DB
-db = yaml.load(open('db.yaml'), Loader=yaml.SafeLoader)
+db = yaml.load(open(os.path.join(basedir, 'db.yaml')), Loader=yaml.SafeLoader)
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
 app.config['MYSQL_PASSWORD'] = db['mysql_password']
@@ -232,9 +232,9 @@ def create_node():
     # add the honeynode's hpfeeds credentials to the sqlite database
     hpfeeds_identifier = request.json['token']
     hpfeeds_secret = request.json['token']
-    pubchans = hpfeeds_db.hpfeeds_channels[request.json['honeypot_type']] + hpfeeds_db.hpfeeds_channels[request.json['nids_type']]
-    print(pubchans)
-    hpfeeds_update_result = hpfeeds_db.add_honeynode_credentials(hpfeeds_identifier, hpfeeds_secret, pubchans)
+    honeypot_type = request.json['honeypot_type']
+    nids_type = request.json['nids_type']
+    hpfeeds_update_result = hpfeeds_db.add_honeynode_credentials(hpfeeds_identifier, hpfeeds_secret, honeypot_type, nids_type)
 
     if hpfeeds_update_result is None:
         abort(404)
@@ -317,27 +317,27 @@ def send_deployment_script_cowrie():
 def send_deployment_script_dionaea():
     return send_file("deployment_scripts/deploy_dionaea.sh")
 
-@app.route("/api/v1/deployment_scripts/drupot", methods=['GET'])
+@app.route("/api/v1/deployment_script/drupot", methods=['GET'])
 def send_deployment_script_drupot():
     return send_file("deployment_scripts/deploy_drupot.sh")
 
-@app.route("/api/v1/deployment_scripts/elastichoney", methods=['GET'])
+@app.route("/api/v1/deployment_script/elastichoney", methods=['GET'])
 def send_deployment_script_elastichoney():
     return send_file("deployment_scripts/deploy_elastichoney.sh")
 
-@app.route("/api/v1/deployment_scripts/shockpot", methods=['GET'])
+@app.route("/api/v1/deployment_script/shockpot", methods=['GET'])
 def send_deployment_script_shockpot():
     return send_file("deployment_scripts/deploy_shockpot.sh")
 
-@app.route("/api/v1/deployment_scripts/snort", methods=['GET'])
+@app.route("/api/v1/deployment_script/snort", methods=['GET'])
 def send_deployment_script_snort():
     return send_file("deployment_scripts/deploy_snort.sh")
 
-@app.route("/api/v1/deployment_scripts/sticky_elephant", methods=['GET'])
+@app.route("/api/v1/deployment_script/sticky_elephant", methods=['GET'])
 def send_deployment_script_sticky_elephant():
     return send_file("deployment_scripts/deploy_sticky_elephant.sh")
 
-@app.route("/api/v1/deployment_scripts/wordpot", methods=['GET'])
+@app.route("/api/v1/deployment_script/wordpot", methods=['GET'])
 def send_deployment_script_wordpot():
     return send_file("deployment_scripts/deploy_wordpot.sh")
 
