@@ -8,7 +8,7 @@ from HpfeedsDB import *
 import subprocess
 from configparser import ConfigParser
 import socket
-
+import uuid
 
 app = Flask(__name__,
             static_url_path='', 
@@ -330,6 +330,29 @@ HTTP GET /api/v1/deploy/deployment_script/honeyagent_conf_file
 HTTP GET /api/v1/deploy/deployment_script/ [HONEYPOT TYPE DESIRED]
 
 """
+@app.route("/api/v1/deploy/generate_deployment_command", methods=['POST'])
+def generate_deployment_command():
+    if not request.json:
+        abort(400)
+    # print(request.json)
+    # print(type(request.json))
+    honeynode_name = request.json['honeynode_name']
+    honeypot_type = request.json['honeypot_type']
+    honeypot_script_api = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/{honeypot_type}"
+    honeypot_script_output_file = f"deploy_{honeypot_type}.sh"
+    nids_script_api = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/deploy/deployment_script/snort"
+    nids_script_output_file = f"deploy_snort.sh"
+    token = uuid.uuid4()
+    deployment_cmd = f"""
+    sudo wget {honeypot_script_api} -O {honeypot_script_output_file} &&
+    sudo wget {nids_script_api} -O {nids_script_output_file} &&
+    sudo chmod +x {honeypot_script_output_file} {nids_script_output_file} &&
+    sudo ./{honeypot_script_output_file} {WEB_SERVER_IP} {token} {honeynode_name} &&
+    sudo ./{nids_script_output_file}
+    """
+    return jsonify(deployment_cmd.strip()), 200
+
+
 @app.route("/api/v1/deploy/deployment_script/honeyagent", methods=['GET'])
 def send_deployment_script_honeyagent():
     return send_file(os.path.join(basedir, "deployment_scripts/honeyagent.py"))

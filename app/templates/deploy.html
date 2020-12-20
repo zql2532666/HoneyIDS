@@ -32,7 +32,7 @@
               </div>
             </div>
             <div class="card-footer">
-              <button id="generate" class="btn btn-primary float-right" disabled="">Generate Command</button>
+              <button id="generate" class="btn btn-primary float-right" disabled="" onclick="callGenerateDeploymentCommandAPI()">Generate Command</button>
             </div>
             <!-- /.card-body -->
           </div>
@@ -54,7 +54,9 @@
                 <label for="command">Deploy Command</label>
                 <p style="margin:0px;">To deploy, copy and paste this entire command into the terminal of your machine</p>
                 <div class="form-group">
-                  <textarea class="form-control" rows="3" placeholder="" readonly style="height:auto; margin-top: 0px; margin-bottom: 0px; height: 90px; resize: none;">wget "http://115.66.77.82/api/script/?text=true&script_id=13" -O deploy.sh && sudo bash deploy.sh http://115.66.77.82 X6yHg4D2</textarea>
+                  <textarea class="form-control" id="target-command" rows="8" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">
+                    
+                  </textarea>
                 </div>
               </div>
             </div>
@@ -99,5 +101,38 @@
           $('#generate').prop('disabled', 'disabled');
       }
   });
+
+  function callGenerateDeploymentCommandAPI(){
+    var honeynodeType = document.getElementById("deployScript").value;
+    var honeynodeName = document.getElementById("nodeName").value;
+    var data = {
+      'honeynode_name': honeynodeName,
+      'honeypot_type': honeynodeType
+    }
+    var dataJson = JSON.stringify(data); 
+    console.log(honeynodeType);
+    console.log(honeynodeName);
+    //console.log(data)
+    console.log(dataJson)
+    var myHeader = {
+      "Content-Type": "application/json"
+    };
+
+    $.ajax({
+      url: "/api/v1/deploy/generate_deployment_command",
+      type: "POST",
+      //contentType : 'text/json',
+      headers:myHeader,
+      data: dataJson,
+      success: function(result){
+        console.log(result)
+        document.getElementById("target-command").innerHTML=result
+        console.log("done")
+      },
+      error: function(error){
+        alert(`Error ${error}`);
+      }
+    });
+  }
 </script>
 {% endblock %}
