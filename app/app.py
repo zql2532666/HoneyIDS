@@ -359,6 +359,9 @@ def generate_deployment_command():
     """
     return jsonify(deployment_cmd.strip()), 200
 
+@app.route("/api/v1/deploy/deployment_script/main", methods=['GET'])
+def send_deployment_script_honeyagent():
+    return send_file(os.path.join(basedir, "deployment_scripts/main.sh"))
 
 @app.route("/api/v1/deploy/deployment_script/honeyagent", methods=['GET'])
 def send_deployment_script_honeyagent():
