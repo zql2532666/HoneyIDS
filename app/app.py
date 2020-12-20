@@ -317,50 +317,56 @@ The API Routes are soley dedicated for serving deployment scripts
 Author: Derek
 
 Logical flow should be as follow,
-HTTP GET /api/v1/deployment_script/honeyagent
-HTTP GET /api/v1/deployment_script/honeyagent_conf_file
-HTTP GET /api/v1/deployment_script/ [HONEYPOT TYPE DESIRED]
+HTTP GET /api/v1/deploy/deployment_script/honeyagent
+HTTP GET /api/v1/deploy/deployment_script/honeyagent_conf_file
+HTTP GET /api/v1/deploy/deployment_script/ [HONEYPOT TYPE DESIRED]
 
 """
-@app.route("/api/v1/deployment_script/honeyagent", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/honeyagent", methods=['GET'])
 def send_deployment_script_honeyagent():
-    return send_file("deployment_scripts/honeyagent.py")
+    return send_file(os.path.join(basedir, "deployment_scripts/honeyagent.py"))
 
-@app.route("/api/v1/deployment_script/honeyagent_conf_file", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/honeyagent_conf_file", methods=['GET'])
 def send_deployment_script_honeyagent_conf():
-    return send_file("deployment_scripts/honeyagent.conf")
+    return send_file(os.path.join(basedir, "deployment_scripts/honeyagent.conf"))
 
-@app.route("/api/v1/deployment_script/cowrie", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/cowrie", methods=['GET'])
 def send_deployment_script_cowrie():
-    return send_file("deployment_scripts/deploy_cowrie.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_cowrie.sh"))
 
-@app.route("/api/v1/deployment_script/dionaea", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/dionaea", methods=['GET'])
 def send_deployment_script_dionaea():
-    return send_file("deployment_scripts/deploy_dionaea.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_dionaea.sh"))
 
-@app.route("/api/v1/deployment_script/drupot", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/drupot", methods=['GET'])
 def send_deployment_script_drupot():
-    return send_file("deployment_scripts/deploy_drupot.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_drupot.sh"))
 
-@app.route("/api/v1/deployment_script/elastichoney", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/elastichoney", methods=['GET'])
 def send_deployment_script_elastichoney():
-    return send_file("deployment_scripts/deploy_elastichoney.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_elastichoney.sh"))
 
-@app.route("/api/v1/deployment_script/shockpot", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/shockpot", methods=['GET'])
 def send_deployment_script_shockpot():
-    return send_file("deployment_scripts/deploy_shockpot.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_shockpot.sh"))
 
-@app.route("/api/v1/deployment_script/snort", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/snort", methods=['GET'])
 def send_deployment_script_snort():
-    return send_file("deployment_scripts/deploy_snort.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_snort.sh"))
 
-@app.route("/api/v1/deployment_script/sticky_elephant", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/sticky_elephant", methods=['GET'])
 def send_deployment_script_sticky_elephant():
-    return send_file("deployment_scripts/deploy_sticky_elephant.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_sticky_elephant.sh"))
 
-@app.route("/api/v1/deployment_script/wordpot", methods=['GET'])
+@app.route("/api/v1/deploy/deployment_script/wordpot", methods=['GET'])
 def send_deployment_script_wordpot():
-    return send_file("deployment_scripts/deploy_wordpot.sh")
+    return send_file(os.path.join(basedir, "deployment_scripts/deploy_wordpot.sh"))
+
+
+# API ROUTE FOR THE CLEAN VM OVA FILE
+@app.route("/api/v1/deploy/honeyids-vm", methods=['GET'])
+def send_honeyids_vm_ova():
+    return send_file(os.path.join(basedir, "vm_ova/honeyids-vm.ova"))
 
 
 
