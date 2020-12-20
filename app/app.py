@@ -6,6 +6,8 @@ from flask import Flask, render_template, request, jsonify, abort, redirect, url
 import os
 from HpfeedsDB import *
 import subprocess
+from configparser import ConfigParser
+import socket
 
 
 app = Flask(__name__,
@@ -15,6 +17,17 @@ app = Flask(__name__,
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Heartbeats Server and HoneyNode Configuration
+config = ConfigParser()
+config.read(os.path.join(basedir, 'heartbeats_server.conf'))
+
+HBPORT = int(config['HEARTBEATS']['SERVER_HB_PORT']) 
+HELLO_INTERVAL = int(config['HEARTBEATS']['HELLO_INTERVAL'])   
+DEAD_INTERVAL = int(config['HEARTBEATS']['DEAD_INTERVAL'])   
+WEB_SERVER_IP = config['WEB-SERVER']['SERVER_IP'] 
+WEB_SERVER_PORT = config['WEB-SERVER']['PORT']
+HONEYNODE_COMMAND_PORT = int(config['HONEYNODE']['COMMAND_PORT'])
 
 # Configure DB
 db = yaml.load(open(os.path.join(basedir, 'db.yaml')), Loader=yaml.SafeLoader)
@@ -239,6 +252,14 @@ def create_node():
     if hpfeeds_update_result is None:
         abort(404)
 
+    # signal the heartbeat server to repopulate the heartbeat dictionary
+    populate_signal= {
+        'msg': "POPULATE"
+    }
+    populate_signal_json = json.dumps(populate_signal)
+    populate_signal_encoded = populate_signal_json.encode('utf-8')
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
+        hbsocket.sendto( populate_signal_encoded, (WEB_SERVER_IP,HBPORT))
     return jsonify({'success': True}), 201
 
 
