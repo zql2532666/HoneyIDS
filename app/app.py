@@ -86,15 +86,16 @@ def deploy():
 def nodes():
     return render_template("nodes.html", title="Nodes")
 
-@app.route("/activatenode", methods=['GET', 'POST'])
-def activate_node():
+@app.route("/addnode", methods=['GET', 'POST'])
+def add_node():
 
     if request.method == 'POST':
         # do stuff when the form is submitted
         #node_name = request.form['nodename']
         ip_addr = request.form['ipaddress']
         
-        if(node_name and ip_addr):
+        if(ip_addr):
+            send_signal_honeynode_add_node(ip_addr,HONEYNODE_COMMAND_PORT)
             flash(u'Node successfully added.', 'success')
         else:
             flash(u'Node not added.', 'danger')
@@ -102,7 +103,7 @@ def activate_node():
         # redirect to end the POST handling
         return redirect(url_for('nodes'))
 
-    return render_template("addnode.html", title="Activate Node")
+    return render_template("addnode.html", title="Add Node")
 
 @app.route("/deactivatenode", methods=['GET', 'POST'])
 def kill_node():

@@ -26,7 +26,7 @@ config.read(os.path.join(basedir, 'honeyagent.conf'))
 
 # WEB SERVER INFO
 WEB_SERVER_IP = config['WEB-SERVER']['SERVER_IP']  
-                  
+WEB_SERVER_PORT = config['WEB-SERVER']['PORT']     
 SERVER_HB_PORT = int(config['HEARTBEATS']['SERVER_HB_PORT'])            
 HELLO_INTERVAL = int(config['HEARTBEATS']['HELLO_INTERVAL'])               
 
@@ -68,6 +68,23 @@ def kill():
     cmd = "init 0"
     os.system(cmd)
 
+def add_node():
+    payload = {
+        "honeynode_name": HONEYNODE_NAME,
+        "ip_addr": HONEYNODE_IP,
+        "subnet_mask": HONEYNODE_SUBNET_MASK,
+        "honeypot_type": HONEYNODE_HONEYPOT_TYPE,
+        "nids_type": HONEYNODE_NIDS_TYPE,
+        "no_of_attacks": "0",
+        "date_deployed": HONEYNODE_DEPLOYED_DATE,
+        "heartbeat_status":"False",
+        "last_heard": HONEYNODE_DEPLOYED_DATE,
+        "token": TOKEN
+    }
+    payload_json = json.dumps(payload)
+    api_endpoint = "http://{0}:{1}/api/v1/honeynodes/".format(WEB_SERVER_IP,WEB_SERVER_PORT)
+    response = requests.post(api_endpoint, payload_json)
+
 def listen_for_command():
     receive_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     receive_socket.bind(('', HONEYNODE_COMMAND_PORT))
@@ -77,7 +94,8 @@ def listen_for_command():
     print("data: {} from {}".format(data,addr))
     if data['command'] == 'KILL':
         kill()
-
+    elif data['command'] == 'ADD_NODE':
+        add_node()
 
 send_heartbeats_thread = threading.Thread(target=send_heartbeats)
 listen_for_command_thread = threading.Thread(target=listen_for_command)

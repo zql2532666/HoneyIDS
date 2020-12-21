@@ -24,3 +24,12 @@ def send_signal_heartbeats_server_repopulate(ip_addr,port):
     populate_signal_encoded = populate_signal_json.encode('utf-8')
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
         hbsocket.sendto( populate_signal_encoded, (ip,port))
+
+def send_signal_honeynode_add_node(ip_addr,port):
+    add_node_signal={
+        'command' : 'ADD_NODE'
+    }
+    add_node_signal_json = json.dumps(add_node_signal)
+    add_node_signal_encoded = add_node_signal_json.encode('utf-8')
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
+        hbsocket.sendto(add_node_signal_encoded, (ip_addr,port))
