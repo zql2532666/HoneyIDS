@@ -416,7 +416,7 @@ def send_deployment_script_wordpot():
 
 
 # API ROUTE FOR THE CLEAN VM OVA FILE
-@app.route("/api/v1/deploy/honeyids-vm", methods=['GET'])
+@app.route("/api/v1/deploy/honeyids-vm.ova", methods=['GET'])
 def send_honeyids_vm_ova():
     return send_file(os.path.join(basedir, "vm_ova/honeyids-vm.ova"))
 
