@@ -86,8 +86,8 @@ def deploy():
 def nodes():
     return render_template("nodes.html", title="Nodes")
 
-@app.route("/activatenode", methods=['GET', 'POST'])
-def activate_node():
+@app.route("/addnode", methods=['GET', 'POST'])
+def add_node():
 
     if request.method == 'POST':
         # do stuff when the form is submitted
@@ -103,7 +103,7 @@ def activate_node():
         # redirect to end the POST handling
         return redirect(url_for('nodes'))
 
-    return render_template("addnode.html", title="Activate Node")
+    return render_template("addnode.html", title="Add Node")
 
 @app.route("/deactivatenode", methods=['GET', 'POST'])
 def kill_node():
