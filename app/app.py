@@ -1,4 +1,5 @@
 import yaml, json, requests
+from time import sleep
 from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
@@ -103,6 +104,7 @@ def add_node():
             flash(u'Node not added.', 'danger')
         
         # redirect to end the POST handling
+        sleep(25)
         return redirect(url_for('nodes'))
 
     return render_template("addnode.html", title="Add Node")
@@ -130,13 +132,14 @@ def kill_node():
             flash(u'Erorr occurred.', 'danger')
         
         # redirect to end the POST handling
+        sleep(25)
         return redirect(url_for('nodes'))
 
     return render_template("killnode.html", title="Deactivate Node")
 
 @app.context_processor
 def list_nodes_for_web():
-    list_nodes = json.loads(retrieve_all_nodes())
+    list_nodes = json.loads(db_access.retrieve_all_active_nodes())
     return dict(list_nodes=list_nodes)
 
 @app.route("/log", methods=['GET', 'POST'])
@@ -330,9 +333,13 @@ def delete_node(token):
     resultValue = db_access.delete_node(token)
 
     if resultValue == 0:
-        abort(404)
+        flash(u'Node not deleted.', 'danger')
+    else:
+        flash(u'Node successfully deleted.', 'success')
 
-    return jsonify({'success': True}), 200
+    # redirect to end the POST handling
+    return redirect(url_for('nodes'))
+    #return jsonify({'success': True}), 200
 
 """ 
 API ROUTES FOR DEPLOYMENT SCRIPTS  

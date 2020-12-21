@@ -32,6 +32,21 @@ class DbAccess:
 
         return json_data
 
+    def retrieve_all_active_nodes(self):
+        
+        json_data = {}
+
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = "select * from nodes where heartbeat_status='True'"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+
+        return json_data
+
     def retrieve_all_general_logs(self):
         
         json_data = {}
