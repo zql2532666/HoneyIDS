@@ -94,7 +94,7 @@ def add_node():
         #node_name = request.form['nodename']
         ip_addr = request.form['ipaddress']
         
-        if(node_name and ip_addr):
+        if(ip_addr):
             send_signal_honeynode_add_node(ip_addr,HONEYNODE_COMMAND_PORT)
             flash(u'Node successfully added.', 'success')
         else:
