@@ -95,6 +95,7 @@ def activate_node():
         ip_addr = request.form['ipaddress']
         
         if(node_name and ip_addr):
+            send_signal_honeynode_add_node(ip_addr,HONEYNODE_COMMAND_PORT)
             flash(u'Node successfully added.', 'success')
         else:
             flash(u'Node not added.', 'danger')
