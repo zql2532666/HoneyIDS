@@ -96,6 +96,8 @@ def add_node():
         
         if(ip_addr):
             send_signal_honeynode_add_node(ip_addr,HONEYNODE_COMMAND_PORT)
+            send_signal_heartbeats_server_repopulate(WEB_SERVER_IP,HBPORT)
+
             flash(u'Node successfully added.', 'success')
         else:
             flash(u'Node not added.', 'danger')
