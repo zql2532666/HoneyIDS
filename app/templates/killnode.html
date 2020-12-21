@@ -27,7 +27,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button id="submitbtn" type="submit" class="btn btn-primary" disabled="">Deactivate</button>
+                <button id="submitbtn" onclick="kill()" type="submit" class="btn btn-primary" disabled="">Deactivate</button>
               </div>
             </form>
           </div>
@@ -90,5 +90,11 @@
         $('#submitbtn').prop('disabled', 'disabled');
     }
 });
+
+  function kill() {
+    document.getElementById("nodeForm").submit();
+    $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
+    Killing Node...');
+  }
 </script>
 {% endblock %}

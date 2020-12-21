@@ -40,7 +40,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Activate</button>
+                <button id="submitbtn" type="submit" onclick="kill()" class="btn btn-primary">Activate</button>
               </div>
             </form>
           </div>
@@ -95,5 +95,13 @@
     // Activate parsley
     $('#nodeForm').parsley(parsleyConfig);
   });
+
+  function kill() {
+    if($('#nodeForm').parsley().validate()){
+      document.getElementById("nodeForm").submit();
+      $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
+    Adding Node...');
+    }
+  }
 </script>
 {% endblock %}
