@@ -9,6 +9,7 @@ import subprocess
 from configparser import ConfigParser
 import socket
 import uuid
+from signal import *
 
 app = Flask(__name__,
             static_url_path='', 
@@ -111,17 +112,15 @@ def kill_node():
         ip_addr = request.form['selectkill']
 
         if(ip_addr):
-            # Signal/Send command to the honey node @ ip_addr to kill 
-            kill_signal= {
-                'command': "KILL"
-            }
-            kill_signal_json = json.dumps(kill_signal)
-            kill_signal_encoded = kill_signal_json.encode('utf-8')
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
-                for _ in range(3):
-                    hbsocket.sendto(kill_signal_encoded, (ip_addr,HONEYNODE_COMMAND_PORT))
+           
+            # kill_signal_json = json.dumps(kill_signal)
+            # kill_signal_encoded = kill_signal_json.encode('utf-8')
+            # with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
+            #     for _ in range(3):
+            #         hbsocket.sendto(kill_signal_encoded, (ip_addr,HONEYNODE_COMMAND_PORT))
 
             # sleep(DEAD_INTERVAL)
+            send_signal_honeynode_kill(ip_addr, HONEYNODE_COMMAND_PORT)
             flash(u'Node successfully killed.', 'success')
         else:
             flash(u'Erorr occurred.', 'danger')
@@ -186,15 +185,15 @@ Author: Aaron
 """
 
 # Deactivate node
-@app.route("/api/v1/deactivate/<string:token>", methods=['PUT'])
-def deactivate_node(token):
-    if token:
+# @app.route("/api/v1/deactivate/<string:token>", methods=['PUT'])
+# def deactivate_node(token):
+#     if token:
 
-        ###### call heartbeat server ######
+#         ###### call heartbeat server ######
 
-        return jsonify({'success': True}), 200
-    else:
-        return abort(404, "Token not specified")
+#         return jsonify({'success': True}), 200
+#     else:
+#         return abort(404, "Token not specified")
 
     
 
@@ -272,13 +271,14 @@ def create_node():
         abort(404)
 
     # signal the heartbeat server to repopulate the heartbeat dictionary
-    populate_signal= {
-        'msg': "POPULATE"
-    }
-    populate_signal_json = json.dumps(populate_signal)
-    populate_signal_encoded = populate_signal_json.encode('utf-8')
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
-        hbsocket.sendto( populate_signal_encoded, (WEB_SERVER_IP,HBPORT))
+    # populate_signal= {
+    #     'msg': "POPULATE"
+    # }
+    # populate_signal_json = json.dumps(populate_signal)
+    # populate_signal_encoded = populate_signal_json.encode('utf-8')
+    # with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as hbsocket:
+    #     hbsocket.sendto( populate_signal_encoded, (WEB_SERVER_IP,HBPORT))
+    send_signal_heartbeats_server_repopulate(WEB_SERVER_IP,HBPORT)
     return jsonify({'success': True}), 201
 
 
