@@ -21,9 +21,6 @@ DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 apt-get update
 apt-get install -y python
-
-
-apt-get update
 apt-get -y install python-dev git openssh-server supervisor authbind openssl python-virtualenv build-essential python-gmpy2 libgmp-dev libmpfr-dev libmpc-dev libssl-dev python-pip libffi-dev python3-pip curl
 
 pip install -U supervisor
