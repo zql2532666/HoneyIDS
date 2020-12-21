@@ -19,7 +19,12 @@ IP_ADDR=$(ip addr show dev $INTERFACE | grep "inet" | awk 'NR==1{print $2}' | cu
 SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2)
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
+systemctl disable apt-daily-upgrade.service 
+
 apt-get update
+sudo rm /var/lib/dpkg/lock*
+sudo dpkg --configure -a
+
 apt-get install -y python
 apt-get -y install python-dev git openssh-server supervisor authbind openssl python-virtualenv build-essential python-gmpy2 libgmp-dev libmpfr-dev libmpc-dev libssl-dev python-pip libffi-dev python3-pip curl
 

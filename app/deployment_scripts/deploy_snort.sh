@@ -105,9 +105,6 @@ sed -i "/ipvar HOME_NET/c\ipvar HOME_NET $IP" /opt/snort/etc/snort.conf
 rm -f /etc/snort/rules/local.rules
 ln -s /opt/honeyids/rules/honeyids.rules /opt/snort/rules/local.rules
 
-# Supervisor will manage snort-hpfeeds
-apt-get install -y supervisor
-
 # Config for supervisor.
 cat > /etc/supervisor/conf.d/snort.conf <<EOF
 [program:snort]

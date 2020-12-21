@@ -21,7 +21,13 @@ DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 
 # Install dependencies
+systemctl disable apt-daily-upgrade.service 
+
 apt update
+
+sudo rm /var/lib/dpkg/lock*
+sudo dpkg --configure -a
+
 apt --yes install \
     git \
     supervisor \

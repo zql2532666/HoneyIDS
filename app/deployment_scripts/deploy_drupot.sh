@@ -22,7 +22,12 @@ IP_ADDR=$(ip addr show dev $INTERFACE | grep "inet" | awk 'NR==1{print $2}' | cu
 SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2)
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
-apt-get update
+systemctl disable apt-daily-upgrade.service 
+
+apt update
+
+sudo rm /var/lib/dpkg/lock*
+sudo dpkg --configure -a
 apt-get -y install git supervisor curl python-pip python3-pip
 pip install configparser
 

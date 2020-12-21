@@ -18,7 +18,12 @@ SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 
-apt-get update
+systemctl disable apt-daily-upgrade.service 
+
+apt update
+
+sudo rm /var/lib/dpkg/lock*
+sudo dpkg --configure -a
 
 sudo apt install -y python-pip
 pip install -U pip
