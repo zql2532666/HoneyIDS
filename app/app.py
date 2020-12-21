@@ -123,6 +123,7 @@ def kill_node():
             #         hbsocket.sendto(kill_signal_encoded, (ip_addr,HONEYNODE_COMMAND_PORT))
 
             # sleep(DEAD_INTERVAL)
+            print("killing now..")
             send_signal_honeynode_kill(ip_addr, HONEYNODE_COMMAND_PORT)
             flash(u'Node successfully killed.', 'success')
         else:

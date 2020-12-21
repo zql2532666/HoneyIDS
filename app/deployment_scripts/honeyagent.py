@@ -13,6 +13,7 @@ from configparser import ConfigParser
 import os 
 import socket
 import threading
+import requests
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -81,24 +82,25 @@ def add_node():
         "last_heard": HONEYNODE_DEPLOYED_DATE,
         "token": TOKEN
     }
-    payload_json = json.dumps(payload)
+    payload_json = json.dumps(payload)  
+    headers = {'content-type': 'application/json'}
     api_endpoint = "http://{0}:{1}/api/v1/honeynodes/".format(WEB_SERVER_IP,WEB_SERVER_PORT)
-    response = requests.post(api_endpoint, payload_json)
+    response = requests.post(api_endpoint, data=payload_json, headers=headers)
 
 def listen_for_command():
     receive_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     receive_socket.bind(('', HONEYNODE_COMMAND_PORT))
-    data, addr = receive_socket.recvfrom(1024)
-    data = data.decode('utf-8')
-    data = json.loads(data)
-    print("data: {} from {}".format(data,addr))
-    if data['command'] == 'KILL':
-        kill()
-    elif data['command'] == 'ADD_NODE':
-        add_node()
+    while True:
+        data, addr = receive_socket.recvfrom(1024)
+        data = data.decode('utf-8')
+        data = json.loads(data)
+        print("data: {} from {}".format(data,addr))
+        if data['command'] == 'KILL':
+            kill()
+        elif data['command'] == 'ADD_NODE':
+            add_node()
 
 send_heartbeats_thread = threading.Thread(target=send_heartbeats)
 listen_for_command_thread = threading.Thread(target=listen_for_command)
 send_heartbeats_thread.start()
 listen_for_command_thread.start()
-

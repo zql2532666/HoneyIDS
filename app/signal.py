@@ -4,6 +4,7 @@ import json
 def send_signal_honeynode_kill(ip_addr,port):
      # Signal/Send command to the honey node @ ip_addr to kill 
     print(f"\nkilling {ip_addr}\n")
+    print("kill signal method called")
     
     kill_signal= {
         'command': "KILL"
