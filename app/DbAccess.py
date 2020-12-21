@@ -29,6 +29,8 @@ class DbAccess:
         if result_value > 0:
             my_query = self.query_db(cur)
             json_data = json.dumps(my_query, default=self.myconverter)
+        else:
+            json_data = {}
 
         return json_data
 

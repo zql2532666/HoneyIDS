@@ -34,9 +34,7 @@ CREATE TABLE `general_logs` (
   `destination_port` varchar(45) DEFAULT NULL,
   `protocol` varchar(45) DEFAULT NULL,
   `token` varchar(45) NOT NULL,
-  PRIMARY KEY (`log_id`),
-  UNIQUE KEY `token_UNIQUE` (`token`),
-  CONSTRAINT `token` FOREIGN KEY (`token`) REFERENCES `nodes` (`token`)
+  PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,7 +102,7 @@ CREATE TABLE `nodes` (
   PRIMARY KEY (`node_id`),
   UNIQUE KEY `token_UNIQUE` (`token`),
   UNIQUE KEY `ip_addr_UNIQUE` (`ip_addr`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +111,7 @@ CREATE TABLE `nodes` (
 
 LOCK TABLES `nodes` WRITE;
 /*!40000 ALTER TABLE `nodes` DISABLE KEYS */;
-INSERT INTO `nodes` VALUES (1,'cowrie','192.168.1.200','255.255.255.0','ssh','null',1,'2020-01-01 10:10:10','False','1','2022-01-01 10:10:10'),(3,'dionea','192.168.1.1','255.255.255.0','test','null',123,'2020-01-01 10:10:10','True','2','2022-01-01 10:10:10');
+INSERT INTO `nodes` VALUES (10,'test','192.168.1.1','255.255.255.0','nids','null',123,'2020-01-01 10:10:10','False','1','2020-01-01 10:10:10');
 /*!40000 ALTER TABLE `nodes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,4 +132,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-20 20:31:27
+-- Dump completed on 2020-12-21 23:39:20

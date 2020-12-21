@@ -139,7 +139,10 @@ def kill_node():
 
 @app.context_processor
 def list_nodes_for_web():
-    list_nodes = json.loads(db_access.retrieve_all_active_nodes())
+    try:
+        list_nodes = json.loads(db_access.retrieve_all_active_nodes())
+    except Exception as e:
+        list_nodes = {}
     return dict(list_nodes=list_nodes)
 
 @app.route("/log", methods=['GET', 'POST'])
@@ -220,7 +223,11 @@ def retrieve_all_nodes():
 def retrieve_all_nodes_for_datatables():
 
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(db_access.retrieve_all_nodes())
+    data = db_access.retrieve_all_nodes()
+    if data == {}:
+        datatable_dict["data"] = data
+    else:
+        datatable_dict["data"] = json.loads(data)
 
     return datatable_dict
 
