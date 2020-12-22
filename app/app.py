@@ -132,8 +132,8 @@ def kill_node():
             flash(u'Erorr occurred.', 'danger')
         
         # redirect to end the POST handling
-        sleep(25)
-        return redirect(url_for('nodes'))
+        return ('', 204)
+        #return redirect(url_for('kill_node'))
 
     return render_template("killnode.html", title="Deactivate Node")
 
