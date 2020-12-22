@@ -17,37 +17,157 @@
 <!-- alert end -->
 <style>
   tfoot {
-      display: table-row-group;
+    display: table-row-group;
+  }
+  p {
+    margin: 0;
+  }
+  td:hover {
+    cursor: pointer;
+  }
+  tr.selected {
+    background-color: #ececec;
   }
 </style>
 <div class="row">
   <div class="col-12">
-    <table id="example" class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Ip Address</th>
-          <th>Honeypot Type</th>
-          <th>NIDS Type</th>
-          <th>Number of Attacks</th>
-          <th>Token</th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th>Name</th>
-          <th>Ip Address</th>
-          <th>Honeypot Type</th>
-          <th>NIDS Type</th>
-          <th>Number of Attacks</th>
-          <th>Token</th>
-        </tr>
-    </tfoot>
-    </table>
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Sessions with Interaction</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table id="example" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Session</th>
+              <th>Time</th>
+              <th>Attacker IP</th>
+              <th>Honeynode Name</th>
+              <th>Message Count</th>
+              <th>Message aasdasdd</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Session</th>
+              <th>Time</th>
+              <th>Attacker IP</th>
+              <th>Honeynode Name</th>
+              <th>Message Count</th>
+              <th>Message aasdasdd</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
   </div>
   <!-- /.col -->
 </div>
 <!-- /.row -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Session Time</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="row justify-content-center">
+              <p id="startTime">test</p>
+            </div>
+            <div class="row justify-content-center">
+              <p style="font-size: x-small;">START TIME</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row justify-content-center">
+              <p id="endTime">test</p>
+            </div>
+            <div class="row justify-content-center">
+              <p style="font-size: x-small;">END TIME</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row justify-content-center">
+              <p id="duration" >test</p>
+            </div>
+            <div class="row justify-content-center">
+              <p style="font-size: x-small;">DURATION</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <div class="col-md-6">
+    <div style="height:20rem;" class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Passwords Accepted</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+      </div>
+    </div>
+  </div>
+  <!-- /.col -->
+  
+  <div class="col-md-6">
+    <div style="height:20rem;" class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Passwords Attempted</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+      </div>
+    </div>
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Commands Entered During Session</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table id="example2" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Command</th>
+              <th>Time</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+
+<!-- <th>Session</th>
+<th>Time</th>
+<th>Attacker IP</th>
+<th>Honeynode Name</th>
+<th>Message Count</th> -->
 {% endblock %}
 {% block script %}
 <!-- DataTables -->
@@ -56,13 +176,16 @@
 <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script>
+
+  var table, table2;
+
   $(function () {
     $('#example tfoot th').each( function () {
         var title = $(this).text();
         $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
     } );
 
-    $('#example').DataTable({
+    table = $('#example').DataTable({
       initComplete: function () {
           // Apply the search
           this.api().columns().every( function () {
@@ -89,7 +212,51 @@
             { "data": "no_of_attacks" },
             { "data": "token" }
         ]
+
+      
     });
+     
+    $('#example').on('click', 'tbody tr', function () {
+        $('#example1 tbody > tr').removeClass('selected');
+        $(this).addClass('selected');
+        var data = table.row( this ).data();
+        $('#startTime').html(data.date_deployed);
+        $('#endTime').html(data.last_heard);
+        $('#duration').html(data.no_of_attacks);
+    } );
+
+    $('#example2 tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    table2 = $('#example2').DataTable({
+      initComplete: function () {
+          // Apply the search
+          this.api().columns().every( function () {
+              var that = this;
+
+              $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                  if ( that.search() !== this.value ) {
+                      that
+                          .search( this.value )
+                          .draw();
+                  }
+              } );
+          } );
+      },
+      "ordering": true,
+      "responsive": true,
+      "autoWidth": false,
+      "ajax": "/api/v1/honeynodes/datatables",
+      "columns": [
+            { "data": "honeynode_name" },
+            { "data": "ip_addr" }
+        ]
+
+      
+    });
+    
   });
 
 </script>
