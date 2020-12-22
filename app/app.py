@@ -153,12 +153,12 @@ def log():
 @app.route("/sessionlog", methods=['GET', 'POST'])
 def session_log():
 
-    return render_template("sessionlog.html", title="NIDS Logs")
+    return render_template("sessionlog.html", title="Session Logs")
 
 @app.route("/snortlog", methods=['GET', 'POST'])
 def snort_log():
 
-    return render_template("snortlog.html", title="Snort Logs")
+    return render_template("snortlog.html", title="NIDS Logs")
 
 @app.route("/malwarelog", methods=['GET', 'POST'])
 def malware_log():
