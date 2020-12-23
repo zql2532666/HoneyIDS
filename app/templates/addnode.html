@@ -2,6 +2,42 @@
 
 {% block mainContent %}
 
+    <!-- Alert after adding node -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Node</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <p class="mainText"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Adding Node... (Approx. <span id="time">00:25</span>)</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -40,7 +76,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button id="submitbtn" type="submit" onclick="kill()" class="btn btn-primary">Activate</button>
+                <button id="submitbtn" type="submit" onclick="add()" class="btn btn-primary">Activate</button>
               </div>
             </form>
           </div>
@@ -96,12 +132,43 @@
     $('#nodeForm').parsley(parsleyConfig);
   });
 
-  function kill() {
+  //function kill() {
+  //  if($('#nodeForm').parsley().validate()){
+  //   document.getElementById("nodeForm").submit();
+  //    $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
+  //  Adding Node...');
+  //  }
+  //}
+
+  function add() {
     if($('#nodeForm').parsley().validate()){
-      document.getElementById("nodeForm").submit();
+      $("#exampleModal").modal("show");
       $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
-    Adding Node...');
+      Adding Node...');
+      var fiveMinutes = 24,
+      display = document.querySelector('#time');
+      startTimer(fiveMinutes, display);
+      setTimeout(function(){ 
+        location.reload(); 
+      }, 25000);
     }
+  }
+
+  function startTimer(duration, display) {
+      var timer = duration, minutes, seconds;
+      setInterval(function () {
+          minutes = parseInt(timer / 60, 10);
+          seconds = parseInt(timer % 60, 10);
+
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+
+          display.textContent = minutes + ":" + seconds;
+
+          if (--timer < 0) {
+              timer = duration;
+          }
+      }, 1000);
   }
 </script>
 {% endblock %}

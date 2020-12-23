@@ -104,8 +104,8 @@ def add_node():
             flash(u'Node not added.', 'danger')
         
         # redirect to end the POST handling
-        sleep(25)
-        return redirect(url_for('nodes'))
+        return ('', 204)
+        #return redirect(url_for('nodes'))
 
     return render_template("addnode.html", title="Add Node")
 
