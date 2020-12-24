@@ -116,6 +116,12 @@ sed -i 's/hostname = svr04/hostname = server/g' cowrie.cfg
 sed -i 's/listen_endpoints = tcp:2222:interface=0.0.0.0/listen_endpoints = tcp:22:interface=0.0.0.0/g' cowrie.cfg
 sed -i 's/version = SSH-2.0-OpenSSH_6.0p1 Debian-4+deb7u2/version = SSH-2.0-OpenSSH_6.7p1 Ubuntu-5ubuntu1.3/g' cowrie.cfg
 
+# ssh root user password configuration
+cp userdb.example userdb.txt
+sed -i 's/root:x:\*/root:x:sunshine/g' userdb.txt
+sed -i 's/tomcat:x:\*/john:x:flower/g' userdb.txt
+sed -i 's/oracle:x:\*/anthony:x:anthony/g' userdb.txt
+
 # HPFEEDS config
 HPF_HOST=$SERVER_IP  
 HPF_PORT=$(cat /opt/honeyagent/honeyagent.conf | grep "HPFEEDS_PORT" | awk -F: '{print $2}' | xargs)
