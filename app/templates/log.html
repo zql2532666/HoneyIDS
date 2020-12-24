@@ -15,6 +15,28 @@
   {% endif %}
 {% endwith %}
 <!-- alert end -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Raw Log</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
+            
+          </textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
   tfoot {
       display: table-row-group;
@@ -32,6 +54,7 @@
           <th>Destination IP</th>
           <th>Destination Port</th>
           <th>Protocol</th>
+          <th>Raw Logs</th>
         </tr>
       </thead>
       <tfoot>
@@ -43,6 +66,7 @@
           <th>Destination IP</th>
           <th>Destination Port</th>
           <th>Protocol</th>
+          <th>Raw Logs</th>
         </tr>
     </tfoot>
     </table>
@@ -57,8 +81,21 @@
 <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 <script>
   $(function () {
+    var CustomRenders = {
+      raw_logs: function (data, type, row, meta) {
+        return '<button type="button" onclick="viewLog(`' + data.replace(/"/g, "'") + '`)" class="deletebutton btn btn-info" data-toggle="modal" data-target="#exampleModal" title="View Raw Log">View Raw Log</button>'
+      }
+    };
+
     $('#example tfoot th').each( function () {
         var title = $(this).text();
         $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
@@ -79,6 +116,11 @@
               } );
           } );
       },
+      "dom": "Bfrtip",
+        "buttons": [
+            "excelHtml5",
+            "csvHtml5",
+        ],
       "ordering": true,
       "responsive": true,
       "autoWidth": false,
@@ -90,10 +132,16 @@
             { "data": "source_port" },
             { "data": "destination_ip" },
             { "data": "destination_port" },
-            { "data": "protocol" }
+            { "data": "protocol" },
+            { "data": "raw_logs", "render": CustomRenders.raw_logs }
         ]
     });
   });
 
+  function viewLog(input) {
+    var obj = JSON.parse(input.replace(/'/g, '"'));
+    var pretty = JSON.stringify(obj, null, "\t");
+    $('#target-command').val(pretty);
+  }
 </script>
 {% endblock %}
