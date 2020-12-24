@@ -25,6 +25,125 @@
 ```
 <br>
 
+### SSH bruteforce log
+#### bruteforce command used 
+```bash
+sudo hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://192.168.148.146 -t 4
+```
+```json
+{
+   "peerIP":"192.168.148.128",
+   "commands":[
+      
+   ],
+   "loggedin":"None",
+   "protocol":"ssh",
+   "startTime":"2020-12-24T14:31:30.187541Z",
+   "ttylog":"None",
+   "hostIP":"192.168.148.150",
+   "peerPort":39610,
+   "session":"350f7cf9ca02",
+   "urls":[
+      
+   ],
+   "hostPort":22,
+   "credentials":[
+      [
+         "root",
+         "password"
+      ],
+      [
+         "root",
+         "rockyou"
+      ],
+      [
+         "root",
+         "daniel"
+      ],
+      [
+         "root",
+         "jessica"
+      ],
+      [
+         "root",
+         "qwerty"
+      ],
+      [
+         "root",
+         "michelle"
+      ],
+      [
+         "root",
+         "password1"
+      ],
+      [
+         "root",
+         "butterfly"
+      ],
+      [
+         "root",
+         "liverpool"
+      ],
+      [
+         "root",
+         "123123"
+      ],
+      [
+         "root",
+         "carlos"
+      ],
+      [
+         "root",
+         "1234567890"
+      ],
+      [
+         "root",
+         "loveyou"
+      ],
+      [
+         "root",
+         "angels"
+      ],
+      [
+         "root",
+         "hello"
+      ],
+      [
+         "root",
+         "charlie"
+      ],
+      [
+         "root",
+         "lovers"
+      ],
+      [
+         "root",
+         "666666"
+      ],
+      [
+         "root",
+         "matthew"
+      ],
+      [
+         "root",
+         "family"
+      ],
+      [
+         "root",
+         "whatever"
+      ]
+   ],
+   "hashes":[
+      
+   ],
+   "endTime":"2020-12-24T14:31:51.443015Z",
+   "version":"'SSH-2.0-libssh_0.9.3'",
+   "unknownCommands":[
+      
+   ]
+}
+```
+
 ## Snort
 ```json
 {
