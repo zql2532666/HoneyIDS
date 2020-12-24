@@ -34,6 +34,7 @@ CREATE TABLE `general_logs` (
   `destination_port` varchar(45) DEFAULT NULL,
   `protocol` varchar(45) DEFAULT NULL,
   `token` varchar(45) NOT NULL,
+  `raw_logs` json DEFAULT NULL,
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -44,7 +45,7 @@ CREATE TABLE `general_logs` (
 
 LOCK TABLES `general_logs` WRITE;
 /*!40000 ALTER TABLE `general_logs` DISABLE KEYS */;
-INSERT INTO `general_logs` VALUES (1,'2020-01-01 10:10:10','cowrie','192.168.12.123','54234','192.168.12.124','80','TCP','1');
+INSERT INTO `general_logs` VALUES (1,'2020-01-01 10:10:10','cowrie','192.168.12.123','54234','192.168.12.124','80','TCP','1','{\"urls\": [], \"hashes\": [], \"hostIP\": \"192.168.148.148\", \"peerIP\": \"192.168.148.146\", \"ttylog\": \"010000000000000000000000000000004e18b65f48d50b0003000000000000001e010........\", \"endTime\": \"2020-11-19T07:02:24.197533Z\", \"session\": \"df81514de4f2\", \"version\": \"SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1\", \"commands\": [\"ifconfig\", \"ls\", \"whoami\", \"cat /etc/passwd\", \"ls\", \"hello\", \"idk\", \"exit\"], \"hostPort\": 22, \"loggedin\": [\"root\", \"password\"], \"peerPort\": 43250, \"protocol\": \"ssh\", \"startTime\": \"2020-11-19T07:01:31.752063Z\", \"credentials\": [], \"unknownCommands\": [\"hello\", \"idk\"]}');
 /*!40000 ALTER TABLE `general_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,8 +112,44 @@ CREATE TABLE `nodes` (
 
 LOCK TABLES `nodes` WRITE;
 /*!40000 ALTER TABLE `nodes` DISABLE KEYS */;
-INSERT INTO `nodes` VALUES (10,'test','192.168.1.1','255.255.255.0','nids','null',123,'2020-01-01 10:10:10','False','1','2020-01-01 10:10:10');
+INSERT INTO `nodes` VALUES (10,'test','192.168.1.1','255.255.255.0','nids','null',123,'2020-01-01 10:10:10','True','1','2010-05-09 07:41:54');
 /*!40000 ALTER TABLE `nodes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `session_logs`
+--
+
+DROP TABLE IF EXISTS `session_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `session_logs` (
+  `session_log_id` int NOT NULL AUTO_INCREMENT,
+  `source_ip` varchar(45) DEFAULT NULL,
+  `source_port` varchar(45) DEFAULT NULL,
+  `destination_ip` varchar(45) DEFAULT NULL,
+  `destination_port` varchar(45) DEFAULT NULL,
+  `commands` text,
+  `logged_in` text,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `session` varchar(45) NOT NULL,
+  `urls` text,
+  `credentials` text,
+  `hashes` text,
+  `version` varchar(100) DEFAULT NULL,
+  `unknown_commands` text,
+  PRIMARY KEY (`session_log_id`,`session`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `session_logs`
+--
+
+LOCK TABLES `session_logs` WRITE;
+/*!40000 ALTER TABLE `session_logs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `session_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -132,4 +169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-21 23:39:20
+-- Dump completed on 2020-12-24 18:51:40
