@@ -61,7 +61,7 @@ pip install -r requirements.txt
 
 cp wordpot.conf wordpot.conf.bak
 sed -i '/HPFEEDS_.*/d' wordpot.conf
-sed -i "s/^HOST\s.*/HOST = '0.0.0.0'/" wordpot.conf
+sed -i "s/^HOST\s.*/HOST = '$IP_ADDR'/" wordpot.conf
 
 # api call to join the honeynet
 curl -X POST -H "Content-Type: application/json" -d "{

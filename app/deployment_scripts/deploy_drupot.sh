@@ -133,6 +133,3 @@ autorestart=true
 redirect_stderr=true
 stopsignal=QUIT
 EOF
-
-supervisorctl update
-supervisorctl restart all
