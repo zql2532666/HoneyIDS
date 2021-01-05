@@ -129,7 +129,6 @@ cat > /opt/dionaea/etc/dionaea/ihandlers-enabled/hpfeeds.yaml <<EOF
     # reconnect_timeout: 10.0
 EOF
 
-sed -i 's/listen.mode=getifaddrs/#listen.mode=getifaddrs/g' /opt/dionaea/etc/dionaea/dionaea.cfg
 sed -i 's/# listen.addresses=127.0.0.1/listen.addresses=$IP_ADDR/g' /opt/dionaea/etc/dionaea/dionaea.cfg
 
 # Editing configuration for Dionaea.
