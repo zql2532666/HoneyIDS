@@ -488,19 +488,19 @@ def handle_dionaea_upload():
             # write out the zipped file  
             pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", ZIPPED_PASSWORD, COMPRESSION_LEVEL)
 
-        # vt_data = vt_request(md5)
-        # vt_resp = int(vt_data.get("response_code"))
+        vt_data = vt_request(md5)
+        vt_resp = int(vt_data.get("response_code"))
         # insert file path + token here --> will be stored in the database
-        # vt_data["file_path"] = file_path
-        # vt_data["token"] = token
+        vt_data["file_path"] = file_path
+        vt_data["token"] = token
 
-        # response code == 1 means the hash is found on virus total
-        # if vt_resp == 1 :
-        #     print("yay")
+        response code == 1 means the hash is found on virus total
+        if vt_resp == 1 :
+            print("yay")
             # database function call here 
             
-        # elif vt_resp == 0:
-        #     print("FUck")
+        elif vt_resp == 0:
+            print("Fuck No resutls")
             # database function call here -- 0 means the hash is not found on virus total
 
         # send md5 hash to virus total api
