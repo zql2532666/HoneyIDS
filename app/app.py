@@ -462,7 +462,7 @@ def handle_dionaea_upload():
         time = request.json['time']
 
         # generate dir path
-        dest_dir_path = os.path.join(basedir, f"/dionaea_malware_files/{token}/")
+        dest_dir_path = os.path.join(basedir, f"dionaea_malware_files/{token}/")
         print(dest_dir_path)
         # generate file path 
         # dest_file_path = f"{dest_dir_path}/{time}_{md5}"
@@ -473,14 +473,15 @@ def handle_dionaea_upload():
         if os.path.exists(dest_dir_path):
             print("path exists")
             # write out the original file
-            print(dest_dir_path)
-            print(dest_file_path)
+            # print(dest_dir_path)
+            # print(dest_file_path)
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
             # write out the zipped file  
             pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", ZIPPED_PASSWORD, COMPRESSION_LEVEL)
         else:
-            os.makedirs(dest_dir_path, exist_ok=True)
+            # os.makedirs(dest_dir_path, exist_ok=True)
+            os.mkdir(dest_dir_path)
             # write out the original file
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
