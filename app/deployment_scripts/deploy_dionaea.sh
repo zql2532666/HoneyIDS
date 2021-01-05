@@ -3,7 +3,7 @@
 set -e
 set -x
 
-if [ $# -ne 3 ]
+if [ $# -ne 4 ]
     then
         echo "Wrong number of arguments supplied."
         echo "Usage: $0 <server_ip> <honeynode_token> <honeynode_name>"
@@ -11,8 +11,9 @@ if [ $# -ne 3 ]
 fi
 
 SERVER_IP=$1
-TOKEN=$2
-HONEYNODE_NAME=$3
+SERVER_PORT=$2
+TOKEN=$3
+HONEYNODE_NAME=$4
 
 INTERFACE=$(basename -a /sys/class/net/e*)
 IP_ADDR=$(ip addr show dev $INTERFACE | grep "inet" | awk 'NR==1{print $2}' | cut -d '/' -f 1)
@@ -56,12 +57,13 @@ apt --yes install \
     curl
 
 pip install configparser
+pip3 install watchdog
 
-# install honeyagent
+# fetching honeyagent script + config file from the server
 mkdir /opt/honeyagent
 cd /opt/honeyagent
-wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent -O honeyagent.py
-wget http://$SERVER_IP:5000/api/v1/deploy/deployment_script/honeyagent_conf_file -O honeyagent.conf
+wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/honeyagent -O honeyagent.py
+wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/honeyagent_conf_file -O honeyagent.conf
 
 # populate the honeyagent config file
 sed -i "s/TOKEN:/TOKEN: $TOKEN/g" honeyagent.conf
@@ -72,6 +74,11 @@ sed -i "s/HONEYPOT_TYPE:/HONEYPOT_TYPE: dionaea/g" honeyagent.conf
 sed -i "s/NIDS_TYPE:/NIDS_TYPE: snort/g" honeyagent.conf
 sed -i "s/DEPLOYED_DATE:/DEPLOYED_DATE: $DEPLOY_DATE/g" honeyagent.conf
 sed -i "s/SERVER_IP:/SERVER_IP: $SERVER_IP/g" honeyagent.conf
+
+# fetch the watchdog script from the server
+mkdir /opt/watchdog.py
+cd /opt/watchdog.py
+wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/watchdog.py -O watchdog.py
     
 cd ~
 git clone https://github.com/zql2532666/dionaea.git
@@ -92,7 +99,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:5000/api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/
 
 
 mkdir build
@@ -156,4 +163,15 @@ redirect_stderr=true
 stopsignal=QUIT
 EOF
 
-# supervisorctl update
+# configure supervisor for watchdog
+cat > /etc/supervisor/conf.d/watchdog.conf <<EOF
+[program:watchdog]
+command=python3 /opt/watchdog/watchdog.py
+directory=/opt/watchdog
+stdout_logfile=/opt/watchdog/honeyagent.out
+stderr_logfile=/opt/watchdog/honeyagent.err
+autostart=true
+autorestart=true
+redirect_stderr=true
+stopsignal=QUIT
+EOF
