@@ -14,6 +14,7 @@ from signal import *
 from virus_total import *
 import pyminizip
 import warnings
+import base64
 
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
@@ -463,7 +464,7 @@ def handle_dionaea_upload():
         # generate dir path
         dest_dir_path = f"dioena_malware_files/{token}/"
         # generate file path 
-        dest_file_path = f"{dir_path}/{time}_{md5}"
+        dest_file_path = f"{dest_dir_path}/{time}_{md5}"
 
         # write the binary file out to the file path --> refer to the zip.py (password encrypted)
         if os.path.exists(dest_dir_path):
