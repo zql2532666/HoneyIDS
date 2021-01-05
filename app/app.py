@@ -461,7 +461,7 @@ def handle_dionaea_upload():
         time = request.json['time']
 
         # generate dir path
-        dest_dir_path = f"didioena_malware_file/{token}/"
+        dest_dir_path = f"dioena_malware_files/{token}/"
         # generate file path 
         dest_file_path = f"{dir_path}/{time}_{md5}"
 
