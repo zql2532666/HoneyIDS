@@ -38,6 +38,12 @@
       </div>
     </div>
 
+    <div id="progress" class="progress" hidden style="margin-bottom: 2%; height:20px;">
+        <div class="progress-bar" style="min-width: 20px; width: 2%;">
+            25s
+        </div>
+    </div>
+
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -142,9 +148,10 @@
 
   function add() {
     if($('#nodeForm').parsley().validate()){
-      $("#exampleModal").modal("show");
+      //$("#exampleModal").modal("show"); //hide modal for now
       $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
       Adding Node...');
+      $('#progress').prop('hidden', false);
       var fiveMinutes = 24,
       display = document.querySelector('#time');
       startTimer(fiveMinutes, display);
@@ -156,6 +163,7 @@
 
   function startTimer(duration, display) {
       var timer = duration, minutes, seconds;
+      var i = 4;
       setInterval(function () {
           minutes = parseInt(timer / 60, 10);
           seconds = parseInt(timer % 60, 10);
@@ -163,7 +171,9 @@
           minutes = minutes < 10 ? "0" + minutes : minutes;
           seconds = seconds < 10 ? "0" + seconds : seconds;
 
-          display.textContent = minutes + ":" + seconds;
+          //display.textContent = minutes + ":" + seconds;
+          i = i + 4;
+          $(".progress-bar").css("width", i + "%").text(seconds + "s");
 
           if (--timer < 0) {
               timer = duration;

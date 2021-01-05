@@ -355,3 +355,18 @@ sudo hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://192.168.148.146 -t 
    "query":"QUERY: \\'SELECT d.datname as \"Name\",\n       pg_catalog.pg_get_userbyid(d.datdba) as \"Owner\",\n       pg_catalog.pg_encoding_to_char(d.encoding) as \"Encoding\",\n       d.datcollate as \"Collate\",\n       d.datctype as \"Ctype\",\n       pg_catalog.array_to_string(d.datacl, E\\'\\n\\') AS \"Access privileges\"\nFROM pg_catalog.pg_database d\nORDER BY 1;\\'"
 }
 ```
+
+## Dionaea
+### Connection logs
+```json
+{
+   "connection_type":"accept",
+   "connection_transport":"tcp",
+   "local_port":445,
+   "connection_protocol":"smbd",
+   "remote_host":"192.168.148.128",
+   "remote_port":36407,
+   "remote_hostname":"",
+   "local_host":"192.168.148.150"
+}
+```
