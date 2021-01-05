@@ -1,7 +1,7 @@
 import os 
 token = "xx"
 
-dir_path = f"dioena_malware_files/{token}"
+dir_path = f"dionaea_malware_files/{token}"
 
 if os.path.exists(dir_path):
     # write the binary file 

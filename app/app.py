@@ -38,7 +38,7 @@ WEB_SERVER_PORT = config['WEB-SERVER']['PORT']
 HONEYNODE_COMMAND_PORT = int(config['HONEYNODE']['COMMAND_PORT'])
 
 ZIPPED_PASSWORD = config['COMPRESSION']['PASSWORD']
-COMPRESSION_LEVEL = config['COMPRESSION']['PASSWORD']
+COMPRESSION_LEVEL = int(config['COMPRESSION']['COMPRESSION_LEVEL'])
 
 # Configure DB
 db = yaml.load(open(os.path.join(basedir, 'db.yaml')), Loader=yaml.SafeLoader)
@@ -462,24 +462,30 @@ def handle_dionaea_upload():
         time = request.json['time']
 
         # generate dir path
-        dest_dir_path = f"dioena_malware_files/{token}/"
+        dest_dir_path = os.path.join(basedir, f"/dionaea_malware_files/{token}/")
+        print(dest_dir_path)
         # generate file path 
-        dest_file_path = f"{dest_dir_path}/{time}_{md5}"
+        # dest_file_path = f"{dest_dir_path}/{time}_{md5}"
+        dest_file_path = os.path.join(dest_dir_path, f"{time}_{md5}")
+        print(dest_file_path)
 
         # write the binary file out to the file path --> refer to the zip.py (password encrypted)
         if os.path.exists(dest_dir_path):
+            print("path exists")
             # write out the original file
+            print(dest_dir_path)
+            print(dest_file_path)
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
             # write out the zipped file  
-            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", PASSWORD, COMPRESSION_LEVEL)
+            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", ZIPPED_PASSWORD, COMPRESSION_LEVEL)
         else:
-            os.mkdir(dest_dir_path)
+            os.makedirs(dest_dir_path, exist_ok=True)
             # write out the original file
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
             # write out the zipped file  
-            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", PASSWORD, COMPRESSION_LEVEL)
+            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", ZIPPED_PASSWORD, COMPRESSION_LEVEL)
 
         # vt_data = vt_request(md5)
         # vt_resp = int(vt_data.get("response_code"))
@@ -497,6 +503,7 @@ def handle_dionaea_upload():
             # database function call here -- 0 means the hash is not found on virus total
 
         # send md5 hash to virus total api
+    return jsonify({"data": True}), 201
 
 
 
