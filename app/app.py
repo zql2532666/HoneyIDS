@@ -11,6 +11,11 @@ from configparser import ConfigParser
 import socket
 import uuid
 from signal import *
+from virus-total import *
+import pyminizip
+import warnings
+
+warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 app = Flask(__name__,
             static_url_path='', 
@@ -30,6 +35,9 @@ DEAD_INTERVAL = int(config['HEARTBEATS']['DEAD_INTERVAL'])
 WEB_SERVER_IP = config['WEB-SERVER']['SERVER_IP'] 
 WEB_SERVER_PORT = config['WEB-SERVER']['PORT']
 HONEYNODE_COMMAND_PORT = int(config['HONEYNODE']['COMMAND_PORT'])
+
+ZIPPED_PASSWORD = config['COMPRESSION']['PASSWORD']
+COMPRESSION_LEVEL = config['COMPRESSION']['PASSWORD']
 
 # Configure DB
 db = yaml.load(open(os.path.join(basedir, 'db.yaml')), Loader=yaml.SafeLoader)
@@ -437,6 +445,58 @@ def send_deployment_script_wordpot():
 @app.route("/api/v1/deploy/honeyids-vm.ova", methods=['GET'])
 def send_honeyids_vm_ova():
     return send_file(os.path.join(basedir, "vm_ova/honeyids-vm.ova"))
+
+
+""" 
+API Route for dionaea
+"""
+@app.route('/api/v1/dionaea-binary-upload', methods=['POST'])
+def handle_dionaea_upload():
+    print("/api/v1/dionaea-binary-upload")
+    if request.json:
+        malware_file_base64 = request.json['file'].encode('utf-8')
+        malware_file_binary = base64.b64decode(malware_file_base64)
+        md5 = request.json['md5']
+        token = request.json['token']
+        time = request.json['time']
+
+        # generate dir path
+        dest_dir_path = f"didioena_malware_file/{token}/"
+        # generate file path 
+        dest_file_path = f"{dir_path}/{time}_{md5}"
+
+        # write the binary file out to the file path --> refer to the zip.py (password encrypted)
+        if os.path.exists(dest_dir_path):
+            # write out the original file
+            with open(dest_file_path, "wb") as writer:
+                writer.write(malware_file_binary)
+            # write out the zipped file  
+            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", PASSWORD, COMPRESSION_LEVEL)
+        else:
+            os.mkdir(dest_dir_path)
+            # write out the original file
+            with open(dest_file_path, "wb") as writer:
+                writer.write(malware_file_binary)
+            # write out the zipped file  
+            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", PASSWORD, COMPRESSION_LEVEL)
+
+        # vt_data = vt_request(md5)
+        # vt_resp = int(vt_data.get("response_code"))
+        # insert file path + token here --> will be stored in the database
+        # vt_data["file_path"] = file_path
+        # vt_data["token"] = token
+
+        # response code == 1 means the hash is found on virus total
+        # if vt_resp == 1 :
+        #     print("yay")
+            # database function call here 
+            
+        # elif vt_resp == 0:
+        #     print("FUck")
+            # database function call here -- 0 means the hash is not found on virus total
+
+        # send md5 hash to virus total api
+
 
 
 
