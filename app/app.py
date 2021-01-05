@@ -494,7 +494,7 @@ def handle_dionaea_upload():
         vt_data["file_path"] = file_path
         vt_data["token"] = token
 
-        response code == 1 means the hash is found on virus total
+        # response code == 1 means the hash is found on virus total
         if vt_resp == 1 :
             print("yay")
             # database function call here 
