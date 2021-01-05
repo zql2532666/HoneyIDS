@@ -27,8 +27,8 @@ systemctl disable apt-daily-upgrade.service
 
 apt update
 
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 apt-get install -y ruby2.4 ruby2.4-dev
 
 # install git and supervisor

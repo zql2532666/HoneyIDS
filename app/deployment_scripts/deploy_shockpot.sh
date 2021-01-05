@@ -23,8 +23,8 @@ systemctl disable apt-daily-upgrade.service
 
 apt update
 
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 
 sudo apt install -y python-pip
 pip install -U pip
