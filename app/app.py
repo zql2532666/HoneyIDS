@@ -11,7 +11,7 @@ from configparser import ConfigParser
 import socket
 import uuid
 from signal import *
-from virus-total import *
+from virus_total import *
 import pyminizip
 import warnings
 
