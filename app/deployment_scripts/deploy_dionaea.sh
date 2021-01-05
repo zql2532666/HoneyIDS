@@ -76,9 +76,9 @@ sed -i "s/DEPLOYED_DATE:/DEPLOYED_DATE: $DEPLOY_DATE/g" honeyagent.conf
 sed -i "s/SERVER_IP:/SERVER_IP: $SERVER_IP/g" honeyagent.conf
 
 # fetch the watchdog script from the server
-mkdir /opt/dionaea_binary_uploader
-cd /opt/dionaea_binary_uploader
-wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/dionaea_binary_uploader.py -O dionaea_binary_uploader.py
+# mkdir /opt/dionaea_binary_uploader
+# cd /opt/dionaea_binary_uploader
+# wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/dionaea_binary_uploader.py -O dionaea_binary_uploader.py
     
 cd ~
 git clone https://github.com/zql2532666/dionaea.git
@@ -99,7 +99,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/ || true
 
 
 mkdir build
@@ -164,14 +164,14 @@ stopsignal=QUIT
 EOF
 
 # configure supervisor for watchdog
-cat > /etc/supervisor/conf.d/dionaea_binary_uploader.conf <<EOF
-[program:dionaea_binary_uploader]
-command=python3 /opt/watchdog/dionaea_binary_uploader.py
-directory=/opt/dionaea_binary_uploader
-stdout_logfile=/opt/dionaea_binary_uploader/dionaea_binary_uploader.out
-stderr_logfile=/opt/dionaea_binary_uploader/dionaea_binary_uploader.err
-autostart=true
-autorestart=true
-redirect_stderr=true
-stopsignal=QUIT
-EOF
+# cat > /etc/supervisor/conf.d/dionaea_binary_uploader.conf <<EOF
+# [program:dionaea_binary_uploader]
+# command=python3 /opt/watchdog/dionaea_binary_uploader.py
+# directory=/opt/dionaea_binary_uploader
+# stdout_logfile=/opt/dionaea_binary_uploader/dionaea_binary_uploader.out
+# stderr_logfile=/opt/dionaea_binary_uploader/dionaea_binary_uploader.err
+# autostart=true
+# autorestart=true
+# redirect_stderr=true
+# stopsignal=QUIT
+# EOF

@@ -53,7 +53,7 @@ sed -i "s/SERVER_IP:/SERVER_IP: $SERVER_IP/g" honeyagent.conf
 
 # Get the Wordpot source
 cd /opt
-git clone https://github.com/zql2532666/wordpot
+git clone https://github.com/zql2532666/wordpot || true
 cd wordpot
 
 virtualenv env

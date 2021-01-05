@@ -78,7 +78,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:$SERVER_PORT//api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT//api/v1/honeynodes/ || true
 
 
 # hpfeeds config
