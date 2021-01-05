@@ -9,7 +9,7 @@ set -x
 if [ $# -ne 4 ]
     then
         echo "Wrong number of arguments supplied."
-        echo "Usage: $0 <server_ip> <honeynode_token> <honeynode_name>"
+        echo "Usage: $0 <server_ip> <server_port> <honeynode_token> <honeynode_name>"
         exit 1
 fi
 

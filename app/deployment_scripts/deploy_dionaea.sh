@@ -6,7 +6,7 @@ set -x
 if [ $# -ne 4 ]
     then
         echo "Wrong number of arguments supplied."
-        echo "Usage: $0 <server_ip> <honeynode_token> <honeynode_name>"
+        echo "Usage: $0 <server_ip> <server_port> <honeynode_token> <honeynode_name>"
         exit 1
 fi
 
@@ -76,9 +76,9 @@ sed -i "s/DEPLOYED_DATE:/DEPLOYED_DATE: $DEPLOY_DATE/g" honeyagent.conf
 sed -i "s/SERVER_IP:/SERVER_IP: $SERVER_IP/g" honeyagent.conf
 
 # fetch the watchdog script from the server
-mkdir /opt/watchdog.py
-cd /opt/watchdog.py
-wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/watchdog.py -O watchdog.py
+mkdir /opt/dionaea_binary_uploader
+cd /opt/dionaea_binary_uploader
+wget http://$SERVER_IP:$SERVER_PORT/api/v1/deploy/deployment_script/dionaea_binary_uploader.py -O dionaea_binary_uploader.py
     
 cd ~
 git clone https://github.com/zql2532666/dionaea.git
@@ -164,12 +164,12 @@ stopsignal=QUIT
 EOF
 
 # configure supervisor for watchdog
-cat > /etc/supervisor/conf.d/watchdog.conf <<EOF
-[program:watchdog]
-command=python3 /opt/watchdog/watchdog.py
-directory=/opt/watchdog
-stdout_logfile=/opt/watchdog/honeyagent.out
-stderr_logfile=/opt/watchdog/honeyagent.err
+cat > /etc/supervisor/conf.d/dionaea_binary_uploader.conf <<EOF
+[program:dionaea_binary_uploader]
+command=python3 /opt/watchdog/dionaea_binary_uploader.py
+directory=/opt/dionaea_binary_uploader
+stdout_logfile=/opt/dionaea_binary_uploader/dionaea_binary_uploader.out
+stderr_logfile=/opt/dionaea_binary_uploader/dionaea_binary_uploader.err
 autostart=true
 autorestart=true
 redirect_stderr=true
