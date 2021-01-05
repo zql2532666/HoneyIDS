@@ -80,7 +80,7 @@ HPF_SECRET=$TOKEN
 
 cat > shockpot.conf<<EOF
 [server]
-host = 0.0.0.0
+host = $IP_ADDR
 port = 80
 [headers]
 server = Apache/2.0.55 (Debian) PHP/5.1.2-1+b1 mod_ssl/2.0.55 OpenSSL/0.9.8b
