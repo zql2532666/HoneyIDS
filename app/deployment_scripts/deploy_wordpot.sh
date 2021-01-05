@@ -27,8 +27,8 @@ systemctl disable apt-daily-upgrade.service
 
 apt update
 
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 
 apt-get -y install git python-pip supervisor python3-pip curl
 pip install -U pip
@@ -53,7 +53,7 @@ sed -i "s/SERVER_IP:/SERVER_IP: $SERVER_IP/g" honeyagent.conf
 
 # Get the Wordpot source
 cd /opt
-git clone https://github.com/zql2532666/wordpot
+git clone https://github.com/zql2532666/wordpot || true
 cd wordpot
 
 virtualenv env

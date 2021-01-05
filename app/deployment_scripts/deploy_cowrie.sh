@@ -23,8 +23,8 @@ DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 systemctl disable apt-daily-upgrade.service 
 
 apt-get update
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 
 apt-get install -y python
 apt-get -y install python-dev git openssh-server supervisor authbind openssl python-virtualenv build-essential python-gmpy2 libgmp-dev libmpfr-dev libmpc-dev libssl-dev python-pip libffi-dev python3-pip curl
@@ -74,7 +74,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/ || true
 
 # Config for requirements.txt
 cat > /opt/cowrie/requirements.txt <<EOF

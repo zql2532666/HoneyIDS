@@ -27,8 +27,8 @@ systemctl disable apt-daily-upgrade.service
 
 apt update
 
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 apt-get install -y ruby2.4 ruby2.4-dev
 
 # install git and supervisor
@@ -71,7 +71,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/ || true
 
 # run the setup program to install required ruby packages for sticky_elephant
 gem install bundler -v 1.13

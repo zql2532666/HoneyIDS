@@ -27,8 +27,8 @@ systemctl disable apt-daily-upgrade.service
 
 apt update
 
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 apt-get -y install git supervisor curl python-pip python3-pip
 pip install configparser
 
@@ -78,7 +78,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:$SERVER_PORT//api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT//api/v1/honeynodes/ || true
 
 
 # hpfeeds config

@@ -467,6 +467,7 @@ def handle_dionaea_upload():
         # generate file path 
         # dest_file_path = f"{dest_dir_path}/{time}_{md5}"
         dest_file_path = os.path.join(dest_dir_path, f"{time}_{md5}")
+        zip_file = f"{dest_file_path}.zip"
         print(dest_file_path)
 
         # write the binary file out to the file path --> refer to the zip.py (password encrypted)
@@ -478,7 +479,7 @@ def handle_dionaea_upload():
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
             # write out the zipped file  
-            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", ZIPPED_PASSWORD, COMPRESSION_LEVEL)
+            pyminizip.compress(dest_file_path,f"{time}_{md5}",zip_file, ZIPPED_PASSWORD, COMPRESSION_LEVEL)
         else:
             # os.makedirs(dest_dir_path, exist_ok=True)
             os.mkdir(dest_dir_path)
@@ -486,12 +487,12 @@ def handle_dionaea_upload():
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
             # write out the zipped file  
-            pyminizip.compress(dest_file_path,f"{time}_{md5}",f"{dest_file_path}.zip", ZIPPED_PASSWORD, COMPRESSION_LEVEL)
+            pyminizip.compress(dest_file_path,f"{time}_{md5}",zip_file, ZIPPED_PASSWORD, COMPRESSION_LEVEL)
 
         vt_data = vt_request(md5)
         vt_resp = int(vt_data.get("response_code"))
         # insert file path + token here --> will be stored in the database
-        vt_data["file_path"] = file_path
+        vt_data["file_path"] = zip_file
         vt_data["token"] = token
 
         # response code == 1 means the hash is found on virus total

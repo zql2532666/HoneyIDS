@@ -23,8 +23,8 @@ systemctl disable apt-daily-upgrade.service
 
 apt update
 
-sudo rm /var/lib/dpkg/lock*
-sudo dpkg --configure -a
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
 
 sudo apt install -y python-pip
 pip install -U pip
@@ -70,7 +70,7 @@ curl -X POST -H "Content-Type: application/json" -d "{
 	\"heartbeat_status\" : \"False\",
 	\"last_heard\" : \"$DEPLOY_DATE\",
 	\"token\" : \"$TOKEN\"
-}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/
+}" http://$SERVER_IP:$SERVER_PORT/api/v1/honeynodes/ || true
 
 # hpfeeds config
 HPF_HOST=$SERVER_IP  
@@ -80,7 +80,7 @@ HPF_SECRET=$TOKEN
 
 cat > shockpot.conf<<EOF
 [server]
-host = 0.0.0.0
+host = $IP_ADDR
 port = 80
 [headers]
 server = Apache/2.0.55 (Debian) PHP/5.1.2-1+b1 mod_ssl/2.0.55 OpenSSL/0.9.8b
