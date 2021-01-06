@@ -228,3 +228,41 @@ class DbAccess:
             print(err)
 
         return result_value
+
+
+
+    """
+    Author: Derek
+    Database Access for virustotal logs
+    """
+
+    def insert_vt_log(vt_data):
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = f"insert into virus_total_logs(resource, scan_id, md5, sha1, sha256, scan_date,permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
+            values('%d', '%s', '%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s','%s','%s')"        
+        result_value = 0
+        insert_data = (
+            int(vt_data["resource"]),
+            vt_data["scan_id"],
+            vt_data["md5"],
+            vt_data["sha1"],
+            vt_data["sha256"],
+            vt_data["scan_date"],
+            vt_data["permalink"],
+            vt_data["positives"],
+            vt_data["total"],
+            vt_data["scans"],
+            vt_data["zipped_file_path"],
+            vt_data["time_at_file_received"],
+            vt_data["token"],
+        )
+        try:
+            result_value = cur.execute(sql,insert_data)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value

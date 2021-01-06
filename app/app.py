@@ -40,6 +40,8 @@ HONEYNODE_COMMAND_PORT = int(config['HONEYNODE']['COMMAND_PORT'])
 ZIPPED_PASSWORD = config['COMPRESSION']['PASSWORD']
 COMPRESSION_LEVEL = int(config['COMPRESSION']['COMPRESSION_LEVEL'])
 
+VT_API_KEY = config['VIRUSTOTAL']['API_KEY']
+
 # Configure DB
 db = yaml.load(open(os.path.join(basedir, 'db.yaml')), Loader=yaml.SafeLoader)
 app.config['MYSQL_HOST'] = db['mysql_host']
@@ -492,16 +494,20 @@ def handle_dionaea_upload():
         vt_data = vt_request(md5)
         vt_resp = int(vt_data.get("response_code"))
         # insert file path + token here --> will be stored in the database
-        vt_data["file_path"] = zip_file
+        vt_data["zipped_file_path"] = zip_file
         vt_data["token"] = token
-
+        vt_data["time_at_file_received"] = time
         # response code == 1 means the hash is found on virus total
         if vt_resp == 1 :
-            print("yay")
+            print("The hash can be found on Virus Total")
             # database function call here 
+            result_value = db_access.insert_vt_log(vt_data)
+
+            if result_value == 0:
+                abort(404)
             
         elif vt_resp == 0:
-            print("Fuck No resutls")
+            print("No Virus Total Results")
             # database function call here -- 0 means the hash is not found on virus total
 
         # send md5 hash to virus total api
