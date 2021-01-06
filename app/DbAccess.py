@@ -236,15 +236,15 @@ class DbAccess:
     Database Access for virustotal logs
     """
 
-    def insert_vt_log(vt_data):
+    def insert_vt_log(self, vt_data):
         # Mysql connection
         cur = self.mysql.connection.cursor()
 
         sql = f"insert into virus_total_logs(resource, scan_id, md5, sha1, sha256, scan_date,permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
-            values('%d', '%s', '%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s','%s','%s')"        
+            values('%s', '%s', '%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s','%s','%s')"        
         result_value = 0
         insert_data = (
-            int(vt_data["resource"]),
+            vt_data["resource"],
             vt_data["scan_id"],
             vt_data["md5"],
             vt_data["sha1"],
