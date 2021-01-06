@@ -241,7 +241,7 @@ class DbAccess:
         cur = self.mysql.connection.cursor()
 
         sql = f"insert into virus_total_logs(resource, scan_id, md5, sha1, sha256, scan_date,permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
-            values('%s', '%s', '%s', '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s','%s','%s')"        
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')"        
         result_value = 0
         insert_data = (
             vt_data["resource"],
@@ -253,7 +253,7 @@ class DbAccess:
             vt_data["permalink"],
             vt_data["positives"],
             vt_data["total"],
-            vt_data["scans"],
+            json.dumps(vt_data["scans"]),
             vt_data["zipped_file_path"],
             vt_data["time_at_file_received"],
             vt_data["token"],
