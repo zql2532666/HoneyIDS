@@ -444,6 +444,11 @@ def send_deployment_script_wordpot():
     return send_file(os.path.join(basedir, "deployment_scripts/deploy_wordpot.sh"))
 
 
+@app.route("/api/v1/deploy/deployment_script/watchdog", methods=['GET'])
+def send_deployment_script_watchdog():
+    return send_file(os.path.join(basedir, "deployment_scripts/dionaea_binary_uploader.sh"))
+
+
 # API ROUTE FOR THE CLEAN VM OVA FILE
 @app.route("/api/v1/deploy/honeyids-vm.ova", methods=['GET'])
 def send_honeyids_vm_ova():
