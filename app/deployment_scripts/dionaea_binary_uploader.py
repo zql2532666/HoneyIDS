@@ -8,9 +8,11 @@ import hashlib
 from datetime import datetime
 from configparser import ConfigParser
 import os
+from pathlib import Path
 
 
 DIONAEA_BINARY_FOLDER_PATH = r"/opt/dionaea/var/lib/dionaea/binaries"
+DIONAEA_FTP_FOLDER_PATH = r"/opt/dionaea/var/lib/dionaea/ftp/root"
 HONEY_AGENT_CONFIG_PATH	= r"/opt/honeyagent/honeyagent.conf"
 
 config = ConfigParser()
@@ -30,9 +32,10 @@ def md5(fname):
   
   
 class Handler(watchdog.events.PatternMatchingEventHandler): 
-    def __init__(self): 
-        # Set the patterns for PatternMatchingEventHandler 
-        watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=['*.tmp'], 
+    def __init__(self, patterns): 
+        # Set the patterns for PatternMatchingEventHandler
+        self.patterns = patterns
+        watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=self.patterns, 
                                                              ignore_directories=True, case_sensitive=False) 
   
     def on_created(self, event):
@@ -57,15 +60,17 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 
         finally:
             malware_file.close()
-            file_list = [f for f in os.listdir(DIONAEA_BINARY_FOLDER_PATH)]
+            parent_path = Path(event.src_path).parent
+            file_list = [f for f in os.listdir(parent_path)]
             for f in file_list:
-                os.remove(os.path.join(DIONAEA_BINARY_FOLDER_PATH, f))
+                os.remove(os.path.join(parent_path, f))
   
   
 if __name__ == "__main__": 
-    event_handler = Handler()
+    event_handler = Handler('*')
     observer = watchdog.observers.Observer() 
-    observer.schedule(event_handler, path=DIONAEA_BINARY_FOLDER_PATH, recursive=True) 
+    observer.schedule(event_handler, path=DIONAEA_BINARY_FOLDER_PATH, recursive=True)
+    observer.schedule(event_handler, path=DIONAEA_FTP_FOLDER_PATH, recursive=True) 
     observer.start() 
     try: 
         while True: 
