@@ -59,6 +59,7 @@ Authon: Derek, Thein Than Zaw
 """
 
 import requests, argparse, os, time, json, hashlib
+import json
 API_KEY='a4285326b887ff18976ba19661911b61d4833cf4943238413f957c19f0770d6d'
 # REQUEST FUNCTION
 def vt_request(hash,key=API_KEY) :

@@ -517,6 +517,10 @@ def handle_dionaea_upload():
             
         elif vt_resp == 0:
             print("No Virus Total Results")
+            vt_data["md5"] = md5
+            result_value = db_access.insert_vt_log_file_path(vt_data)
+            if result_value == 0:
+                abort(404)
             # database function call here -- 0 means the hash is not found on virus total
 
         # send md5 hash to virus total api

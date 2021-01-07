@@ -239,30 +239,68 @@ class DbAccess:
     def insert_vt_log(self, vt_data):
         # Mysql connection
         cur = self.mysql.connection.cursor()
+        scan_id  = vt_data["scan_id"]
+        md5 = vt_data["md5"]
+        sha1 =  vt_data["sha1"]
+        sha256 =  vt_data["sha256"]
+        scan_date =  vt_data["scan_date"]
+        permalink = vt_data["permalink"]
+        positives =  int(vt_data["positives"])
+        total =  int(vt_data["total"])
+        scans =  json.dumps(vt_data["scans"])
+        zipped_file_path =  vt_data["zipped_file_path"]
+        time_at_file_received =  vt_data["time_at_file_received"]
+        token =  vt_data["token"]
+        response = vt_data["response_code"]
 
-        sql = f"insert into virus_total_logs(resource, scan_id, md5, sha1, sha256, scan_date,permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
-            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')"        
+        # sql = f"insert into virus_total_logs(scan_id, md5, sha1, sha256, scan_date, permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
+        #     values(%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')" % (scan_id,md5,sha1,sha256,scan_date,permalink,positives,total,scans,zipped_file_path,time_at_file_received,token)
+        sql = f"insert into virus_total_logs(scan_id, md5, sha1, sha256, scan_date, permalink,positives, total, scans, zipped_file_path,time_at_file_received, token,response) \
+            values(\
+                '{scan_id}',\
+                '{md5}', \
+                '{sha1}', \
+                '{sha256}',\
+                '{scan_date}', \
+                '{permalink}', \
+                '{positives}', \
+                '{total}', \
+                '{scans}', \
+                '{zipped_file_path}', \
+                '{time_at_file_received}',\
+                '{token}',\
+                '{response}')"     
         result_value = 0
-        insert_data = (
-            vt_data["resource"],
-            vt_data["scan_id"],
-            vt_data["md5"],
-            vt_data["sha1"],
-            vt_data["sha256"],
-            vt_data["scan_date"],
-            vt_data["permalink"],
-            vt_data["positives"],
-            vt_data["total"],
-            json.dumps(vt_data["scans"]),
-            vt_data["zipped_file_path"],
-            vt_data["time_at_file_received"],
-            vt_data["token"],
-        )
         try:
-            result_value = cur.execute(sql,insert_data)
+            result_value = cur.execute(sql)
             self.mysql.connection.commit()
             cur.close()
         except Exception as err:
             print(err)
 
         return result_value
+
+    def insert_vt_log_file_path(self, vt_data):
+        cur = self.mysql.connection.cursor()
+        md5 = vt_data["md5"]
+        zipped_file_path =  vt_data["zipped_file_path"]
+        time_at_file_received =  vt_data["time_at_file_received"]
+        token =  vt_data["token"]
+        response = vt_data["response_code"]        
+        sql = f"insert into virus_total_logs(md5, zipped_file_path,time_at_file_received, token,response) \
+            values(\
+                '{md5}', \
+                '{zipped_file_path}', \
+                '{time_at_file_received}',\
+                '{token}',\
+                '{response}')"     
+        result_value = 0
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
+
