@@ -243,7 +243,7 @@ def retrieve_all_nodes_for_datatables():
     return datatable_dict
 
 #Retrieve all honeynodes for heartbeat server
-@app.route("/api/v1/heartbeats", methods=['GET'])
+@app.route("/api/v1/heartbeats/", methods=['GET'])
 def retrieve_all_nodes_for_heartbeat():
 
     return db_access.retrieve_all_nodes_for_heartbeat()
