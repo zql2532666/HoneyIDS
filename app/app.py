@@ -450,7 +450,7 @@ def send_deployment_script_wordpot():
 
 @app.route("/api/v1/deploy/deployment_script/watchdog", methods=['GET'])
 def send_deployment_script_watchdog():
-    return send_file(os.path.join(basedir, "deployment_scripts/dionaea_binary_uploader.sh"))
+    return send_file(os.path.join(basedir, "deployment_scripts/dionaea_binary_uploader.py"))
 
 
 # API ROUTE FOR THE CLEAN VM OVA FILE
