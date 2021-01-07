@@ -353,6 +353,7 @@ def delete_node(token):
     if resultValue == 0:
         flash(u'Node not deleted.', 'danger')
     else:
+        end_signal_heartbeats_server_repopulate(WEB_SERVER_IP,HBPORT)
         flash(u'Node successfully deleted.', 'success')
 
     # redirect to end the POST handling
