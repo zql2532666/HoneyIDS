@@ -1,6 +1,6 @@
 import yaml, json, requests
 from time import sleep
-from DbAccess import *
+from DbAccess_test import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
 from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash,send_file
@@ -15,6 +15,9 @@ from virus_total import *
 import pyminizip
 import warnings
 import base64
+from threading import Thread
+import log_collector
+
 
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
@@ -50,11 +53,11 @@ app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
 app.config['HPFEEDS_DATABASE_PATH'] = os.path.join(basedir, 'sqlite.db')
 
-# run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
-hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
-
 # Initialise Database
 db_access = DbAccess(app)
+
+# run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
+# hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
 
 # Initialize Hpfeeds credential database
 hpfeeds_db = HPfeedsDB(app.config['HPFEEDS_DATABASE_PATH'])
@@ -446,7 +449,7 @@ def send_deployment_script_wordpot():
 
 @app.route("/api/v1/deploy/deployment_script/watchdog", methods=['GET'])
 def send_deployment_script_watchdog():
-    return send_file(os.path.join(basedir, "deployment_scripts/dionaea_binary_uploader.sh"))
+    return send_file(os.path.join(basedir, "deployment_scripts/dionaea_binary_uploader.py"))
 
 
 # API ROUTE FOR THE CLEAN VM OVA FILE
@@ -519,15 +522,41 @@ def handle_dionaea_upload():
     return jsonify({"data": True}), 201
 
 
+"""
+api route for storing general log
+"""
+@app.route('/api/v1/general_logs', methods=['POST'])
+def insert_general_log():
+    if request.json:
+        general_log_data = request.json
+        print("/api/v1/general_logs:")
+        print(general_log_data)
+        result_value = db_access.insert_general_log(general_log_data)
+
+        if result_value == 0:
+            abort(404)
+
+        return jsonify({"success": True}), 201
+
+    else:
+        abort(404)
+
 
 
 
 if __name__ == "__main__":
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)
+        # run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
+        hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
+        sleep(5)
+        log_collector_thread = Thread(target=log_collector.main, args=())
         app.debug = True
+        log_collector_thread.start()
         print('Waiting for requests.. ')
         http_server.serve_forever()
+        
+
     except:
         hpfeeds_broker_process.terminate()
         print("Exception")

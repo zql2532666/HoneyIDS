@@ -104,7 +104,7 @@ ident = "$HPF_IDENT"
 auth = "$HPF_SECRET"
 channel = "agave.events"
 [fetch_public_ip]
-enabled = true
+enabled = false
 urls = ["http://icanhazip.com/", "http://ifconfig.me/ip"]
 EOF
 
