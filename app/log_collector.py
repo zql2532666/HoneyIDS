@@ -3,8 +3,6 @@ import sys
 import json
 import requests
 from datetime import datetime
-from DbAccess import *
-from flask import current_app
 
 
 # run broker :
@@ -192,7 +190,7 @@ def create_general_log_entry(identifier, channel, payload):
     return general_log_entry
 
 
-def insert_general_log_entry_to_database(general_log_entry):
+def insert_general_log_entry_to_database(db_access, general_log_entry):
     pass
 
 
@@ -201,7 +199,7 @@ def insert_general_log_entry_to_database(general_log_entry):
 
 
 
-def main():
+def main(db_access):
     hpc = hpfeeds.new(HOST, PORT, IDENT, SECRET)
     print("connected to " + hpc.brokername)
 
@@ -218,7 +216,7 @@ def main():
         print(general_log_entry)
         print("\n")
 
-        # call api endpoint to store the log/alert in database and display on the webpage
+        # store the log to the database
         
 
     def on_error(payload):

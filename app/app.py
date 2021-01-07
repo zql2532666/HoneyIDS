@@ -225,7 +225,7 @@ Author: Aaron
 
 # CRUD endpoints
 # Retrieve all honeynodes
-@app.route("/api/v1/honeynodes/", methods=['GET'])
+@app.route("/api/v1/honeynodes", methods=['GET'])
 def retrieve_all_nodes():
     return db_access.retrieve_all_nodes()
 
@@ -243,7 +243,7 @@ def retrieve_all_nodes_for_datatables():
     return datatable_dict
 
 #Retrieve all honeynodes for heartbeat server
-@app.route("/api/v1/heartbeats/", methods=['GET'])
+@app.route("/api/v1/heartbeats", methods=['GET'])
 def retrieve_all_nodes_for_heartbeat():
 
     return db_access.retrieve_all_nodes_for_heartbeat()
@@ -271,6 +271,7 @@ def retrieve_node(token):
 # }
 @app.route("/api/v1/honeynodes/", methods=['POST'])
 def create_node():
+    # db_access = DbAccess(app)
 
     if not request.json or not 'token' in request.json:
         abort(400)
@@ -344,11 +345,13 @@ def update_node_for_heartbeat():
 # Delete honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['DELETE'])
 def delete_node(token):
+    # db_access = DbAccess(app)
 
     if not token:
         abort(400)
 
     resultValue = db_access.delete_node(token)
+    sleep(3)
 
     if resultValue == 0:
         flash(u'Node not deleted.', 'danger')
