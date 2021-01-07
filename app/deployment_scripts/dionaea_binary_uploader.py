@@ -32,10 +32,10 @@ def md5(fname):
   
   
 class Handler(watchdog.events.PatternMatchingEventHandler): 
-    def __init__(self, patterns): 
+    def __init__(self, pattern): 
         # Set the patterns for PatternMatchingEventHandler
-        self.patterns = patterns
-        watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=self.patterns, 
+        self.pattern = pattern
+        watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=self.pattern, 
                                                              ignore_directories=True, case_sensitive=False) 
   
     def on_created(self, event):
@@ -49,7 +49,7 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
         data = {
                 'file': malware_file_base64_string, 
                 'token': TOKEN, 
-                'time': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 
+                'time': datetime.now().strftime("%d-%m-%Y_%H:%M:%S"), 
                 'md5': md5(event.src_path)
             }
 
@@ -60,14 +60,14 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 
         finally:
             malware_file.close()
-            parent_path = Path(event.src_path).parent
+            parent_path = str(Path(event.src_path).parent)
             file_list = [f for f in os.listdir(parent_path)]
             for f in file_list:
                 os.remove(os.path.join(parent_path, f))
   
   
 if __name__ == "__main__": 
-    event_handler = Handler('*')
+    event_handler = Handler(['*'])
     observer = watchdog.observers.Observer() 
     observer.schedule(event_handler, path=DIONAEA_BINARY_FOLDER_PATH, recursive=True)
     observer.schedule(event_handler, path=DIONAEA_FTP_FOLDER_PATH, recursive=True) 
