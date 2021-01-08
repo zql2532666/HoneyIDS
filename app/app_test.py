@@ -542,6 +542,25 @@ def insert_general_log():
         abort(404)
 
 
+"""
+api route for storing nids log
+"""
+@app.route("/api/v1/snort_logs", methods=['POST'])
+def insert_snort_log():
+    if request.json:
+        snort_log_data = request.json
+        print("/api/v1/snort_logs:")
+        print(snort_log_data)
+        result_value = db_access.insert_snort_log(snort_log_data)
+
+        if result_value == 0:
+            abort(404)
+
+        return jsonify({"success": True}), 201
+
+    else:
+        abort(404)
+
 
 
 if __name__ == "__main__":

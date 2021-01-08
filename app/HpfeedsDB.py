@@ -16,7 +16,7 @@ class HPfeedsDB:
             "snort": ["snort.alerts"], 
             "sticky_elephant": ["sticky_elephant.connections", "sticky_elephant.queries"],
             "wordpot": ["wordpot.events"],
-            "dionaea": ["dionaea.connections", "dionaea.capture", "mwbinary.dionaea.sensorunique", "dionaea.capture.anon", "dionaea.caputres"]
+            "dionaea": ["dionaea.connections"]
         }
         self.connection = self.create_connection()
 

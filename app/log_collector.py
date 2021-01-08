@@ -19,7 +19,13 @@ WEB_SERVER_IP = config['WEB-SERVER']['SERVER_IP']
 WEB_SERVER_PORT = config['WEB-SERVER']['PORT']
 
 GET_NODE_API_ENDPOINT = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/honeynodes/"
-GENERAL_LOG_API_ENDPOINT = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/general_logs"
+
+LOG_API_ENDPOINTS = {
+    "general_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/general_logs",
+    "nids_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/nids_logs",
+    "session_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/session_logs"
+}
+# GENERAL_LOG_API_ENDPOINT = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/general_logs"
 
 HOST = 'localhost'
 PORT = 10000
@@ -54,7 +60,7 @@ def parse_cowrie_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, "general_log")
 
 
 def parse_elastichoney_logs(identifier, payload):
@@ -71,7 +77,7 @@ def parse_elastichoney_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, 'general_log')
 
 
 def parse_wordpot_logs(identifier, payload):
@@ -88,7 +94,7 @@ def parse_wordpot_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, 'general_log')
 
 
 def parse_drupot_logs(identifier, payload):
@@ -105,7 +111,7 @@ def parse_drupot_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, 'general_log')
 
 
 def parse_shockpot_logs(identifier, payload):
@@ -122,7 +128,7 @@ def parse_shockpot_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, 'general_log')
 
 
 def parse_sticky_elephant_logs(identifier, payload):
@@ -139,7 +145,7 @@ def parse_sticky_elephant_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, 'general_log')
     
 
 def parse_dionaea_connection_logs(identifier, payload):
@@ -156,7 +162,7 @@ def parse_dionaea_connection_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return general_log_data_dict
+    return (general_log_data_dict, 'general_log')
 
 
 def parse_snort_nids_logs(identifier, payload):
@@ -169,32 +175,42 @@ def parse_snort_nids_logs(identifier, payload):
     nids_log_dict['source_port'] = payload['source_port']
     nids_log_dict['destination_ip'] = payload['destination_ip']
     nids_log_dict['destination_port'] = payload['destination_port']
-    nids_log_dict['priority'] = payload['priority']
-    nids_log_dict['classification'] = payload['classification']
+    nids_log_dict['priority'] = int(payload['priority'])
+    nids_log_dict['classification'] = int(payload['classification'])
     nids_log_dict['signature'] = payload['signature']
+    nids_log_dict['raw_logs'] = json.dumps(payload)
 
-    return nids_log_dict
+    return (nids_log_dict, 'nids_log')
 
 
-def create_general_log_data(identifier, channel, payload):
-    general_log_data = dict()
+def process_log_data(identifier, channel, payload):
+    log_data = dict()
 
     if channel == "cowrie.sessions":
-        general_log_data = parse_cowrie_logs(identifier, payload)
+        log_data = parse_cowrie_logs(identifier, payload)
     elif channel == "agave.events":
-        general_log_data = parse_drupot_logs(identifier, payload)
+        log_data = parse_drupot_logs(identifier, payload)
     elif channel == "wordpot.events":
-        general_log_data = parse_wordpot_logs(identifier, payload)
+        log_data = parse_wordpot_logs(identifier, payload)
     elif channel == "elastichoney.events":
-        general_log_data = parse_elastichoney_logs(identifier, payload)
+        log_data = parse_elastichoney_logs(identifier, payload)
     elif channel == "shockpot.events":
-        general_log_data = parse_shockpot_logs(identifier, payload)
+        log_data = parse_shockpot_logs(identifier, payload)
     elif channel == "sticky_elephant.connections" or channel == "sticky_elephant.queries":
-        general_log_data = parse_sticky_elephant_logs(identifier, payload)
+        log_data = parse_sticky_elephant_logs(identifier, payload)
     elif channel == "dionaea.connections":
-        general_log_data = parse_dionaea_connection_logs(identifier, payload)
+        log_data = parse_dionaea_connection_logs(identifier, payload)
+    elif channel == "snort.alerts":
+        log_data = parse_snort_nids_logs(identifier, payload)
 
-    return general_log_data
+    # log_data[0] is the dictionary containing the log's data
+    # log_data[1] is the log_type
+    result_value = insert_log_to_database(log_data[0], log_data[1])
+
+    if result_value == 0:
+        print("log insertion successful")
+    else:
+        print("log insertion failed")
 
 
 def get_honeynode_name_by_token(token):
@@ -208,10 +224,14 @@ def get_honeynode_name_by_token(token):
         return " "
 
 
-def insert_general_log_to_database(general_log_data):
+def insert_log_to_database(log_data_dict, log_type):
+    if log_type not in LOG_API_ENDPOINTS.keys():
+        return 0
+    api_to_call = LOG_API_ENDPOINTS[log_type]
     headers = {'content-type': 'application/json'}
-    response = requests.post(GENERAL_LOG_API_ENDPOINT, data=json.dumps(general_log_data), headers=headers)
+    response = requests.post(api_to_call, data=json.dumps(log_data), headers=headers)
     print(response.text)
+    return 1
 
 
 def main():
@@ -223,18 +243,18 @@ def main():
 
     def on_message(identifier, channel, payload):
 
-        # print(f"Identifier : {identifier}")
-        # print(f"Channel: {channel}")
-        # print("Payload:")
+        print(f"Identifier : {identifier}")
+        print(f"Channel: {channel}")
+        print("Payload:")
  
         payload_converted = json.loads(payload.decode())
         # print(type(payload_converted))
-        general_log_data = create_general_log_data(identifier, channel, payload_converted)
-        print(general_log_data)
-        print("\n")
+        process_log_data(identifier, channel, payload_converted)
+        # print(general_log_data)
+        # print("\n")
 
         # store the log to the database
-        insert_general_log_to_database(general_log_data)
+        # insert_general_log_to_database(general_log_data)
 
     def on_error(payload):
         hpc.stop()
