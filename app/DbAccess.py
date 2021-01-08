@@ -305,7 +305,7 @@ class DbAccess:
         return result_value
 
     # Insert NIDS Logs
-    def insert_nids_log(self,snort_log_data):
+    def insert_snort_log(self,snort_log_data):
         cur = self.mysql.connection.cursor()
         sql = f"insert into general_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classfication,signature, raw_logs) \
             values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (general_log_data['capture_date'],
