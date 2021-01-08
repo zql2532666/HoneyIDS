@@ -308,8 +308,7 @@ class DbAccess:
     def insert_snort_log(self,snort_log_data):
         cur = self.mysql.connection.cursor()
         sql = f"insert into general_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classfication,signature, raw_logs) \
-            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (general_log_data['capture_date'],
-            'snort',
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % ('snort',
             snort_log_data['date'],
             snort_log_data['honeynode_name'],
             snort_log_data['source_ip'],
