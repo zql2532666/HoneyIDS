@@ -304,3 +304,31 @@ class DbAccess:
 
         return result_value
 
+    # Insert NIDS Logs
+    def insert_nids_log(self,snort_log_data):
+        cur = self.mysql.connection.cursor()
+        sql = f"insert into general_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classfication,signature, raw_logs) \
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (general_log_data['capture_date'],
+            'snort',
+            snort_log_data['date'],
+            snort_log_data['honeynode_name'],
+            snort_log_data['source_ip'],
+            snort_log_data['source_port'],
+            snort_log_data['destination_ip'],
+            snort_log_data['destination_port'],
+            snort_log_data['priority'],
+            snort_log_data['classification'],
+            snort_log_data['signature'],
+            snort_log_data['raw_logs'])
+        )
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
