@@ -124,11 +124,12 @@ cat > /opt/dionaea/etc/dionaea/ihandlers-enabled/hpfeeds.yaml <<EOF
     ident: "$HPF_IDENT"
     secret: "$HPF_SECRET"
     # dynip_resolve: enable to lookup the sensor ip through a webservice
-    dynip_resolve: "http://canhazip.com/"
+    # dynip_resolve: "http://canhazip.com/"
     # Try to reconnect after N seconds if disconnected from hpfeeds broker
     # reconnect_timeout: 10.0
 EOF
 
+sed -i "s/listen.mode=getifaddrs/listen.mode=manual/g" /opt/dionaea/etc/dionaea/dionaea.cfg
 sed -i "s/# listen.addresses=127.0.0.1/listen.addresses=$IP_ADDR/g" /opt/dionaea/etc/dionaea/dionaea.cfg
 
 # Editing configuration for Dionaea.
@@ -164,7 +165,7 @@ redirect_stderr=true
 stopsignal=QUIT
 EOF
 
-configure supervisor for watchdog
+# configure supervisor for watchdog
 cat > /etc/supervisor/conf.d/dionaea_binary_uploader.conf <<EOF
 [program:dionaea_binary_uploader]
 command=python3 /opt/dionaea_binary_uploader/dionaea_binary_uploader.py
