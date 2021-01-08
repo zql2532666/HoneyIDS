@@ -39,31 +39,32 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
                                                              ignore_directories=True, case_sensitive=False) 
   
     def on_created(self, event):
-        print("Watchdog received created event - % s" % event.src_path)
+        if not "httpupload" in event.src_path:
+            print("Watchdog received created event - % s" % event.src_path)
 
-        with open(event.src_path, 'rb') as malware_file:
-            malware_file_base64 = base64.b64encode(malware_file.read())
+            with open(event.src_path, 'rb') as malware_file:
+                malware_file_base64 = base64.b64encode(malware_file.read())
 
-        malware_file_base64_string = malware_file_base64.decode('utf-8')
+            malware_file_base64_string = malware_file_base64.decode('utf-8')
 
-        data = {
-                'file': malware_file_base64_string, 
-                'token': TOKEN, 
-                'time': datetime.now().strftime("%d-%m-%Y_%H:%M:%S"), 
-                'md5': md5(event.src_path)
-            }
+            data = {
+                    'file': malware_file_base64_string, 
+                    'token': TOKEN, 
+                    'time': datetime.now().strftime("%d-%m-%Y_%H:%M:%S"), 
+                    'md5': md5(event.src_path)
+                }
 
-        try:
-            headers = {'content-type': 'application/json'}
-            r = requests.post(API_ENDPOINT_URL, data=json.dumps(data), headers=headers)
-            print(r.text)
+            try:
+                headers = {'content-type': 'application/json'}
+                r = requests.post(API_ENDPOINT_URL, data=json.dumps(data), headers=headers)
+                print(r.text)
 
-        finally:
-            malware_file.close()
-            parent_path = str(Path(event.src_path).parent)
-            file_list = [f for f in os.listdir(parent_path)]
-            for f in file_list:
-                os.remove(os.path.join(parent_path, f))
+            finally:
+                malware_file.close()
+                parent_path = str(Path(event.src_path).parent)
+                file_list = [f for f in os.listdir(parent_path)]
+                for f in file_list:
+                    os.remove(os.path.join(parent_path, f))
   
   
 if __name__ == "__main__": 
