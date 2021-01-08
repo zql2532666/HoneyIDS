@@ -460,7 +460,7 @@ def send_honeyids_vm_ova():
 
 
 """ 
-API Route for dionaea
+API Route for dionaea virus total logs
 """
 @app.route('/api/v1/dionaea-binary-upload', methods=['POST'])
 def handle_dionaea_upload():
@@ -497,7 +497,7 @@ def handle_dionaea_upload():
             # write out the zipped file  
             pyminizip.compress(dest_file_path,f"{time}_{md5}",zip_file, ZIPPED_PASSWORD, COMPRESSION_LEVEL)
 
-        vt_data = vt_request(md5)
+        vt_data = vt_request(md5,VT_API_KEY)
         vt_resp = int(vt_data.get("response_code"))
         # insert file path + token here --> will be stored in the database
         vt_data["zipped_file_path"] = relative_zipped_file_path
