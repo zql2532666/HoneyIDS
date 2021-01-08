@@ -182,6 +182,15 @@ API Routes for Log
 Author: Aaron
 """
 
+# Retrieve all virus total logs for datatable
+@app.route("/api/v1/virus_total_logs/datatables", methods=['GET'])
+def retrieve_all_virus_total_logs_for_datatables():
+
+    datatable_dict = dict()
+    datatable_dict["data"] = json.loads(db_access.retrieve_all_virus_total_logs())
+
+    return datatable_dict
+
 # Retrieve all general logs for datatable
 @app.route("/api/v1/general_logs/datatables", methods=['GET'])
 def retrieve_all_general_logs_for_datatables():
@@ -452,6 +461,10 @@ def send_deployment_script_wordpot():
 def send_deployment_script_watchdog():
     return send_file(os.path.join(basedir, "deployment_scripts/dionaea_binary_uploader.py"))
 
+# Issues with downloading malware file
+@app.route("/api/v1/virus_total_logs/dionaea_malware_file/<string:token>/<string:path>", methods=['GET'])
+def send_dionaea_malware_file(token, path):
+    return send_file(os.path.join(basedir, "dionaea_malware_files/" + token + "/" + path))
 
 # API ROUTE FOR THE CLEAN VM OVA FILE
 @app.route("/api/v1/deploy/honeyids-vm.ova", methods=['GET'])
