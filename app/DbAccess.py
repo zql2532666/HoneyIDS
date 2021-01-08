@@ -64,6 +64,21 @@ class DbAccess:
 
         return json_data
 
+    def retrieve_all_virus_total_logs(self):
+        
+        json_data = {}
+
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = "select * from virus_total_logs"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+
+        return json_data
+
     def retrieve_all_nids_logs(self):
         
         json_data = {}
@@ -319,7 +334,6 @@ class DbAccess:
             snort_log_data['classification'],
             snort_log_data['signature'],
             snort_log_data['raw_logs'])
-        )
 
         result_value = 0
 
