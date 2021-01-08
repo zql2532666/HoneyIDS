@@ -473,20 +473,17 @@ def handle_dionaea_upload():
         time = request.json['time']
 
         # generate dir path
-        dest_dir_path = os.path.join(basedir, f"dionaea_malware_files/{token}/")
-        print(dest_dir_path)
-        # generate file path 
-        # dest_file_path = f"{dest_dir_path}/{time}_{md5}"
+        dest_dir_path = os.path.join(basedir, f"dionaea_malware_files/{token}/")    
         dest_file_path = os.path.join(dest_dir_path, f"{time}_{md5}")
+        # relative_zipped_file_path will be stored in the database, needs to os.path.join when pulled from database
+        relative_zipped_file_path = f"dionaea_malware_files/{token}/{time}_{md5}.zip"
         zip_file = f"{dest_file_path}.zip"
-        print(dest_file_path)
+        print(f"relative_zipped_file_path: {relative_zipped_file_path}")
 
         # write the binary file out to the file path --> refer to the zip.py (password encrypted)
         if os.path.exists(dest_dir_path):
             print("path exists")
             # write out the original file
-            # print(dest_dir_path)
-            # print(dest_file_path)
             with open(dest_file_path, "wb") as writer:
                 writer.write(malware_file_binary)
             # write out the zipped file  
@@ -503,7 +500,7 @@ def handle_dionaea_upload():
         vt_data = vt_request(md5)
         vt_resp = int(vt_data.get("response_code"))
         # insert file path + token here --> will be stored in the database
-        vt_data["zipped_file_path"] = zip_file
+        vt_data["zipped_file_path"] = relative_zipped_file_path
         vt_data["token"] = token
         vt_data["time_at_file_received"] = time
         # response code == 1 means the hash is found on virus total
@@ -525,10 +522,6 @@ def handle_dionaea_upload():
 
         # send md5 hash to virus total api
     return jsonify({"data": True}), 201
-
-
-
-
 
 if __name__ == "__main__":
     try:
