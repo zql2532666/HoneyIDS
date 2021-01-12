@@ -41,6 +41,9 @@
   tfoot {
       display: table-row-group;
   }
+  th.dt-center {
+        text-align: center;
+    }
 </style>
 <div class="row">
   <div class="col-12">
@@ -66,7 +69,7 @@
           <th>Destination IP</th>
           <th>Destination Port</th>
           <th>Protocol</th>
-          <th>Raw Logs</th>
+          <th></th>
         </tr>
     </tfoot>
     </table>
@@ -98,7 +101,9 @@
 
     $('#example tfoot th').each( function () {
         var title = $(this).text();
-        $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
+        if (title != ""){
+          $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
+        }
     } );
 
     $('#example').DataTable({
@@ -135,7 +140,11 @@
             { "data": "destination_port" },
             { "data": "protocol" },
             { "data": "raw_logs", "render": CustomRenders.raw_logs }
-        ]
+        ],
+        "columnDefs": [
+          {"className": "dt-center", "targets": "_all"},
+          {"width": '13%', "targets": 7},
+      ]
     });
   });
 
