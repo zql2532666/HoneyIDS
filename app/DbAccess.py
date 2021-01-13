@@ -124,7 +124,7 @@ class DbAccess:
         # Mysql connection
         cur = self.mysql.connection.cursor()
 
-        sql = f"select * from nodes where token={token}"
+        sql = f"select * from nodes where token='%s'" % (token)
         result_value = cur.execute(sql)
         if result_value > 0:
             my_query = self.query_db(cur)
@@ -359,8 +359,9 @@ class DbAccess:
     # Insert NIDS Logs
     def insert_snort_log(self,snort_log_data):
         cur = self.mysql.connection.cursor()
-        sql = f"insert into general_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classfication,signature, raw_logs) \
-            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % ('snort',
+        nids_type = 'snort'
+        sql = f"insert into nids_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classification,signature, raw_logs) \
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (nids_type,
             snort_log_data['date'],
             snort_log_data['honeynode_name'],
             snort_log_data['source_ip'],
