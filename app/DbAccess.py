@@ -267,10 +267,11 @@ class DbAccess:
         time_at_file_received =  vt_data["time_at_file_received"]
         token =  vt_data["token"]
         response = vt_data["response_code"]
+        zipped_file_password = vt_data["zipped_file_password"]
 
         # sql = f"insert into virus_total_logs(scan_id, md5, sha1, sha256, scan_date, permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
         #     values(%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')" % (scan_id,md5,sha1,sha256,scan_date,permalink,positives,total,scans,zipped_file_path,time_at_file_received,token)
-        sql = f"insert into virus_total_logs(scan_id, md5, sha1, sha256, scan_date, permalink,positives, total, scans, zipped_file_path,time_at_file_received, token,response) \
+        sql = f"insert into virus_total_logs(scan_id, md5, sha1, sha256, scan_date, permalink,positives, total, scans, zipped_file_path,time_at_file_received, token,response, zipped_file_password) \
             values(\
                 '{scan_id}',\
                 '{md5}', \
@@ -284,7 +285,8 @@ class DbAccess:
                 '{zipped_file_path}', \
                 '{time_at_file_received}',\
                 '{token}',\
-                '{response}')"     
+                '{response}',\
+                '{zipped_file_password}')"     
         result_value = 0
         try:
             result_value = cur.execute(sql)
@@ -301,14 +303,16 @@ class DbAccess:
         zipped_file_path =  vt_data["zipped_file_path"]
         time_at_file_received =  vt_data["time_at_file_received"]
         token =  vt_data["token"]
-        response = vt_data["response_code"]        
-        sql = f"insert into virus_total_logs(md5, zipped_file_path,time_at_file_received, token,response) \
+        response = vt_data["response_code"] 
+        zipped_file_password = vt_data["zipped_file_password"]       
+        sql = f"insert into virus_total_logs(md5, zipped_file_path,time_at_file_received, token,response,zipped_file_password) \
             values(\
                 '{md5}', \
                 '{zipped_file_path}', \
                 '{time_at_file_received}',\
                 '{token}',\
-                '{response}')"     
+                '{response}'\
+                '{zipped_file_password}')"     
         result_value = 0
         try:
             result_value = cur.execute(sql)

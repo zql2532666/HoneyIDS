@@ -519,6 +519,7 @@ def handle_dionaea_upload():
         vt_data["zipped_file_path"] = relative_zipped_file_path
         vt_data["token"] = token
         vt_data["time_at_file_received"] = time
+        vt_data["zipped_file_password"] = ZIPPED_PASSWORD
         # response code == 1 means the hash is found on virus total
         if vt_resp == 1 :
             print("The hash can be found on Virus Total")
