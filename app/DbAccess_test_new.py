@@ -17,6 +17,7 @@ import time
 
 def query_db(cursor):
     r = [dict((cursor.description[i][0], value) for i, value in enumerate(row)) for row in cursor.fetchall()]
+    cursor.close()
     return r
 
 def myconverter(obj):
