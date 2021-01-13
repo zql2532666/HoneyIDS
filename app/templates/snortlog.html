@@ -3,31 +3,34 @@
 {% block mainContent %}
 <!-- Alert after adding node -->
 {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-      {{message}}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endfor %}
-  {% endif %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+  {{message}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
 {% endwith %}
 <!-- alert end -->
 <style>
   tfoot {
-      display: table-row-group;
+    display: table-row-group;
   }
+
   th.dt-center {
-      text-align: center;
+    text-align: center;
   }
+
   .buttons-columnVisibility.active {
-      background-color: grey;
+    background-color: grey;
   }
 </style>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -37,8 +40,9 @@
         </button>
       </div>
       <div class="modal-body">
-          <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
-            
+        <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly
+          style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
+
           </textarea>
       </div>
       <div class="modal-footer">
@@ -79,7 +83,7 @@
           <th>Signature</th>
           <th></th>
         </tr>
-    </tfoot>
+      </tfoot>
     </table>
   </div>
   <!-- /.col -->
@@ -94,7 +98,7 @@
     $('#target-command').val(pretty);
   }
 
-  function loadButton(){
+  function loadButton() {
     console.log("asdd");
     $('#hide-column').append(table.buttons().container());
   }
@@ -107,58 +111,63 @@
 
   var table;
   $(function () {
-    $('#example tfoot th').each( function () {
-        var title = $(this).text();
-        if (title != ""){
-          $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
-        }
-    } );
+    $('#example tfoot th').each(function () {
+      var title = $(this).text();
+      if (title != "") {
+        $(this).html('<input style="width:100%" type="text" placeholder="Search ' + title + '" />');
+      }
+    });
 
     table = $('#example').DataTable({
       initComplete: function () {
-          // Apply the search
-          this.api().columns().every( function () {
-              var that = this;
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
 
-              $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                  if ( that.search() !== this.value ) {
-                      that
-                          .search( this.value )
-                          .draw();
-                  }
-              } );
-          } );
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
       },
       "ordering": true,
       "responsive": true,
       "autoWidth": false,
       "buttons": [
-          "colvis"
+        "colvis"
       ],
       "ajax": "/api/v1/nids_logs/datatables",
       "columns": [
-            { "data": "date" },
-            { "data": "honeynode_name" },
-            { "data": "source_ip" },
-            { "data": "destination_ip" },
-            { "data": "destination_port" },
-            { "data": "priority" },
-            { "data": "classification" },
-            { "data": "signature" },
-            { "data": "raw_logs", "render": CustomRenders.raw_logs }
+        { "data": "date" },
+        { "data": "honeynode_name" },
+        { "data": "source_ip" },
+        { "data": "destination_ip" },
+        { "data": "destination_port" },
+        { "data": "priority" },
+        { "data": "classification" },
+        { "data": "signature" },
+        { "data": "raw_logs", "render": CustomRenders.raw_logs }
       ],
       "columnDefs": [
-          {"className": "dt-center", "targets": "_all"},
-          {"width": '13%', "targets": 0},
-          {"width": '23%', "targets": 7},
-          {"width": '13%', "targets": 8},
+        { "className": "dt-center", "targets": "_all" },
+        { "width": '13%', "targets": 0 },
+        { "width": '23%', "targets": 7 },
+        { "width": '13%', "targets": 8 },
       ],
     });
-    
+
   });
 
+  setInterval(function () {
+    table.ajax.reload(null, false);
+  }, 3000);
+
+
   setTimeout(loadButton, 200);
-  $( "*" ).mouseover(function() {
+  $("*").mouseover(function () {
     loadButton();
   });
 </script>
