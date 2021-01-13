@@ -188,27 +188,35 @@ Author: Aaron
 # Retrieve all virus total logs for datatable
 @app.route("/api/v1/virus_total_logs/datatables", methods=['GET'])
 def retrieve_all_virus_total_logs_for_datatables():
-
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(db_access.retrieve_all_virus_total_logs())
+    data = db_access.retrieve_all_virus_total_logs()
+    if data == {}:
+        datatable_dict["data"] = data
+    else:
+        datatable_dict["data"] = json.loads(data)
 
     return datatable_dict
 
 # Retrieve all general logs for datatable
 @app.route("/api/v1/general_logs/datatables", methods=['GET'])
 def retrieve_all_general_logs_for_datatables():
-
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(db_access.retrieve_all_general_logs())
-
+    data = db_access.retrieve_all_general_logs()
+    if data == {}:
+        datatable_dict["data"] = data
+    else:
+        datatable_dict["data"] = json.loads(data)
     return datatable_dict
 
 # Retrieve all nids logs for datatable
 @app.route("/api/v1/nids_logs/datatables", methods=['GET'])
 def retrieve_all_nids_logs_for_datatables():
-
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(db_access.retrieve_all_nids_logs())
+    data = db_access.retrieve_all_nids_logs()
+    if data == {}:
+        datatable_dict["data"] = data
+    else:
+        datatable_dict["data"] = json.loads(data)
 
     return datatable_dict
     
