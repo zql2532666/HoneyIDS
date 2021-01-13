@@ -48,6 +48,8 @@ SECRET = 'collector'
 
 def parse_cowrie_logs(identifier, payload):
     general_log_data_dict = dict()
+    session_log_data_dict = dict()
+
     honeynode_name = get_honeynode_name_by_token(identifier)
 
     general_log_data_dict['capture_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -59,6 +61,12 @@ def parse_cowrie_logs(identifier, payload):
     general_log_data_dict['protocol'] = "tcp"
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
+
+    session_log_data_dict['source_ip'] = ''
+    session_log_data_dict['source_port'] = ''
+    session_log_data_dict[''] = ''
+    session_log_data_dict[''] = ''
+    session_log_data_dict[''] = ''
 
     return (general_log_data_dict, "general_log")
 
@@ -184,7 +192,7 @@ def parse_snort_nids_logs(identifier, payload):
 
 
 def process_log_data(identifier, channel, payload):
-    log_data = dict()
+    log_data = tuple()
 
     if channel == "cowrie.sessions":
         log_data = parse_cowrie_logs(identifier, payload)
