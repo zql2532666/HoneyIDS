@@ -22,7 +22,7 @@ GET_NODE_API_ENDPOINT = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/honeyn
 
 LOG_API_ENDPOINTS = {
     "general_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/general_logs",
-    "nids_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/nids_logs",
+    "nids_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/snort_logs",
     "session_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/session_logs"
 }
 # GENERAL_LOG_API_ENDPOINT = f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/general_logs"
@@ -75,7 +75,7 @@ def parse_cowrie_logs(identifier, payload):
         session_log_data_dict['urls'] = payload['urls']
         session_log_data_dict['credentials'] = payload['credentials']
         session_log_data_dict['version'] = payload['version']
-        session_log_data_dict['unknown_commands'] = payload['uknownCommands']
+        session_log_data_dict['unknown_commands'] = payload['unknownCommands']
 
 
     return (general_log_data_dict, "general_log")
@@ -226,9 +226,10 @@ def process_log_data(identifier, channel, payload):
     result_value = insert_log_to_database(log_data[0], log_data[1])
 
     if result_value == 0:
-        print("log insertion successful")
-    else:
         print("log insertion failed")
+        
+    else:
+        print("log insertion successful")
 
 
 def get_honeynode_name_by_token(token):
