@@ -55,6 +55,23 @@ def retrieve_all_active_nodes():
 
     return json_data
 
+
+def retrieve_all_virus_total_logs():
+        
+        json_data = {}
+
+        # Mysql connection
+        cur = mysql.connection.cursor()
+
+        sql = "select * from virus_total_logs"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = query_db(cur)
+            json_data = json.dumps(my_query, default=myconverter)
+
+        return json_data
+
+
 def retrieve_all_general_logs():
     
     json_data = {}

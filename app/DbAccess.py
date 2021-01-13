@@ -319,6 +319,39 @@ class DbAccess:
 
         return result_value
 
+
+    """
+    Author: rongtao
+    Database Access for general logs
+    """
+    def insert_general_log(self, general_log_data):
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = f"insert into general_logs(capture_date, honeynode_name, source_ip, source_port, destination_ip, destination_port, protocol, token, raw_logs) \
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (general_log_data['capture_date'],
+            general_log_data['honeynode_name'],
+            general_log_data['source_ip'],
+            general_log_data['source_port'],
+            general_log_data['destination_ip'],
+            general_log_data['destination_port'],
+            general_log_data['protocol'],
+            general_log_data['token'],
+            general_log_data['raw_logs']
+        )
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
+
+
     # Insert NIDS Logs
     def insert_snort_log(self,snort_log_data):
         cur = self.mysql.connection.cursor()

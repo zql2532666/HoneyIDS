@@ -185,6 +185,14 @@ def malware_log():
 API Routes for Log
 Author: Aaron
 """
+# Retrieve all virus total logs for datatable
+@app.route("/api/v1/virus_total_logs/datatables", methods=['GET'])
+def retrieve_all_virus_total_logs_for_datatables():
+
+    datatable_dict = dict()
+    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_virus_total_logs())
+
+    return datatable_dict
 
 # Retrieve all general logs for datatable
 @app.route("/api/v1/general_logs/datatables", methods=['GET'])

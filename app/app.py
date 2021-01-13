@@ -15,6 +15,9 @@ from virus_total import *
 import pyminizip
 import warnings
 import base64
+from threading import Thread
+import log_collector
+
 
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
@@ -536,12 +539,60 @@ def handle_dionaea_upload():
         # send md5 hash to virus total api
     return jsonify({"data": True}), 201
 
+
+"""
+api route for storing general log
+"""
+@app.route('/api/v1/general_logs', methods=['POST'])
+def insert_general_log():
+    if request.json:
+        general_log_data = request.json
+        print("/api/v1/general_logs:")
+        print(general_log_data)
+        result_value = db_access.insert_general_log(general_log_data)
+
+        if result_value == 0:
+            abort(404)
+
+        return jsonify({"success": True}), 201
+
+    else:
+        abort(404)
+
+
+"""
+api route for storing nids log
+"""
+@app.route("/api/v1/snort_logs", methods=['POST'])
+def insert_snort_log():
+    if request.json:
+        snort_log_data = request.json
+        print("/api/v1/snort_logs:")
+        print(snort_log_data)
+        result_value = db_access.insert_snort_log(snort_log_data)
+
+        if result_value == 0:
+            abort(404)
+
+        return jsonify({"success": True}), 201
+
+    else:
+        abort(404)
+
+
 if __name__ == "__main__":
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)
+        # run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
+        hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
+        sleep(5)
+        log_collector_thread = Thread(target=log_collector.main, args=())
         app.debug = True
+        log_collector_thread.start()
         print('Waiting for requests.. ')
         http_server.serve_forever()
+        
+
     except:
         hpfeeds_broker_process.terminate()
         print("Exception")
