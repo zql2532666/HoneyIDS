@@ -155,7 +155,7 @@ def kill_node():
 @app.context_processor
 def list_nodes_for_web():
     try:
-        list_nodes = json.loads(DbAccess_test_new.retrieve_all_active_nodes())
+        list_nodes = json.loads(DbAccess_test_new.retrieve_all_active_nodes(mysql))
     except Exception as e:
         list_nodes = {}
     return dict(list_nodes=list_nodes)
@@ -190,7 +190,7 @@ Author: Aaron
 def retrieve_all_virus_total_logs_for_datatables():
 
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_virus_total_logs())
+    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_virus_total_logs(mysql))
 
     return datatable_dict
 
@@ -199,7 +199,7 @@ def retrieve_all_virus_total_logs_for_datatables():
 def retrieve_all_general_logs_for_datatables():
 
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_general_logs())
+    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_general_logs(mysql))
 
     return datatable_dict
 
@@ -208,7 +208,7 @@ def retrieve_all_general_logs_for_datatables():
 def retrieve_all_nids_logs_for_datatables():
 
     datatable_dict = dict()
-    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_nids_logs())
+    datatable_dict["data"] = json.loads(DbAccess_test_new.retrieve_all_nids_logs(mysql))
 
     return datatable_dict
     
@@ -239,14 +239,14 @@ Author: Aaron
 # Retrieve all honeynodes
 @app.route("/api/v1/honeynodes/", methods=['GET'])
 def retrieve_all_nodes():
-    return DbAccess_test_new.retrieve_all_nodes()
+    return DbAccess_test_new.retrieve_all_nodes(mysql)
 
 # Retrieve all honeynodes
 @app.route("/api/v1/honeynodes/datatables", methods=['GET'])
 def retrieve_all_nodes_for_datatables():
 
     datatable_dict = dict()
-    data = DbAccess_test_new.retrieve_all_nodes()
+    data = DbAccess_test_new.retrieve_all_nodes(mysql)
     if data == {}:
         datatable_dict["data"] = data
     else:
@@ -258,13 +258,13 @@ def retrieve_all_nodes_for_datatables():
 @app.route("/api/v1/heartbeats/", methods=['GET'])
 def retrieve_all_nodes_for_heartbeat():
 
-    return DbAccess_test_new.retrieve_all_nodes_for_heartbeat()
+    return DbAccess_test_new.retrieve_all_nodes_for_heartbeat(mysql)
 
 #Retrieve single honeynode
 @app.route("/api/v1/honeynodes/<string:token>", methods=['GET'])
 def retrieve_node(token):
 
-    return DbAccess_test_new.retrieve_node(token)
+    return DbAccess_test_new.retrieve_node(token, mysql)
 
 # Create honeynode
 # Change accordingly with derek's data
@@ -287,7 +287,7 @@ def create_node():
     if not request.json or not 'token' in request.json:
         abort(400)
 
-    resultValue = DbAccess_test_new.create_node(request.json)
+    resultValue = DbAccess_test_new.create_node(request.json, mysql)
 
     if resultValue == 0:
         abort(404)
@@ -326,7 +326,7 @@ def update_node(token):
     if not request.json or not token:
         abort(400)
     
-    resultValue = DbAccess_test_new.update_node(request.json, token)
+    resultValue = DbAccess_test_new.update_node(request.json, token, mysql)
 
     if resultValue == 0:
         abort(404, "no values inserted")
@@ -346,7 +346,7 @@ def update_node_for_heartbeat():
             print(token)
             print(request.json[token])
             print("\n\n")
-            DbAccess_test_new.update_node_heartbeat_status(token, request.json[token])
+            DbAccess_test_new.update_node_heartbeat_status(token, request.json[token], mysql)
 
     except Exception as e:
         abort(404, e)
@@ -360,7 +360,7 @@ def delete_node(token):
     if not token:
         abort(400)
 
-    resultValue = DbAccess_test_new.delete_node(token)
+    resultValue = DbAccess_test_new.delete_node(token, mysql)
 
     if resultValue == 0:
         flash(u'Node not deleted.', 'danger')
@@ -518,7 +518,7 @@ def handle_dionaea_upload():
         if vt_resp == 1 :
             print("The hash can be found on Virus Total")
             # database function call here 
-            result_value = DbAccess_test_new.insert_vt_log(vt_data)
+            result_value = DbAccess_test_new.insert_vt_log(vt_data, mysql)
 
             if result_value == 0:
                 abort(404)
@@ -540,7 +540,7 @@ def insert_general_log():
         general_log_data = request.json
         print("/api/v1/general_logs:")
         print(general_log_data)
-        result_value = DbAccess_test_new.insert_general_log(general_log_data)
+        result_value = DbAccess_test_new.insert_general_log(general_log_data, mysql)
 
         if result_value == 0:
             abort(404)
@@ -560,7 +560,7 @@ def insert_snort_log():
         snort_log_data = request.json
         print("/api/v1/snort_logs:")
         print(snort_log_data)
-        result_value = DbAccess_test_new.insert_snort_log(snort_log_data)
+        result_value = DbAccess_test_new.insert_snort_log(snort_log_data, mysql)
 
         if result_value == 0:
             abort(404)
