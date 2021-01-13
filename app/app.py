@@ -581,6 +581,26 @@ def insert_snort_log():
         abort(404)
 
 
+"""
+api route for storing session log
+"""
+@app.route("/api/v1/session_logs", methods=['POST'])
+def insert_session_log():
+    if request.json:
+        session_log_data = request.json
+        print("/api/v1/session_logs:")
+        print(session_log_data)
+        result_value = db_access.insert_session_log(session_log_data)
+
+        if result_value == 0:
+            abort(404)
+
+        return jsonify({"success": True}), 201
+
+    else:
+        abort(404)
+
+
 if __name__ == "__main__":
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)

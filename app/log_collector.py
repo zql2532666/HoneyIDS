@@ -48,7 +48,7 @@ SECRET = 'collector'
 
 def parse_cowrie_logs(identifier, payload):
     general_log_data_dict = dict()
-    session_log_data_dict = dict()
+    session_log_data_dict = None
 
     honeynode_name = get_honeynode_name_by_token(identifier)
 
@@ -63,6 +63,8 @@ def parse_cowrie_logs(identifier, payload):
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
     if payload['loggedin'] != "None":
+        session_log_data_dict = dict()
+        session_log_data_dict['honeynode_name'] = honeynode_name
         session_log_data_dict['source_ip'] = payload["peerIP"]
         session_log_data_dict['source_port'] = payload["peerPort"]
         session_log_data_dict['destination_ip'] = payload["hostIP"]
@@ -75,10 +77,13 @@ def parse_cowrie_logs(identifier, payload):
         session_log_data_dict['urls'] = payload['urls']
         session_log_data_dict['credentials'] = payload['credentials']
         session_log_data_dict['version'] = payload['version']
+        session_log_data_dict['hashes'] = payload['hashes']
         session_log_data_dict['unknown_commands'] = payload['unknownCommands']
 
-
-    return (general_log_data_dict, "general_log")
+    if session_log_data_dict:
+        return [(general_log_data_dict, "general_log")]
+    else:
+        return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
 
 def parse_elastichoney_logs(identifier, payload):
@@ -95,7 +100,7 @@ def parse_elastichoney_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return (general_log_data_dict, 'general_log')
+    return [(general_log_data_dict, 'general_log')]
 
 
 def parse_wordpot_logs(identifier, payload):
@@ -112,7 +117,7 @@ def parse_wordpot_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return (general_log_data_dict, 'general_log')
+    return [(general_log_data_dict, 'general_log')]
 
 
 def parse_drupot_logs(identifier, payload):
@@ -129,7 +134,7 @@ def parse_drupot_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return (general_log_data_dict, 'general_log')
+    return [(general_log_data_dict, 'general_log')]
 
 
 def parse_shockpot_logs(identifier, payload):
@@ -146,7 +151,7 @@ def parse_shockpot_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return (general_log_data_dict, 'general_log')
+    return [(general_log_data_dict, 'general_log')]
 
 
 def parse_sticky_elephant_logs(identifier, payload):
@@ -163,7 +168,7 @@ def parse_sticky_elephant_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return (general_log_data_dict, 'general_log')
+    return [(general_log_data_dict, 'general_log')]
     
 
 def parse_dionaea_connection_logs(identifier, payload):
@@ -180,7 +185,7 @@ def parse_dionaea_connection_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    return (general_log_data_dict, 'general_log')
+    return [(general_log_data_dict, 'general_log')]
 
 
 def parse_snort_nids_logs(identifier, payload):
@@ -198,38 +203,39 @@ def parse_snort_nids_logs(identifier, payload):
     nids_log_dict['signature'] = payload['signature']
     nids_log_dict['raw_logs'] = json.dumps(payload)
 
-    return (nids_log_dict, 'nids_log')
+    return [(nids_log_dict, 'nids_log')]
 
 
 def process_log_data(identifier, channel, payload):
-    log_data = tuple()
+    log_data_list = list()
 
     if channel == "cowrie.sessions":
-        log_data = parse_cowrie_logs(identifier, payload)
+        log_data_list = parse_cowrie_logs(identifier, payload)
     elif channel == "agave.events":
-        log_data = parse_drupot_logs(identifier, payload)
+        log_data_list = parse_drupot_logs(identifier, payload)
     elif channel == "wordpot.events":
-        log_data = parse_wordpot_logs(identifier, payload)
+        log_data_list = parse_wordpot_logs(identifier, payload)
     elif channel == "elastichoney.events":
-        log_data = parse_elastichoney_logs(identifier, payload)
+        log_data_list = parse_elastichoney_logs(identifier, payload)
     elif channel == "shockpot.events":
-        log_data = parse_shockpot_logs(identifier, payload)
+        log_data_list = parse_shockpot_logs(identifier, payload)
     elif channel == "sticky_elephant.connections" or channel == "sticky_elephant.queries":
-        log_data = parse_sticky_elephant_logs(identifier, payload)
+        log_data_list = parse_sticky_elephant_logs(identifier, payload)
     elif channel == "dionaea.connections":
-        log_data = parse_dionaea_connection_logs(identifier, payload)
+        log_data_list = parse_dionaea_connection_logs(identifier, payload)
     elif channel == "snort.alerts":
-        log_data = parse_snort_nids_logs(identifier, payload)
+        log_data_list = parse_snort_nids_logs(identifier, payload)
 
-    # log_data[0] is the dictionary containing the log's data
-    # log_data[1] is the log_type
-    result_value = insert_log_to_database(log_data[0], log_data[1])
+    for log_data in log_data_list:
+        # log_data[0] is the dictionary containing the log's data
+        # log_data[1] is the log_type
+        result_value = insert_log_to_database(log_data[0], log_data[1])
 
-    if result_value == 0:
-        print("log insertion failed")
-        
-    else:
-        print("log insertion successful")
+        if result_value == 0:
+            print("log insertion failed")
+            
+        else:
+            print("log insertion successful")
 
 
 def get_honeynode_name_by_token(token):
