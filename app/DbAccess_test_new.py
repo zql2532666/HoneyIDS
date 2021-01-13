@@ -3,7 +3,7 @@ import datetime
 from datetime import datetime as dt
 from flask_mysqldb import MySQL
 import time 
-from app_test_new import *
+#from app_test_new import *
 
 
 # def __init__(self, mysql):
@@ -12,7 +12,7 @@ from app_test_new import *
 #     # print("DBAccess __init__() called")
 #     # print(self.mysql)
 
-mysql = mysql
+#mysql = mysql
 
 
 def query_db(cursor):
@@ -23,7 +23,7 @@ def myconverter(obj):
     if isinstance(obj, datetime.datetime):
         return obj.strftime('%Y-%m-%d %H:%M:%S')
 
-def retrieve_all_nodes():
+def retrieve_all_nodes(mysql):
 
     json_data = {}
 
@@ -40,7 +40,7 @@ def retrieve_all_nodes():
 
     return json_data
 
-def retrieve_all_active_nodes():
+def retrieve_all_active_nodes(mysql):
     
     json_data = {}
 
@@ -56,7 +56,7 @@ def retrieve_all_active_nodes():
     return json_data
 
 
-def retrieve_all_virus_total_logs():
+def retrieve_all_virus_total_logs(mysql):
         
         json_data = {}
 
@@ -72,7 +72,7 @@ def retrieve_all_virus_total_logs():
         return json_data
 
 
-def retrieve_all_general_logs():
+def retrieve_all_general_logs(mysql):
     
     json_data = {}
 
@@ -87,7 +87,7 @@ def retrieve_all_general_logs():
 
     return json_data
 
-def retrieve_all_nids_logs():
+def retrieve_all_nids_logs(mysql):
     
     json_data = {}
 
@@ -102,7 +102,7 @@ def retrieve_all_nids_logs():
 
     return json_data
 
-def retrieve_all_nodes_for_heartbeat():
+def retrieve_all_nodes_for_heartbeat(mysql):
     json_data = {}
 
     # Mysql connection
@@ -126,7 +126,7 @@ def retrieve_all_nodes_for_heartbeat():
 
     return heartbeat_dict
 
-def retrieve_node(token):
+def retrieve_node(token, mysql):
     json_data = {}
 
     # Mysql connection
@@ -140,7 +140,7 @@ def retrieve_node(token):
 
     return json_data
 
-def create_node(json):
+def create_node(json, mysql):
 
     #Mysql connection
     cur = mysql.connection.cursor()
@@ -170,7 +170,7 @@ def create_node(json):
 
     return result_value
 
-def update_node(json, token):
+def update_node(json, token, mysql):
 
     # Mysql connection
     cur = mysql.connection.cursor()
@@ -206,7 +206,7 @@ def update_node(json, token):
 
     return result_value
 
-def update_node_heartbeat_status(token, json):
+def update_node_heartbeat_status(token, json, mysql):
 
     # Mysql connection
     cur = mysql.connection.cursor()
@@ -234,7 +234,7 @@ def update_node_heartbeat_status(token, json):
 
     return result_value
 
-def delete_node(token):
+def delete_node(token, mysql):
 
     # Mysql connection
     cur = mysql.connection.cursor()
@@ -259,7 +259,7 @@ Author: Derek
 Database Access for virustotal logs
 """
 
-def insert_vt_log(vt_data):
+def insert_vt_log(vt_data, mysql):
     # Mysql connection
     cur = mysql.connection.cursor()
 
@@ -295,7 +295,7 @@ def insert_vt_log(vt_data):
 Author: rongtao
 Database Access for general logs
 """
-def insert_general_log(general_log_data):
+def insert_general_log(general_log_data, mysql):
     # Mysql connection
     cur = mysql.connection.cursor()
 
@@ -324,7 +324,7 @@ def insert_general_log(general_log_data):
 
 
 # Insert NIDS Logs
-def insert_snort_log(snort_log_data):
+def insert_snort_log(snort_log_data, mysql):
     cur = mysql.connection.cursor()
     sql = f"insert into general_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classfication,signature, raw_logs) \
         values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % ('snort',
