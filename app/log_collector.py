@@ -62,11 +62,21 @@ def parse_cowrie_logs(identifier, payload):
     general_log_data_dict['token'] = identifier
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    session_log_data_dict['source_ip'] = ''
-    session_log_data_dict['source_port'] = ''
-    session_log_data_dict[''] = ''
-    session_log_data_dict[''] = ''
-    session_log_data_dict[''] = ''
+    if payload['loggedin'] != "None":
+        session_log_data_dict['source_ip'] = payload["peerIP"]
+        session_log_data_dict['source_port'] = payload["peerPort"]
+        session_log_data_dict['destination_ip'] = payload["hostIP"]
+        session_log_data_dict['destination_port'] = payload["hostPort"]
+        session_log_data_dict['commands'] = payload['commands']
+        session_log_data_dict['logged_in'] = payload['loggedin']
+        session_log_data_dict['start_time'] = payload['startTime']
+        session_log_data_dict['end_time'] = payload['endTime']
+        session_log_data_dict['session'] = payload['session']
+        session_log_data_dict['urls'] = payload['urls']
+        session_log_data_dict['credentials'] = payload['credentials']
+        session_log_data_dict['version'] = payload['version']
+        session_log_data_dict['unknown_commands'] = payload['uknownCommands']
+
 
     return (general_log_data_dict, "general_log")
 
@@ -237,7 +247,7 @@ def insert_log_to_database(log_data_dict, log_type):
         return 0
     api_to_call = LOG_API_ENDPOINTS[log_type]
     headers = {'content-type': 'application/json'}
-    response = requests.post(api_to_call, data=json.dumps(log_data), headers=headers)
+    response = requests.post(api_to_call, data=json.dumps(log_data_dict), headers=headers)
     print(response.text)
     return 1
 
