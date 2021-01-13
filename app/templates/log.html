@@ -3,20 +3,21 @@
 {% block mainContent %}
 <!-- Alert after adding node -->
 {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-      {{message}}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endfor %}
-  {% endif %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+  {{message}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
 {% endwith %}
 <!-- alert end -->
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -26,8 +27,9 @@
         </button>
       </div>
       <div class="modal-body">
-          <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
-            
+        <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly
+          style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
+
           </textarea>
       </div>
       <div class="modal-footer">
@@ -39,11 +41,12 @@
 
 <style>
   tfoot {
-      display: table-row-group;
+    display: table-row-group;
   }
+
   th.dt-center {
-        text-align: center;
-    }
+    text-align: center;
+  }
 </style>
 <div class="row">
   <div class="col-12">
@@ -71,7 +74,7 @@
           <th>Protocol</th>
           <th></th>
         </tr>
-    </tfoot>
+      </tfoot>
     </table>
   </div>
   <!-- /.col -->
@@ -92,6 +95,7 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> -->
 <script>
+  var table;
   $(function () {
     var CustomRenders = {
       raw_logs: function (data, type, row, meta) {
@@ -99,27 +103,27 @@
       }
     };
 
-    $('#example tfoot th').each( function () {
-        var title = $(this).text();
-        if (title != ""){
-          $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
-        }
-    } );
+    $('#example tfoot th').each(function () {
+      var title = $(this).text();
+      if (title != "") {
+        $(this).html('<input style="width:100%" type="text" placeholder="Search ' + title + '" />');
+      }
+    });
 
-    $('#example').DataTable({
+    table = $('#example').DataTable({
       initComplete: function () {
-          // Apply the search
-          this.api().columns().every( function () {
-              var that = this;
+        // Apply the search
+        this.api().columns().every(function () {
+          var that = this;
 
-              $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                  if ( that.search() !== this.value ) {
-                      that
-                          .search( this.value )
-                          .draw();
-                  }
-              } );
-          } );
+          $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
       },
       //for export buttons (leave for later)
       //"dom": "Bfrtip",
@@ -132,21 +136,26 @@
       "autoWidth": false,
       "ajax": "/api/v1/general_logs/datatables",
       "columns": [
-            { "data": "capture_date" },
-            { "data": "honeynode_name" },
-            { "data": "source_ip" },
-            { "data": "source_port" },
-            { "data": "destination_ip" },
-            { "data": "destination_port" },
-            { "data": "protocol" },
-            { "data": "raw_logs", "render": CustomRenders.raw_logs }
-        ],
-        "columnDefs": [
-          {"className": "dt-center", "targets": "_all"},
-          {"width": '13%', "targets": 7},
+        { "data": "capture_date" },
+        { "data": "honeynode_name" },
+        { "data": "source_ip" },
+        { "data": "source_port" },
+        { "data": "destination_ip" },
+        { "data": "destination_port" },
+        { "data": "protocol" },
+        { "data": "raw_logs", "render": CustomRenders.raw_logs }
+      ],
+      "columnDefs": [
+        { "className": "dt-center", "targets": "_all" },
+        { "width": '13%', "targets": 7 },
       ]
     });
   });
+
+  setInterval(function () {
+    table.ajax.reload(null, false);
+  }, 3000);
+
 
   function viewLog(input) {
     var obj = JSON.parse(input.replace(/'/g, '"'));
