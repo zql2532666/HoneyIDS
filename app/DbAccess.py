@@ -388,25 +388,40 @@ class DbAccess:
     # Insert cowrie session logs
     def insert_session_log(self, session_log_data):
         cur = self.mysql.connection.cursor()
-        nids_type = 'snort'
+
+        honeynode_name = session_log_data['honeynode_name']
+        source_ip = session_log_data['source_ip']
+        source_port = session_log_data['source_port']
+        destination_ip = session_log_data['destination_ip']
+        destination_port = session_log_data['destination_port']
+        commands = json.dumps(session_log_data['commands'])
+        logged_in = json.dumps(session_log_data['logged_in'])
+        start_time = session_log_data['start_time']
+        end_time = session_log_data['end_time']
+        session = session_log_data['session']
+        urls = json.dumps(session_log_data['urls'])
+        credentials = json.dumps(session_log_data['credentials'])
+        hashes = json.dumps(session_log_data['hashes'])
+        version = session_log_data['version'].replace("\\", "")
+        unknown_commands = json.dumps(session_log_data['unknown_commands'])
+
         sql = f"insert into session_logs(honeynode_name,source_ip,source_port,destination_ip, destination_port, commands, logged_in, start_time, end_time, session, urls, credentials, hashes, version, unknown_commands) \
-            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (
-            session_log_data['honeynode_name'],
-            session_log_data['source_ip'],
-            session_log_data['source_port'],
-            session_log_data['destination_ip'],
-            session_log_data['destination_port'],
-            session_log_data['commands'],
-            session_log_data['logged_in'],
-            session_log_data['start_time'],
-            session_log_data['end_time'],
-            session_log_data['session'],
-            session_log_data['urls'],
-            session_log_data['credentials'],
-            session_log_data['hashes'],
-            session_log_data['version'],
-            session_log_data['unknown_commands']
-        )
+            values( \
+            '{honeynode_name}', \
+            '{source_ip}', \
+            '{source_port}', \
+            '{destination_ip}', \
+            '{destination_port}', \
+            '{commands}', \
+            '{logged_in}', \
+            '{start_time}', \
+            '{end_time}', \
+            '{session}', \
+            '{urls}', \
+            '{credentials}', \
+            '{hashes}', \
+            '{version}', \
+            '{unknown_commands}')"
 
         result_value = 0
 
