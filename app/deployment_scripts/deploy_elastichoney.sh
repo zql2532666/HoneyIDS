@@ -91,8 +91,7 @@ cat > config.json<<EOF
     },
     "instance_name" : "Green Goblin",
     "anonymous" : false,
-    "spoofed_version"  : "1.4.1",
-    # "public_ip_url": "http://icanhazip.com"
+    "spoofed_version"  : "1.4.1"
 }
 EOF
 
