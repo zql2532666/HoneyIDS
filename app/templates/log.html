@@ -99,7 +99,7 @@
   $(function () {
     var CustomRenders = {
       raw_logs: function (data, type, row, meta) {
-        return '<button type="button" onclick="viewLog(`' + data.replace(/"/g, "'") + '`)" class="deletebutton btn btn-info" data-toggle="modal" data-target="#exampleModal" title="View Raw Log">View Raw Log</button>'
+        return '<button type="button" onclick="viewLog(`' + data.replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
       }
     };
 

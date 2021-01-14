@@ -86,9 +86,9 @@
       //}
     }, delete:function (data, type, row, meta) {
       if(row.heartbeat_status == "False") {
-        return '<button type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' + row.token + '"><i class="fas fa-trash-alt"></i></button>'
+        return '<button style="margin:auto;display:block" type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' + row.token + '"><i class="fas fa-trash-alt"></i></button>'
       }else {
-        return '<button disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
+        return '<button style="margin:auto;display:block" disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
       }
     },
   };
@@ -118,7 +118,7 @@
 
   setInterval(function(){ 
     table.ajax.reload( null, false );
-  }, 3000);
+  }, 2000);
 
   $('#exampleModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
