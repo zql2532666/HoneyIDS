@@ -46,6 +46,13 @@ IDENT = 'collector'
 SECRET = 'collector'
 
 
+def convert_time_format(time_string):
+    # example of the format of time_string: {"2020-12-24T14:31:51.443015Z"}
+    # it will be converted to: "2020-12-24 14:31:51"
+    return time_string.split(".")[0].replace("T", " ")
+
+
+
 def parse_cowrie_logs(identifier, payload):
     general_log_data_dict = dict()
     session_log_data_dict = None
@@ -60,6 +67,9 @@ def parse_cowrie_logs(identifier, payload):
     general_log_data_dict['destination_port'] = payload["hostPort"]
     general_log_data_dict['protocol'] = "tcp"
     general_log_data_dict['token'] = identifier
+    if 'version' in payload.keys() and payload['version'] is not None:
+        # remove the single quote and backslash in the version string
+        payload['version'] = payload['version'].replace("\\", "").replace("\'", "")
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
     if payload['loggedin'] != "None":
@@ -71,19 +81,18 @@ def parse_cowrie_logs(identifier, payload):
         session_log_data_dict['destination_port'] = payload["hostPort"]
         session_log_data_dict['commands'] = payload['commands']
         session_log_data_dict['logged_in'] = payload['loggedin']
-        session_log_data_dict['start_time'] = payload['startTime']
-        session_log_data_dict['end_time'] = payload['endTime']
+        session_log_data_dict['start_time'] = convert_time_format(payload['startTime'])
+        session_log_data_dict['end_time'] = convert_time_format(payload['endTime'])
         session_log_data_dict['session'] = payload['session']
         session_log_data_dict['urls'] = payload['urls']
         session_log_data_dict['credentials'] = payload['credentials']
         session_log_data_dict['version'] = payload['version']
         session_log_data_dict['hashes'] = payload['hashes']
         session_log_data_dict['unknown_commands'] = payload['unknownCommands']
-
-    if session_log_data_dict:
-        return [(general_log_data_dict, "general_log")]
-    else:
+        print(session_log_data_dict)
         return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
+
+    return [(general_log_data_dict, "general_log")]
 
 
 def parse_elastichoney_logs(identifier, payload):
@@ -193,6 +202,7 @@ def parse_snort_nids_logs(identifier, payload):
     honeynode_name = get_honeynode_name_by_token(identifier)
 
     nids_log_dict['date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    nids_log_dict['token'] = identifier
     nids_log_dict['honeynode_name'] = honeynode_name
     nids_log_dict['source_ip'] = payload['source_ip']
     nids_log_dict['source_port'] = payload['source_port']

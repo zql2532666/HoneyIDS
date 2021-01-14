@@ -360,9 +360,11 @@ class DbAccess:
     def insert_snort_log(self,snort_log_data):
         cur = self.mysql.connection.cursor()
         nids_type = 'snort'
-        sql = f"insert into nids_logs(nids_type,date,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classification,signature, raw_logs) \
-            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (nids_type,
+        sql = f"insert into nids_logs(nids_type,date,token,honeynode_name,source_ip,source_port,destination_ip, destination_port,priority, classification,signature, raw_logs) \
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (
+            nids_type,
             snort_log_data['date'],
+            snort_log_data['token'], 
             snort_log_data['honeynode_name'],
             snort_log_data['source_ip'],
             snort_log_data['source_port'],
@@ -402,7 +404,7 @@ class DbAccess:
         urls = json.dumps(session_log_data['urls'])
         credentials = json.dumps(session_log_data['credentials'])
         hashes = json.dumps(session_log_data['hashes'])
-        version = session_log_data['version'].replace("\\", "")
+        version = session_log_data['version']
         unknown_commands = json.dumps(session_log_data['unknown_commands'])
 
         print(f"VERSION --> {version}")
