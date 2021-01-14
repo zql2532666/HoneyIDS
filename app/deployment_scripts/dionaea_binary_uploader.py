@@ -68,14 +68,12 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
   
   
 if __name__ == "__main__": 
-    event_handler = Handler(['*'])
-    observer = watchdog.observers.Observer() 
-    observer.schedule(event_handler, path=DIONAEA_BINARY_FOLDER_PATH, recursive=True)
-    observer.schedule(event_handler, path=DIONAEA_FTP_FOLDER_PATH, recursive=True) 
-    observer.start() 
     try: 
-        while True: 
-            time.sleep(1) 
+       event_handler = Handler(['*'])
+       observer = watchdog.observers.Observer() 
+       observer.schedule(event_handler, path=DIONAEA_BINARY_FOLDER_PATH, recursive=True)
+       observer.schedule(event_handler, path=DIONAEA_FTP_FOLDER_PATH, recursive=True) 
+       observer.start() 
     except KeyboardInterrupt: 
         observer.stop() 
     observer.join() 
