@@ -136,7 +136,7 @@ dmypy.json
 cython_debug/
 
 # heartbeats server config
-heartbeats_server.config
+app/heartbeats_server.config
 
 # sqlite database
-sqlite.db
+app/sqlite.db
