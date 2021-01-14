@@ -209,7 +209,7 @@
     });
      
     $('#example').on('click', 'tbody tr', function () {
-        $('#example1 tbody > tr').removeClass('selected');
+        $('#example tbody > tr').removeClass('selected');
         $(this).addClass('selected');
         var data = table.row( this ).data();
         $('#startTime').html(data.date_deployed);
