@@ -47,9 +47,13 @@
   th.dt-center {
     text-align: center;
   }
+  .buttons-columnVisibility.active {
+    background-color: grey;
+  }
 </style>
 <div class="row">
   <div class="col-12">
+    <div id="hide-column" style="margin-bottom: 20px;"></div>
     <table id="example" class="table table-bordered table-hover">
       <thead>
         <tr>
@@ -96,6 +100,11 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> -->
 <script>
   var table;
+
+  function loadButton() {
+    $('#hide-column').append(table.buttons().container());
+  }
+
   $(function () {
     var CustomRenders = {
       raw_logs: function (data, type, row, meta) {
@@ -134,6 +143,9 @@
       "ordering": true,
       "responsive": true,
       "autoWidth": false,
+      "buttons": [
+        "colvis"
+      ],
       "ajax": "/api/v1/general_logs/datatables",
       "columns": [
         { "data": "capture_date" },
@@ -162,5 +174,10 @@
     var pretty = JSON.stringify(obj, null, "\t");
     $('#target-command').val(pretty);
   }
+
+  setTimeout(loadButton, 200);
+  $("*").mouseover(function () {
+    loadButton();
+  });
 </script>
 {% endblock %}

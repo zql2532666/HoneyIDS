@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block mainContent %}
-<style>
+<style> 
   tfoot {
     display: table-row-group;
   }
@@ -12,11 +12,14 @@
     cursor: pointer;
   }
   tr.selected {
-    background-color: #ececec;
+    background-color: #C6FFAB; 
   }
   th.dt-center {
     text-align: center;
-}
+  }
+  .buttons-columnVisibility.active {
+    background-color: grey;
+  }
 </style>
 <div class="row">
   <div class="col-12">
@@ -26,6 +29,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        <div id="hide-column" style="margin-bottom: 20px;"></div>
         <table id="example" class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -168,7 +172,33 @@
 
   var table, table2;
 
+  function loadButton() {
+    $('#hide-column').append(table.buttons().container());
+  }
+
+  function selectPersistedRows(table){
+    console.log("asdsad");
+    if (!(sessionStorage.rowKeyStore))
+      return;
+    
+    var rowKeys = JSON.parse(sessionStorage.rowKeyStore);
+    for (var key in rowKeys)
+    {
+      $(table.row(key).node()).addClass('selected');
+    }
+  }
+
+  function persistSelection( index ){
+    var ss = sessionStorage;
+    ss.rowKeyStore = "{}";
+    var rowKeys = JSON.parse(ss.rowKeyStore);
+    rowKeys[index] = true;
+    ss.rowKeyStore = JSON.stringify(rowKeys);
+  }
+
   $(function () {
+    sessionStorage.rowKeyStore = "{}"; //clear tablestate
+
     $('#example tfoot th').each( function () {
         var title = $(this).text();
         $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
@@ -192,6 +222,9 @@
       "ordering": true,
       "responsive": true,
       "autoWidth": false,
+      "buttons": [
+        "colvis"
+      ],
       "ajax": "/api/v1/honeynodes/datatables",
       "columns": [
             { "data": "honeynode_name" },
@@ -211,6 +244,7 @@
     $('#example').on('click', 'tbody tr', function () {
         $('#example tbody > tr').removeClass('selected');
         $(this).addClass('selected');
+        persistSelection( table.row(this).index() );
         var data = table.row( this ).data();
         $('#startTime').html(data.date_deployed);
         $('#endTime').html(data.last_heard);
@@ -254,5 +288,17 @@
     
   });
 
+  setInterval(function () {
+
+    table.ajax.reload(function () {
+      selectPersistedRows(table);
+    }, false);
+
+  }, 3000);
+  
+  setTimeout(loadButton, 200);
+  $("*").mouseover(function () {
+    loadButton();
+  });
 </script>
 {% endblock %}
