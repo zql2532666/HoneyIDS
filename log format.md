@@ -1,3 +1,78 @@
+# log storage format
+
+## General logs
+```json
+{
+   "capture_date":"2021-01-14 22:31:17",
+   "honeynode_name":"dionaea-test",
+   "source_ip":"192.168.148.146",
+   "source_port":42486,
+   "destination_ip":"192.168.148.159",
+   "destination_port":22,
+   "protocol":"tcp",
+   "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
+   "raw_logs":"{\"remote_hostname\": \"\", \"local_host\": \"192.168.148.159\", \"local_port\": 22, \"connection_protocol\": \"pcap\", \"remote_host\": \"192.168.148.146\", \"connection_transport\": \"tcp\", \"connection_type\": \"reject\", \"remote_port\": 42486}"
+}
+```
+
+## NIDS logs
+```json
+{
+   "date":"2021-01-14 22:29:11",
+   "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
+   "honeynode_name":"dionaea-test",
+   "source_ip":"192.168.148.146",
+   "source_port":55010,
+   "destination_ip":"192.168.148.159",
+   "destination_port":3306,
+   "priority":2,
+   "classification":3,
+   "signature":"ET SCAN Suspicious inbound to mySQL port 3306",
+   "raw_logs":"{\"iplen\": 45056, \"timestamp\": \"2021/01/14 22:29:10.546420\", \"tos\": 0, \"sensor\": \"6efd8740-64c4-4af0-bae5-e5cb41a925a8\", \"header\": \"1:2010937:3\", \"source_ip\": \"192.168.148.146\", \"classification\": 3, \"ethdst\": \"00:0C:29:B9:81:02\", \"priority\": 2, \"tcpflags\": \"******S*\", \"signature\": \"ET SCAN Suspicious inbound to mySQL port 3306\", \"ttl\": 43, \"proto\": \"TCP\", \"source_port\": 55010, \"tcpack\": \"0x0\", \"destination_port\": 3306, \"destination_ip\": \"192.168.148.159\", \"id\": 51050, \"ethlen\": \"0x3C\", \"ethtype\": \"0x800\", \"dgmlen\": 44, \"ethsrc\": \"00:0C:29:1C:81:D5\", \"tcpseq\": \"0x41AC4EC4\", \"tcpwin\": \"0x4000000\", \"tcplen\": 24}"
+}
+```
+
+## Session logs
+```json
+{
+   "token":"ba087387-6db1-4b22-8430-0629ad5c9e20",
+   "honeynode_name":"Cowrie-Test",
+   "source_ip":"192.168.148.146",
+   "source_port":38954,
+   "destination_ip":"192.168.148.150",
+   "destination_port":22,
+   "commands":[
+      "ls",
+      "whoami",
+      "id",
+      "exit"
+   ],
+   "logged_in":[
+      "root",
+      "sunshine"
+   ],
+   "start_time":"2021-01-14 20:47:54",
+   "end_time":"2021-01-14 20:48:04",
+   "session":"4eb17495da20",
+   "urls":[
+      
+   ],
+   "credentials":[
+      
+   ],
+   "version":"SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1",
+   "hashes":[
+      
+   ],
+   "unknown_commands":[
+      
+   ]
+}
+```
+
+
+
+
 # Honeypot Log Formats
 
 ## Cowrie
