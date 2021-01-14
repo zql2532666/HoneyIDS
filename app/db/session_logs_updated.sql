@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `session_logs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `session_logs` (
   `session_log_id` int NOT NULL AUTO_INCREMENT,
+  `token` varchar(45) DEFAULT NULL,
   `honeynode_name` varchar(45) DEFAULT NULL,
   `source_ip` varchar(45) DEFAULT NULL,
   `source_port` varchar(45) DEFAULT NULL,
@@ -49,7 +50,7 @@ CREATE TABLE `session_logs` (
 
 LOCK TABLES `session_logs` WRITE;
 /*!40000 ALTER TABLE `session_logs` DISABLE KEYS */;
-INSERT INTO `session_logs` VALUES (2,'Cowrie-Test','192.168.148.146','36492','192.168.148.150','22','[\"ls\", \"whoami\", \"exit\"]','[\"root\", \"sunshine\"]','2021-01-14 08:35:04','2021-01-14 08:35:12','183a833033e3','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[]'),(3,'Cowrie-Test','192.168.148.146','36522','192.168.148.150','22','[\"ping www.google.com\", \"cat /etc/passwd\", \"exit\"]','[\"root\", \"sunshine\"]','2021-01-14 08:36:48','2021-01-14 08:37:10','fc89750167d6','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[]'),(4,'Cowrie-Test','192.168.148.146','36536','192.168.148.150','22','[\"test\", \"unknown\", \"cat /etc/os-release \", \"cd /etc\", \"ls\", \"cat dhcp\", \"cd dhcp\", \"ls\", \"cat dhclient.conf \", \"exit\"]','[\"root\", \"sunshine\"]','2021-01-14 08:37:26','2021-01-14 08:37:56','89768e1e0ff9','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[\"test\", \"unknown\"]');
+INSERT INTO `session_logs` VALUES (1,'ba087387-6db1-4b22-8430-0629ad5c9e20','Cowrie-Test','192.168.148.146','38536','192.168.148.150','22','[\"hello\", \"whoami\", \"ls\", \"exit\"]','[\"root\", \"sunshine\"]','2021-01-14 12:12:40','2021-01-14 12:12:51','ad57005b1d00','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[\"hello\"]'),(2,'ba087387-6db1-4b22-8430-0629ad5c9e20','Cowrie-Test','192.168.148.146','38568','192.168.148.150','22','[\"ls\", \"exit\"]','[\"root\", \"sunshine\"]','2021-01-14 12:15:24','2021-01-14 12:15:31','52d60b69b6a4','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[]'),(3,'ba087387-6db1-4b22-8430-0629ad5c9e20','Cowrie-Test','192.168.148.146','38582','192.168.148.150','22','[\"whoami\", \"ls\", \"date\"]','[\"root\", \"sunshine\"]','2021-01-14 12:16:08','2021-01-14 12:19:11','7880f58b7b9f','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[]'),(4,'ba087387-6db1-4b22-8430-0629ad5c9e20','Cowrie-Test','192.168.148.146','38664','192.168.148.150','22','[\"date\", \"exit\"]','[\"root\", \"sunshine\"]','2021-01-14 20:24:51','2021-01-14 20:25:05','cacd276dd831','[]','[]','[]','SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1','[]');
 /*!40000 ALTER TABLE `session_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-14 16:39:12
+-- Dump completed on 2021-01-14 20:32:30
