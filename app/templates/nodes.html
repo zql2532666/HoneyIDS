@@ -86,9 +86,9 @@
       //}
     }, delete:function (data, type, row, meta) {
       if(row.heartbeat_status == "False") {
-        return '<button type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' + row.token + '"><i class="fas fa-trash-alt"></i></button>'
+        return '< button type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="margin:auto;display:block" title="Delete Node" data-token="' + row.token + '"><i class="fas fa-trash-alt"></i></button>'
       }else {
-        return '<button disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
+        return '<button disabled class="btn btn-danger" style="margin:auto;display:block"><i class="fas fa-trash-alt"></i></button>'
       }
     },
   };

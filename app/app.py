@@ -99,7 +99,7 @@ def deploy():
 
 @app.route("/nodes")
 def nodes():
-    return render_template("nodes.html", title="Nodes")
+    return render_template("nodes.html", title="Nodes Listing")
 
 @app.route("/addnode", methods=['GET', 'POST'])
 def add_node():
