@@ -72,8 +72,9 @@ def parse_cowrie_logs(identifier, payload):
         payload['version'] = payload['version'].replace("\\", "").replace("\'", "")
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    if payload['loggedin'] != "None":
+    if payload['loggedin'] is not None:
         session_log_data_dict = dict()
+        session_log_data_dict['token'] = identifier
         session_log_data_dict['honeynode_name'] = honeynode_name
         session_log_data_dict['source_ip'] = payload["peerIP"]
         session_log_data_dict['source_port'] = payload["peerPort"]

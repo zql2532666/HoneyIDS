@@ -137,6 +137,7 @@ sed -i "s/#identifier = abc123/identifier = $HPF_IDENT/g" cowrie.cfg
 sed -i "s/#secret = secret/secret = $HPF_SECRET/g" cowrie.cfg
 
 sed -i 's/#debug=false/debug=false/' cowrie.cfg
+sed -i 's/timezone = UTC/timezone = system/' cowrie.cfg
 cd ..
 
 chown -R cowrie:users /opt/cowrie/

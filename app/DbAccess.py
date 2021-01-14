@@ -333,7 +333,8 @@ class DbAccess:
         cur = self.mysql.connection.cursor()
 
         sql = f"insert into general_logs(capture_date, honeynode_name, source_ip, source_port, destination_ip, destination_port, protocol, token, raw_logs) \
-            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (general_log_data['capture_date'],
+            values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (
+            general_log_data['capture_date'],
             general_log_data['honeynode_name'],
             general_log_data['source_ip'],
             general_log_data['source_port'],
@@ -391,6 +392,7 @@ class DbAccess:
     def insert_session_log(self, session_log_data):
         cur = self.mysql.connection.cursor()
 
+        token = session_log_data['token']
         honeynode_name = session_log_data['honeynode_name']
         source_ip = session_log_data['source_ip']
         source_port = session_log_data['source_port']
@@ -407,10 +409,10 @@ class DbAccess:
         version = session_log_data['version']
         unknown_commands = json.dumps(session_log_data['unknown_commands'])
 
-        print(f"VERSION --> {version}")
 
-        sql = f"insert into session_logs(honeynode_name,source_ip,source_port,destination_ip, destination_port, commands, logged_in, start_time, end_time, session, urls, credentials, hashes, version, unknown_commands) \
+        sql = f"insert into session_logs(token,honeynode_name,source_ip,source_port,destination_ip, destination_port, commands, logged_in, start_time, end_time, session, urls, credentials, hashes, version, unknown_commands) \
             values( \
+            '{token}', \
             '{honeynode_name}', \
             '{source_ip}', \
             '{source_port}', \
