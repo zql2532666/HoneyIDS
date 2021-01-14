@@ -157,9 +157,13 @@ class HeartBeatDict:
         try:
             r = requests.get(API_ENDPOINT)
             print(f"populate data successful --> {r.status_code}")
-            if r.json():
-                self.heartbeat_dict = r.json()
+            print(f"Json Data: {r.json()}")
+            # if r.json() == {} or r.json():
+            # if r.json == {} or r.json():
+            print("\n--------------------Changing heartbeat dict--------------------------\n")
+            self.heartbeat_dict = r.json()
             print(f"populated heartbeat dict {self.heartbeat_dict}")
+            print("\n--------------------Changing heartbeat dict--------------------------\n")
         except Exception as err:
             print(err)
         self.heartbeat_dict_lock.release()
