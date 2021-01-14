@@ -405,6 +405,8 @@ class DbAccess:
         version = session_log_data['version'].replace("\\", "")
         unknown_commands = json.dumps(session_log_data['unknown_commands'])
 
+        print(f"VERSION --> {version}")
+
         sql = f"insert into session_logs(honeynode_name,source_ip,source_port,destination_ip, destination_port, commands, logged_in, start_time, end_time, session, urls, credentials, hashes, version, unknown_commands) \
             values( \
             '{honeynode_name}', \

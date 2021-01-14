@@ -50,7 +50,7 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
             data = {
                     'file': malware_file_base64_string, 
                     'token': TOKEN, 
-                    'time': datetime.now().strftime("%d-%m-%Y_%H:%M:%S"), 
+                    'time': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 
                     'md5': md5(event.src_path)
                 }
 
