@@ -266,7 +266,7 @@ class DbAccess:
         zipped_file_path =  vt_data["zipped_file_path"]
         time_at_file_received =  vt_data["time_at_file_received"]
         token =  vt_data["token"]
-        response = vt_data["response_code"]
+        response = int(vt_data["response_code"])
         zipped_file_password = vt_data["zipped_file_password"]
 
         # sql = f"insert into virus_total_logs(scan_id, md5, sha1, sha256, scan_date, permalink,positives, total, scans, zipped_file_path,time_at_file_received, token) \
@@ -303,15 +303,18 @@ class DbAccess:
         zipped_file_path =  vt_data["zipped_file_path"]
         time_at_file_received =  vt_data["time_at_file_received"]
         token =  vt_data["token"]
-        response = vt_data["response_code"] 
+        response = int(vt_data["response_code"])
         zipped_file_password = vt_data["zipped_file_password"]       
+        print("\n\n----VT DATA ---- \n\n")
+        print(vt_data)
+        print("\n\n----VT DATA ---- \n\n")
         sql = f"insert into virus_total_logs(md5, zipped_file_path,time_at_file_received, token,response,zipped_file_password) \
             values(\
                 '{md5}', \
                 '{zipped_file_path}', \
                 '{time_at_file_received}',\
                 '{token}',\
-                '{response}'\
+                '{response}',\
                 '{zipped_file_password}')"     
         result_value = 0
         try:

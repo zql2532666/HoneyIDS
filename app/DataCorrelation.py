@@ -9,14 +9,20 @@ class DataCorrelator():
     def __init__(self,time_window):
         self.time_window = time_window
 
-    def correlate_via_time(self):
+    def correlate_via_time(self,time_window):
+        """
+            +   Time Window can be specified by the user
+            +   Pull the logs within this time window and process them
+        """
         print("Time")
     
-    def correlate_via_src_ip(self):
-        print("SRC IP")
+    def check_one_attacker_attacking_multiple_honeypots():
+        """
+            Same src ip address + Different dest ip address
+        """
     
-    def correlate_via_dest_ip(self):
-        print("DEST IP")
-    
-    def correlate_via_dest_port(self):
+    def check_one_attacker_attacking_same_dest_port(self):
+        """
+            Same src ip address + same dest port
+        """
         print("DEST PORT")
