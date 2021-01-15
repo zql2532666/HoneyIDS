@@ -219,6 +219,18 @@ def retrieve_all_nids_logs_for_datatables():
         datatable_dict["data"] = json.loads(data)
 
     return datatable_dict
+
+# Retrieve all session logs for datatable
+@app.route("/api/v1/session_logs/datatables", methods=['GET'])
+def retrieve_all_session_logs_for_datatables():
+    datatable_dict = dict()
+    data = db_access.retrieve_all_session_logs()
+    if data == {}:
+        datatable_dict["data"] = data
+    else:
+        datatable_dict["data"] = json.loads(data)
+
+    return datatable_dict
     
 """ 
 API Routes for HoneyNode Operations
