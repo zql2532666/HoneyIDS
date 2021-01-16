@@ -113,9 +113,9 @@ def add_node():
             send_signal_honeynode_add_node(ip_addr,HONEYNODE_COMMAND_PORT)
             send_signal_heartbeats_server_repopulate(WEB_SERVER_IP,HBPORT)
 
-            flash(u'Node successfully added.', 'success')
+            flash(u'Node Activation Signal Sent Sucessfully', 'success')
         else:
-            flash(u'Node not added.', 'danger')
+            flash(u'Node Not Added.', 'danger')
         
         # redirect to end the POST handling
         return ('', 204)
@@ -141,7 +141,7 @@ def kill_node():
             # sleep(DEAD_INTERVAL)
             print("killing now..")
             send_signal_honeynode_kill(ip_addr, HONEYNODE_COMMAND_PORT)
-            flash(u'Node successfully killed.', 'success')
+            flash(u'Node Kill Signal Sent Successfully', 'success')
         else:
             flash(u'Erorr occurred.', 'danger')
         
