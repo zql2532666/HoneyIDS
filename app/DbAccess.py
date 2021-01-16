@@ -460,6 +460,8 @@ class DbAccess:
 
 
     def update_bruteforce_log(self, bruteforce_log_data):
+        cur = self.mysql.connection.cursor()
+        
         token = bruteforce_log_data['token']
         end_time = bruteforce_log_data['end_time']
         source_ip = bruteforce_log_data['source_ip']

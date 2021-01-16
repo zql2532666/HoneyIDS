@@ -639,13 +639,13 @@ def retrieve_latest_bruteforce_log():
         bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
 
 
-        print(f"/api/v1/latest_bruteforce_log/{token}:")
+        print(f"/api/v1/latest_bruteforce_log:")
         print(f"Bruteforce log ==> \n {bruteforce_logs}")
 
         if len(bruteforce_logs) == 0:
             return jsonify({"bruteforce_log_empty": True}), 201
         else:
-            return jsonify({"bruteforce_log_empty": False, "latest_bruteforce_log": bruteforce_logs[-1]}), 201
+            return jsonify({"bruteforce_log_empty": False, "latest_bruteforce_log": json.dumps(bruteforce_logs[-1])}), 201
 
     else:
         abort(404)

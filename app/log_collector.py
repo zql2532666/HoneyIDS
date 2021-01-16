@@ -24,7 +24,7 @@ LOG_API_ENDPOINTS = {
     "general_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/general_logs",
     "nids_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/snort_logs",
     "session_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/session_logs",
-    "latest_bruteforce_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/latest_bruteforce_log/",
+    "latest_bruteforce_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/latest_bruteforce_log",
     "update_bruteforce_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/update_bruteforce_log"
 }
 
@@ -55,14 +55,18 @@ def convert_time_format(time_string):
     return time_string.split(".")[0].replace("T", " ")
 
 
-def get_latest_cowrie_bruteforce_log(payload):
+def get_latest_cowrie_bruteforce_log(identifier, payload):
     headers = {'content-type': 'application/json'}
+    payload['token'] = identifier
     response = requests.post(LOG_API_ENDPOINTS['latest_bruteforce_log'], data=json.dumps(payload), headers=headers)
+    print(response.text)
     response_data = response.json()
     if response_data['bruteforce_log_empty'] == True:
         return None
     if response_data['bruteforce_log_empty'] == False and response_data['latest_bruteforce_log'] is not None:
-        return response['latest_bruteforce_log']
+        print("latest bruteforce log ==> ")
+        print(response_data['latest_bruteforce_log'])
+        return response_data['latest_bruteforce_log']
 
 
 def update_bruteforce_log(token, source_ip, credentials, end_time):
@@ -117,10 +121,14 @@ def parse_cowrie_logs(identifier, payload):
         print(session_log_data_dict)
         return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
-    elif payload['credentials'] is not None:  # meaning this is a bruteforce log
-        latest_bruteforce_log = get_latest_cowrie_bruteforce_log(payload)
+    elif len(payload['credentials']) > 0:  # meaning this is a bruteforce log
+        latest_bruteforce_log = json.loads(get_latest_cowrie_bruteforce_log(identifier, payload))
 
-        if latest_bruteforce_log is None:  # meaning this is the first bruteforce log associated with this cowrie honeypot
+        print(convert_time_format(payload['endTime']))
+        print(latest_bruteforce_log['end_time'])
+        time_elapsed_since_last_brutefoce_log = datetime.strptime(convert_time_format(payload['endTime']), "%Y-%m-%d %H:%M:%S") - datetime.strptime(latest_bruteforce_log['end_time'], "%Y-%m-%d %H:%M:%S")
+
+        if latest_bruteforce_log is None or (time_elapsed_since_last_brutefoce_log.total_seconds() > BRUTE_FORCE_LOG_TIME_WINDOW):  # meaning this is the first bruteforce log associated with this cowrie honeypot
             session_log_data_dict = dict()
             session_log_data_dict['token'] = identifier
             session_log_data_dict['honeynode_name'] = honeynode_name
@@ -140,11 +148,12 @@ def parse_cowrie_logs(identifier, payload):
             session_log_data_dict['unknown_commands'] = payload['unknownCommands']
             print(session_log_data_dict)
             return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
-        else:
-            time_elapsed_since_last_brutefoce_log = datetime.strptime(convert_time_format(payload['endTime']), "%Y-%m-%d %H:%M:%S") - datetime.strptime(latest_bruteforce_log['end_time'], "%Y-%m-%d %H:%M:%S")
-            if time_elapsed_since_last_brutefoce_log.total_seconds() <= BRUTE_FORCE_LOG_TIME_WINDOW:
-                update_bruteforce_log(identifier, payload['peerIP'], latest_bruteforce_log['credentials'] + payload['credentials'], payload['endTime'])
-                return []
+
+        elif time_elapsed_since_last_brutefoce_log.total_seconds() <= BRUTE_FORCE_LOG_TIME_WINDOW:
+            print(type(latest_bruteforce_log['credentials']))
+            print(type(payload['credentials']))
+            update_bruteforce_log(identifier, payload['peerIP'], json.loads(latest_bruteforce_log['credentials']) + payload['credentials'], payload['endTime'])
+            return []
 
     return [(general_log_data_dict, "general_log")]
 
