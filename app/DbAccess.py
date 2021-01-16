@@ -457,3 +457,23 @@ class DbAccess:
             print(err)
 
         return result_value
+
+
+    def update_bruteforce_log(self, bruteforce_log_data):
+        token = bruteforce_log_data['token']
+        end_time = bruteforce_log_data['end_time']
+        source_ip = bruteforce_log_data['source_ip']
+        credentials = json.dumps(bruteforce_log_data['credentials'])
+
+        sql = f"update session_logs set end_time='{end_time}', credentials='{credentials}' where token = '{token}' and source_ip = '{source_ip}'"
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
