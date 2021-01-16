@@ -19,17 +19,21 @@ dataset = [
         orginal_log: ""
     }
 ]
+
+Attack Types:
+    1.  One Attacker Attacking Multiple Honeypots
+    2.  One Attacker Attacking One Honeypot
+    3.  Multiple Attackers Attacking One Honeypot
 """
 class DataCorrelator():
-    def __init__(self,time_window):
-        self.time_window = time_window
+    def __init__(self,time_threshold):
+        self.time_threshold = time_threshold
         """
             +   Time Window can be specified by the user
             +   Pull the logs within this time window and process them
         """
     # def correlate_via_time(self,time_window,data):
 
-    #     print("Time")
     def get_dataset(self,general_logs,nids_logs):
         dataset = []
         for log in general_logs:
@@ -65,68 +69,134 @@ class DataCorrelator():
     def check_one_attacker_attacking_multiple_honeypots(self,dataset):
         """
             +   Same src ip address + Different dest ip address
+            +   src ip == attacker
+            +   dest ip == honeypot
         """
         """
-        1. Get number of unique src ip addresses and store them as keys in a dict
-        2. The dict is called src_ip_to_dest_ip, the value will contain the different dest ip addresses
-
-            logs_with_same_source_ip_unique_destination_ip = {
-                "src_ip_1" : ["dest_ip_1","dest_ip_2","dest_ip_3" ],
-                "src_ip_2" : ["dest_ip_1" ],
-                "src_ip_3" : ["dest_ip_1","dest_ip_2","dest_ip_3","dest_ip_4" ]
-            }
-            logs_with_same_source_ip_unique_destination_ip  = {
-                "src_ip_1" : [log_1,log_2,log_3],
-                "src_ip_2" : [log_1 ],
-                "src_ip_3" : [log_1]
-            }
-           logs_with_same_source_ip_unique_destination_ip  = {
+            return_data  = {
                 "src_ip_1" : [
-                        {"dest_ip_1:" log_1},
-                        {"dest_ip_2:" log_2},
-                        {"dest_ip_3:" log_3},
-                "src_ip_2" : [log_1 ],
-                "src_ip_3" : [log_1]
+                    [dest_ip_1,dest_ip_2],
+                    [log_1,log_2,log_3]
+                    ],
             }
+
+            for key in return_data.keys():
+                print(f"source ip: {key}")
+                print(f"destination ip list: {return_data.key[0]}")
+
         """
-        """
-        1. Get all the logs with same source ip 
-        """
-        logs_with_same_source_ip_unique_destination_ip = {}
+        return_data = dict()
         for log in dataset:
             source_ip = log["source_ip"]
             destination_ip = log["destination_ip"]
             # https://stackoverflow.com/questions/1602934/check-if-a-given-key-already-exists-in-a-dictionary
             # for some ds reason, I do not need to call .keys() method
-            if source_ip in logs_with_same_source_ip_unique_destination_ip:
-                print("source ip found")
-                # check if there is a log inside the list that has the same destion ip address as log 
-                # print(len(logs_with_same_source_ip_unique_destination_ip[source_ip]))
-                # print(destination_ip)
-                if destination_ip in logs_with_same_source_ip_unique_destination_ip[source_ip]:   
-                    print("Same DEST IP FOUND") 
-                    print(destination_ip)
+            # check if the source_ip is one the keys in return_data
+            if source_ip in return_data:
+                # return_data["10.1.1.2"]
+                # print("source ip found")
+                # check if if the current destination ip is already inside the destination_ip_list 
+                if destination_ip in return_data[source_ip][0]:  
+                    # the destinationn ip is not  added  to the list if it is found inside the destination_ip_list
+                    print(f"Same Destination IP address found in the list: {destination_ip}") 
                 else:
-                    logs_with_same_source_ip_unique_destination_ip[source_ip].append({destination_ip: log})
+                    print(f"Adding new dest ip to the list: {destination_ip}")
+                    # add the destination ip to the list if it is NOT found inside destination_ip_list
+                    return_data[source_ip][0].append(destination_ip)
+                    print(f"new dest ip list: {return_data[source_ip][0]}")
+                # append the log to the log list 
+                return_data[source_ip][1].append(log)
             else:
-                logs_with_same_source_ip_unique_destination_ip[source_ip] = []
-                logs_with_same_source_ip_unique_destination_ip[source_ip].append({destination_ip: log})
-        print(logs_with_same_source_ip_unique_destination_ip[source_ip][0])
-        print("\n\n")
-        print(logs_with_same_source_ip_unique_destination_ip[source_ip][1])
+                # create a new key in return_data with the source ip return_data["10.1.1.1"] = {}
+                return_data[source_ip] = list()
+                # append the destnation ip as part of a newly declared list return_date["10.1.1.1"] = [192.168.1.1]  
+                destination_ip_list = list()
+                destination_ip_list.append(destination_ip)
+                return_data[source_ip].append(destination_ip_list)
+                # append the log as part of a newly declared list return_date["10.1.1.1"] = [[192.168.1.1],[log]]
+                log_list = list()
+                log_list.append(log)
+                return_data[source_ip].append(log_list)
 
-        return logs_with_same_source_ip_unique_destination_ip
+        return return_data
+                    
+    def check_attacker_attacking_same_honeypot_multiple_times(self,dataset):
+        """ 
+            +   Same SRC IP + Same dest ip 
 
-    def check_one_attacker_attacking_same_dest_port_on_multiple_honeypots(self,dataset):
+            return_data  = {
+                (source_ip,destination_ip): [log],
+                (source_ip,destination_ip_2): [log1,log2,log3],
+            }        
+
+            the keys are types of (source_ip,destination_ip)
         """
-            +   Same src ip address + same dest port + differnt ip address
+        return_data = dict()
+        for log in dataset:
+            source_ip = log["source_ip"]
+            destination_ip = log["destination_ip"]
+            source_ip_destination_ip_pair = (source_ip,destination_ip)
+            if source_ip_destination_ip_pair in return_data:
+                # if the source ip and destination ip pair already exists, append the log
+                print(f"source ip destination ip pair found in return data: {source_ip_destination_ip_pair}")
+                return_data[source_ip_destination_ip_pair].append(log)
+            else:
+                log_list = list()
+                log_list.append(log)
+                return_data[source_ip_destination_ip_pair] = log_list
+        return return_data
+
+    def check_multiple_attacker_on_same_honeypot(self,dataset):
         """
-        print("DEST PORT")
+            Different Source IP + Same Destination IP 
+            +   src ip == attacker
+            +   dest ip == honeypot
+            return_data  = {
+                "destination_ip_1" : [
+                    [source_ip_1,source_ip_2],
+                    [log_1,log_2,log_3]
+                    ],
+            }
+        """
+        return_data = dict()
+        for log in dataset:
+            source_ip = log["source_ip"]
+            destination_ip = log["destination_ip"]
+            # https://stackoverflow.com/questions/1602934/check-if-a-given-key-already-exists-in-a-dictionary
+            # for some ds reason, I do not need to call .keys() method
+            # check if the source_ip is one the keys in return_data
+            if destination_ip in return_data:
+                # return_data["10.1.1.2"]
+                # print("source ip found")
+                # check if if the current destination ip is already inside the destination_ip_list 
+                if source_ip in return_data[destination_ip][0]:  
+                    # the destinationn ip is not  added  to the list if it is found inside the destination_ip_list
+                    print(f"Same Source IP address found in the list: {source_ip}") 
+                else:
+                    print(f"Adding new source ip to the list: {source_ip}")
+                    # add the destination ip to the list if it is NOT found inside destination_ip_list
+                    return_data[destination_ip][0].append(source_ip)
+                    print(f"new source ip list: {return_data[destination_ip][0]}")
+                # append the log to the log list 
+                return_data[destination_ip][1].append(log)
+            else:
+                # create a new key in return_data with the source ip return_data["10.1.1.1"] = {}
+                return_data[destination_ip] = list()
+                # append the destnation ip as part of a newly declared list return_date["10.1.1.1"] = [192.168.1.1]  
+                source_ip_list = list()
+                source_ip_list.append(source_ip)
+                return_data[destination_ip].append(source_ip_list)
+                # append the log as part of a newly declared list return_date["10.1.1.1"] = [[192.168.1.1],[log]]
+                log_list = list()
+                log_list.append(log)
+                return_data[destination_ip].append(log_list)
+
+        return return_data
 
 general_logs = [{
    "capture_date":"2021-01-14 22:31:17",
    "honeynode_name":"dionaea-test",
-   "source_ip":"192.168.148.146",
+   "source_ip":"192.168.148.141",
    "source_port":42486,
    "destination_ip":"10.1.1.1",
    "destination_port":22,
@@ -136,9 +206,9 @@ general_logs = [{
 }, {
    "capture_date":"2021-01-14 22:31:17",
    "honeynode_name":"dionaea-test-2",
-   "source_ip":"192.168.148.146",
+   "source_ip":"192.168.148.141",
    "source_port":42486,
-   "destination_ip":"10.1.1.1",
+   "destination_ip":"10.1.1.2",
    "destination_port":22,
    "protocol":"tcp",
    "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
@@ -151,9 +221,9 @@ nids_logs = [
    "date":"2021-01-14 22:29:11",
    "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
    "honeynode_name":"dionaea-test",
-   "source_ip":"192.168.148.146",
+   "source_ip":"192.168.148.141",
    "source_port":55010,
-   "destination_ip":"10.1.1.1",
+   "destination_ip":"10.1.1.3",
    "destination_port":3306,
    "priority":2,
    "classification":3,
@@ -164,9 +234,9 @@ nids_logs = [
    "date":"2021-01-14 22:29:11",
    "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
    "honeynode_name":"dionaea-test-2",
-   "source_ip":"192.168.148.146",
+   "source_ip":"192.168.148.141",
    "source_port":55010,
-   "destination_ip":"10.1.1.1",
+   "destination_ip":"10.1.1.2",
    "destination_port":3306,
    "priority":2,
    "classification":3,
@@ -175,16 +245,37 @@ nids_logs = [
 }
 ]
 
-dc = DataCorrelator(5)
-dataset = dc.get_dataset(general_logs,nids_logs)
-# print(dataset)
+def test_one_attack_multiple_honeypots():
+    dc = DataCorrelator(5)
+    dataset = dc.get_dataset(general_logs,nids_logs)
+    cd = dc.check_one_attacker_attacking_multiple_honeypots(dataset)
+    # print(cd.keys())
+    for key in cd.keys():
+        print(f"Attacker IP: {key}")
+        print(f"HoneyPots Being Attacked: {cd[key][0]}")
+        print("\n\n\n")
+        print(f"log list:{cd[key][1]}")
+        print("\n\n\n")
 
-cd = dc.check_one_attacker_attacking_multiple_honeypots(dataset)
-# print(cd.keys())
-# print(cd)
-# for src_ip in cd.keys():
-#     dest_ip_to_log_list = cd[src_ip]
-#     for dest_ip_to_log in dest_ip_to_log_list:
-#         print(dest_ip_to_log)
-#         print("\n")
-        
+def test_check_one_attacker_attacking_multiple_honeypots():
+    dc = DataCorrelator(5)
+    dataset = dc.get_dataset(general_logs,nids_logs)
+    cd = dc.check_attacker_attacking_same_honeypot_multiple_times(dataset)
+    print("\n\n")
+    for key in cd.keys():
+        print(key[1])
+
+def test_check_multiple_attacker_on_same_honeypot():
+    dc = DataCorrelator(5)
+    dataset = dc.get_dataset(general_logs,nids_logs)
+    cd = dc.check_multiple_attacker_on_same_honeypot(dataset)
+    print("\n\n")
+    for key in cd.keys():
+        print(f"Target IP: {key}")
+        print(f"Attacker IP: {cd[key][0]}")
+        print("\n\n")
+        print(f"Logs: {cd[key][1]}")
+        print("\n\n")
+# test_check_one_attacker_attacking_multiple_honeypots()
+# test_check_multiple_attacker_on_same_honeypot()
+test_one_attack_multiple_honeypots()
