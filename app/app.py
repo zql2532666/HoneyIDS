@@ -622,6 +622,56 @@ def insert_session_log():
         abort(404)
 
 
+"""
+api route for retrieving the latest cowrie bruteforce log based on token
+"""
+@app.route("/api/v1/latest_bruteforce_log", methods=['POST'])
+def retrieve_latest_bruteforce_log():
+    # bruteforce_logs = list()
+    if request.json:
+        new_bruteforce_log = request.json
+        all_session_logs = json.loads(db_access.retrieve_all_session_logs())
+
+        # for session_log in all_session_logs:
+        #    if len(session_log['credentials']) > 0:
+        #        bruteforce_logs.append(session_log)
+
+        bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
+
+
+        print(f"/api/v1/latest_bruteforce_log/{token}:")
+        print(f"Bruteforce log ==> \n {bruteforce_logs}")
+
+        if len(bruteforce_logs) == 0:
+            return jsonify({"bruteforce_log_empty": True}), 201
+        else:
+            return jsonify({"bruteforce_log_empty": False, "latest_bruteforce_log": bruteforce_logs[-1]}), 201
+
+    else:
+        abort(404)
+
+
+@app.route("/api/v1/update_bruteforce_log", methods=['POST'])
+def update_bruteforce_log():
+    if request.json:
+        bruteforce_log_data = request.json
+        print("/api/v1/update_bruteforce_log:")
+        print(bruteforce_log_data)
+        result_value = db_access.update_bruteforce_log(bruteforce_log_data)
+
+        if result_value == 0:
+            abort(404)
+
+        return jsonify({"success": True}), 201
+
+    else:
+        abort(404)
+        
+
+
+
+
+
 if __name__ == "__main__":
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)
