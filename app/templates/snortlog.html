@@ -63,8 +63,6 @@
           <th>Source IP</th>
           <th>Destination IP</th>
           <th>Destination Port</th>
-          <th>Priority</th>
-          <th>Classification</th>
           <th>Signature</th>
           <th>Raw Logs</th>
         </tr>
@@ -76,8 +74,6 @@
           <th>Source IP</th>
           <th>Destination IP</th>
           <th>Destination Port</th>
-          <th>Priority</th>
-          <th>Classification</th>
           <th>Signature</th>
           <th></th>
         </tr>
@@ -143,16 +139,13 @@
         { "data": "source_ip" },
         { "data": "destination_ip" },
         { "data": "destination_port" },
-        { "data": "priority" },
-        { "data": "classification" },
         { "data": "signature" },
         { "data": "raw_logs", "render": CustomRenders.raw_logs }
       ],
       "columnDefs": [
         { "className": "dt-center", "targets": "_all" },
         { "width": '13%', "targets": 0 },
-        { "width": '23%', "targets": 7 },
-        { "width": '13%', "targets": 8 },
+        { "width": '13%', "targets": 6 },
       ],
     });
 
