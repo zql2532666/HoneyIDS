@@ -90,7 +90,7 @@ cat > config.json<<EOF
         "channel": "elastichoney.events"
     },
     "instance_name" : "Green Goblin",
-    "anonymous" : false,
+    "anonymous" : true,
     "spoofed_version"  : "1.4.1"
 }
 EOF
