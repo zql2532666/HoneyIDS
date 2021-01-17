@@ -772,6 +772,24 @@ def rule_3():
     datatable_dict["data"] = correlated_data
     return datatable_dict
 
+"""
+api route for number of attacks - rule 2 - one attacker vs one honeynode - attack multiple times, 5 nmap scans etc..
+"""
+@app.route('/api/v1/data_correlation/rule_2/num_of_attacks')
+def num_of_attacks():
+    """ NO NEED TO CORRELATE USING TIME WINDOW"""
+    general_logs = json.loads(db_access.retrieve_all_general_logs())
+    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    correlator = DataCorrelator()
+    dataset = correlator.get_dataset(general_logs,nids_logs)
+    correlated_data = correlator.rule_2(dataset)
+    num_of_attacks = len(correlated_data)
+    data = {
+        'num_of_attacks':num_of_attacks
+    }
+    return data
+
+
 if __name__ == "__main__":
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)
