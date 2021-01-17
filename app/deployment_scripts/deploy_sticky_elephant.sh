@@ -23,7 +23,7 @@ DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 # install ruby 2.4, default version on ubuntu 16.04 is 2.3, which is not compatible with some packages used by sticky_elephant
 apt-get install -y software-properties-common
 apt-add-repository -y ppa:brightbox/ruby-ng
-systemctl disable apt-daily-upgrade.service 
+systemctl disable apt-daily-upgrade.service || true
 
 apt update
 
@@ -35,6 +35,8 @@ apt-get install -y ruby2.4 ruby2.4-dev
 apt-get -y install git supervisor curl python-pip python3-pip
 
 pip install configparser
+
+pip install requests
 
 useradd -d /home/sticky_elephant -m sticky_elephant
 

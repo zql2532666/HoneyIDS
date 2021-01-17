@@ -21,7 +21,7 @@ SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 
-systemctl disable apt-daily-upgrade.service 
+systemctl disable apt-daily-upgrade.service || true
 
 apt update
 
@@ -30,6 +30,7 @@ sudo dpkg --configure -a || true
 
 apt-get -y install git golang supervisor curl python-pip python3-pip
 pip install configparser
+pip install requests
 
 # install honeyagent
 mkdir /opt/honeyagent

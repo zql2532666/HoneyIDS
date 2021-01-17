@@ -22,7 +22,7 @@ DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 
 # Install dependencies
-systemctl disable apt-daily-upgrade.service 
+systemctl disable apt-daily-upgrade.service || true
 
 apt update
 
