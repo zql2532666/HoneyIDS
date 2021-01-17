@@ -676,15 +676,24 @@ api route for deleting general logs
 """
 @app.route('/api/v1/general_logs', methods=['DELETE'])
 def delete_general_log():
-    pass
+    result_value = db_access.delete_general_logs_by_id([120, 121, 122])
 
+    if result_value == 0:
+            abort(404)
+
+    return jsonify({"rows_deleted": result_value}), 201
 
 """
 api route for deleting snort logs
 """
 @app.route('/api/v1/snort_logs', methods=['DELETE'])
 def delete_snort_log():
-    pass
+    result_value = db_access.delete_snort_logs_by_id([167, 168, 169])
+
+    if result_value == 0:
+            abort(404)
+
+    return jsonify({"rows_deleted": result_value}), 201
 
 
 """
@@ -692,6 +701,19 @@ api route for deleting session logs
 """
 @app.route('/api/v1/session_logs', methods=['DELETE'])
 def delete_session_log():
+    result_value = db_access.delete_session_logs_by_id([1,2,3])
+
+    if result_value == 0:
+            abort(404)
+
+    return jsonify({"rows_deleted": result_value}), 201
+
+
+"""
+api route for deleting virus total logs
+"""
+@app.route('/api/v1/virus_total_logs', methods=['DELETE'])
+def delete_virus_total_log():
     pass
 
 

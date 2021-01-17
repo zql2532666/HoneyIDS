@@ -484,7 +484,26 @@ class DbAccess:
     def delete_general_logs_by_id(self, log_id_list):
         cur = self.mysql.connection.cursor()
 
-        sql = "delete FROM general_logs WHERE log_id in (%s)" % ','.join(['?'] * len(log_id_list))
+        sql = "delete from general_logs where log_id in ({0})".format(', '.join(['?'] * len(log_id_list)))
+        # sql = "delete from general_logs where log_id = ?"
+        print(sql)
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql, log_id_list)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+            return 0
+
+        return result_value
+
+
+    def delete_snort_logs_by_id(self, log_id_list):
+        cur = self.mysql.connection.cursor()
+
+        sql = "delete from nids_logs where nids_log_id in (%s)" % ','.join(['?'] * len(log_id_list))
 
         result_value = 0
 
@@ -494,14 +513,43 @@ class DbAccess:
             cur.close()
         except Exception as err:
             print(err)
+            return 0
 
         return result_value
 
-
-    def delete_snort_logs_by_id(self, log_id_list):
-        pass
-
     
     def delete_session_logs_by_id(self, log_id_list):
-        pass
+        cur = self.mysql.connection.cursor()
+
+        sql = "delete from session_logs where session_log_id in (%s)" % ','.join(['?'] * len(log_id_list))
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql, log_id_list)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+            return 0
+
+        return result_value
+
+    
+    def delete_vt_logs_by_id(self, log_id_list):
+        cur = self.mysql.connection.cursor()
+
+        sql = "delete from virus_total_logs WHERE id in (%s)" % ','.join(['?'] * len(log_id_list))
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql, log_id_list)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+            return 0
+
+        return result_value
 
