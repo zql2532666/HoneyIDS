@@ -560,3 +560,31 @@ class DbAccess:
 
         return result_value
 
+    """
+    Data correlation sql methods
+    """
+    def retrieve_all_general_logs_last_24_hours(self):
+        json_data = {}
+
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = "SELECT * FROM general_logs where capture_date >= now() - INTERVAL 1 DAY;"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+        return json_data
+
+    def retrieve_all_nids_logs_last_24_hours(self):
+        json_data = {}
+
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = "SELECT * FROM nids_logs where `date` >= now() - INTERVAL 1 DAY;"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+        return json_data

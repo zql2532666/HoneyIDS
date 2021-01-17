@@ -54,7 +54,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3 id="noAttacks">12</h3>
+                <h3 id="noAttacks"></h3>
 
                 <p>Number of Attacks</p>
               </div>
@@ -93,10 +93,22 @@
     });
   }
 
+  function getTotalAttacks(){
+    $.ajax({
+      url: '/api/v1/data_correlation/rule_2/num_of_attacks',
+      type: 'GET',
+      success: function (result) {
+        $("#noAttacks").html(result.num_of_attacks);
+      }
+    });
+  }
+
   $(function () {
     getNodes();
+    getTotalAttacks();
     setInterval(function () {
       getNodes();
+      getTotalAttacks();
     }, 3000);
   });
 </script>
