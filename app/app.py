@@ -777,7 +777,7 @@ api route for number of attacks - rule 2 - one attacker vs one honeynode - attac
 """
 @app.route('/api/v1/data_correlation/rule_2/num_of_attacks')
 def num_of_attacks():
-    """ NO NEED TO CORRELATE USING TIME WINDOW"""
+    """ Msg: Aaron insert your db method here --> hardcode the time window to 24 hours"""
     general_logs = json.loads(db_access.retrieve_all_general_logs())
     nids_logs = json.loads(db_access.retrieve_all_nids_logs())
     correlator = DataCorrelator()
