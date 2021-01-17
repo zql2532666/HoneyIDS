@@ -58,7 +58,7 @@
                   <div class="form-group col-md-12">
                     <label for="selectkill">Nodes</label>
                     <select id="selectkill" name="selectkill" class="form-control custom-select">
-                      <option selected disabled>Select one</option>
+                      <option selected value="">Select one</option>
                       {% for node in list_nodes %}
                         <option value="{{ node.ip_addr }}">{{ node.honeynode_name }}</option>
                       {% endfor %}
@@ -138,6 +138,7 @@
     //$("#exampleModal").modal("show"); //hide modal for now
     $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
     Killing Node...');
+    $('#submitbtn').prop("disabled", true);
     $('#progress').prop('hidden', false);
     var fiveMinutes = 24,
     display = document.querySelector('#time');
