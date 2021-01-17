@@ -58,7 +58,7 @@
 </div>
 <!-- /.row -->
 
-<div class="row">
+<div class="row toShow" hidden>
   <div class="col-12">
     <div class="card card-secondary">
       <div class="card-header">
@@ -99,7 +99,7 @@
 </div>
 <!-- /.row -->
 
-<div class="row">
+<div class="row toShow" hidden>
   <div class="col-md-6">
     <div class="card card-secondary">
       <div class="card-header">
@@ -140,7 +140,7 @@
 </div>
 <!-- /.row -->
 
-<div class="row">
+<div class="row toShow" hidden>
   <div class="col-12">
     <div class="card card-secondary">
       <div class="card-header">
@@ -254,6 +254,7 @@
     });
      
     $('#example').on('click', 'tbody tr', function () {
+        $(".toShow").prop("hidden", false);
         $('#example tbody > tr').removeClass('selected');
         $(this).addClass('selected');
         persistSelection( table.row(this).index() );
@@ -275,6 +276,13 @@
         table2Data = [];
 
         var temp2 = JSON.parse(data.credentials);
+
+        //also display logged in credentials
+        var loginTemp = JSON.parse(data.logged_in);
+        if (loginTemp){
+          usernameData.push([loginTemp[0]]);
+          passwordData.push([loginTemp[1]]);
+        }
         temp2.forEach(function(element) {
           usernameData.push([element[0]]);
           passwordData.push([element[1]]);
@@ -288,6 +296,9 @@
     } );
 
     table2 = $('#example2').DataTable({
+      "language": {
+        "emptyTable": "No commands entered during session"
+      },
       "ordering": true,
       "responsive": true,
       "autoWidth": false,
@@ -302,6 +313,9 @@
     usernameTable = $('#usernameAttempted').DataTable({
       "pagingType": "simple",
       "lengthMenu": [ 5, 10, 25, 50, 100 ],
+      "language": {
+        "emptyTable": "No attempted usernames during session"
+      },
       "ordering": false,
       "pageLength": 5,
       "responsive": true,
@@ -317,6 +331,9 @@
     passwordTable = $('#passwordAttempted').DataTable({
       "pagingType": "simple",
       "lengthMenu": [ 5, 10, 25, 50, 100 ],
+      "language": {
+        "emptyTable": "No attempted passwords during session"
+      },
       "ordering": false,
       "pageLength": 5,
       "responsive": true,
