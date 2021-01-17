@@ -84,11 +84,11 @@ Author: Aaron
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", title="Dashboard V1")
+    return render_template("index.html", title="Dashboard")
 
 @app.route("/index2")
 def index2():
-    return render_template("index2.html", title="Dashboard V2")
+    return render_template("index2.html", title="Data Correlation")
 
 @app.route("/index3")
 def index3():
