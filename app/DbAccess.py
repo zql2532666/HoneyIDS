@@ -483,14 +483,16 @@ class DbAccess:
     
     def delete_general_logs_by_id(self, log_id_list):
         cur = self.mysql.connection.cursor()
+        # log_id_list = [69, 70, 71, 72]
 
-        sql = "delete from general_logs where log_id in ({0})".format(', '.join(['?'] * len(log_id_list)))
-        # sql = "delete from general_logs where log_id = ?"
+        place_holders = ', '.join(["'%s'"] * len(log_id_list))
+        sql = f"delete from general_logs where log_id in ({place_holders})" % tuple(log_id_list)
+
         print(sql)
         result_value = 0
 
         try:
-            result_value = cur.execute(sql, log_id_list)
+            result_value = cur.execute(sql)
             self.mysql.connection.commit()
             cur.close()
         except Exception as err:
@@ -503,12 +505,13 @@ class DbAccess:
     def delete_snort_logs_by_id(self, log_id_list):
         cur = self.mysql.connection.cursor()
 
-        sql = "delete from nids_logs where nids_log_id in (%s)" % ','.join(['?'] * len(log_id_list))
-
+        place_holders = ', '.join(["'%s'"] * len(log_id_list))
+        sql = f"delete from nids_logs where nids_log_id in ({place_holders})" % tuple(log_id_list)
+        print(sql)
         result_value = 0
 
         try:
-            result_value = cur.execute(sql, log_id_list)
+            result_value = cur.execute(sql)
             self.mysql.connection.commit()
             cur.close()
         except Exception as err:
@@ -521,12 +524,14 @@ class DbAccess:
     def delete_session_logs_by_id(self, log_id_list):
         cur = self.mysql.connection.cursor()
 
-        sql = "delete from session_logs where session_log_id in (%s)" % ','.join(['?'] * len(log_id_list))
+        place_holders = ', '.join(["'%s'"] * len(log_id_list))
+        sql = f"delete from session_logs where session_log_id in ({place_holders})" % tuple(log_id_list)
+        print(sql)
 
         result_value = 0
 
         try:
-            result_value = cur.execute(sql, log_id_list)
+            result_value = cur.execute(sql)
             self.mysql.connection.commit()
             cur.close()
         except Exception as err:
@@ -539,12 +544,14 @@ class DbAccess:
     def delete_vt_logs_by_id(self, log_id_list):
         cur = self.mysql.connection.cursor()
 
-        sql = "delete from virus_total_logs WHERE id in (%s)" % ','.join(['?'] * len(log_id_list))
+        place_holders = ', '.join(["'%s'"] * len(log_id_list))
+        sql = f"delete from virus_total_logs where id in ({place_holders})" % tuple(log_id_list)
+        print(sql)
 
         result_value = 0
 
         try:
-            result_value = cur.execute(sql, log_id_list)
+            result_value = cur.execute(sql)
             self.mysql.connection.commit()
             cur.close()
         except Exception as err:

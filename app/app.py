@@ -715,7 +715,12 @@ api route for deleting virus total logs
 """
 @app.route('/api/v1/virus_total_logs', methods=['DELETE'])
 def delete_virus_total_log():
-    pass
+    result_value = db_access.delete_vt_logs_by_id([54, 55, 56])
+
+    if result_value == 0:
+            abort(404)
+
+    return jsonify({"rows_deleted": result_value}), 201
 
 
 """
