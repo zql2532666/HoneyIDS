@@ -57,6 +57,7 @@
     <table id="example" class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th></th>
           <th>Date</th>
           <th>Honeynode Name</th>
           <th>Attacker IP</th>
@@ -69,6 +70,7 @@
       </thead>
       <tfoot>
         <tr>
+          <th></th>
           <th>Date</th>
           <th>Honeynode Name</th>
           <th>Attacker IP</th>
@@ -148,6 +150,7 @@
       ],
       "ajax": "/api/v1/general_logs/datatables",
       "columns": [
+        { "data": "log_id" }, //newline
         { "data": "capture_date" },
         { "data": "honeynode_name" },
         { "data": "source_ip" },
@@ -158,9 +161,21 @@
         { "data": "raw_logs", "render": CustomRenders.raw_logs }
       ],
       "columnDefs": [
+        { //newline
+          "orderable": false,
+          'targets': 0,
+          'checkboxes': {
+            'selectRow': true,
+            'stateSave': true
+          }
+        }, //newline
         { "className": "dt-center", "targets": "_all" },
-        { "width": '13%', "targets": 7 },
-      ]
+        { "width": '13%', "targets": 8 }, // original value:7
+      ],
+      'select': { //newline
+        'style': 'multi'
+      },
+      "order": [[1, 'asc']] //newline
     });
   });
 
