@@ -479,3 +479,29 @@ class DbAccess:
             print(err)
 
         return result_value
+
+    
+    def delete_general_logs_by_id(self, log_id_list):
+        cur = self.mysql.connection.cursor()
+
+        sql = "delete FROM general_logs WHERE log_id in (%s)" % ','.join(['?'] * len(log_id_list))
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql, log_id_list)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
+
+
+    def delete_snort_logs_by_id(self, log_id_list):
+        pass
+
+    
+    def delete_session_logs_by_id(self, log_id_list):
+        pass
+

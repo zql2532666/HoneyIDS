@@ -651,6 +651,9 @@ def retrieve_latest_bruteforce_log():
         abort(404)
 
 
+"""
+api route for appending to the latest cowrie bruteforce log 
+"""
 @app.route("/api/v1/update_bruteforce_log", methods=['POST'])
 def update_bruteforce_log():
     if request.json:
@@ -666,6 +669,32 @@ def update_bruteforce_log():
 
     else:
         abort(404)
+
+
+"""
+api route for deleting general logs
+"""
+@app.route('/api/v1/general_logs', methods=['DELETE'])
+def delete_general_log():
+    pass
+
+
+"""
+api route for deleting snort logs
+"""
+@app.route('/api/v1/snort_logs', methods=['DELETE'])
+def delete_snort_log():
+    pass
+
+
+"""
+api route for deleting session logs
+"""
+@app.route('/api/v1/session_logs', methods=['DELETE'])
+def delete_session_log():
+    pass
+
+
         
 
 
