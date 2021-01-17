@@ -12,6 +12,7 @@ import socket
 import uuid
 from signal import *
 from virus_total import *
+from DataCorrelation import *
 import pyminizip
 import warnings
 import base64
@@ -717,11 +718,59 @@ def delete_virus_total_log():
     pass
 
 
-        
+"""
+api route for data correlation - rule 1 - one attacker vs multiple honeynodes
+"""
+@app.route('/api/v1/data_correlation/rule_1/datatables')
+def rule_1():
+    """ Msg: Aaron Insert your db method here"""
+    general_logs = json.loads(db_access.retrieve_all_general_logs())
+    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    """----db ----"""
+    correlator = DataCorrelator()
+    dataset = correlator.get_dataset(general_logs,nids_logs)
+    correlated_data = correlator.rule_1(dataset)
+    # print(correlated_data)
+    # correlated_data = []
+    datatable_dict = dict()
+    datatable_dict["data"] = correlated_data
+    return datatable_dict
 
+"""
+api route for data correlation - rule 2 - one attacker vs one honeynode - attack multiple times, 5 nmap scans etc..
+"""
+@app.route('/api/v1/data_correlation/rule_2/datatables')
+def rule_2():
+    """ Msg: Aaron Insert your db method here"""""" Msg: Aaron Insert your db method here"""
+    general_logs = json.loads(db_access.retrieve_all_general_logs())
+    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    """----db ----"""
+    correlator = DataCorrelator()
+    dataset = correlator.get_dataset(general_logs,nids_logs)
+    correlated_data = correlator.rule_2(dataset)
+    # print(correlated_data)
+    # correlated_data = []
+    datatable_dict = dict()
+    datatable_dict["data"] = correlated_data
+    return datatable_dict
 
-
-
+"""
+api route for data correlation - rule 3 - multiple attackers vs one honeynode 
+"""
+@app.route('/api/v1/data_correlation/rule_3/datatables')
+def rule_3():
+    """ Msg: Aaron Insert your db method here"""
+    general_logs = json.loads(db_access.retrieve_all_general_logs())
+    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    """----db ----"""
+    correlator = DataCorrelator()
+    dataset = correlator.get_dataset(general_logs,nids_logs)
+    correlated_data = correlator.rule_3(dataset)
+    # print(correlated_data)
+    # correlated_data = []
+    datatable_dict = dict()
+    datatable_dict["data"] = correlated_data
+    return datatable_dict
 
 if __name__ == "__main__":
     try:

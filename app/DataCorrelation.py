@@ -54,7 +54,7 @@ class DataCorrelator():
                 "destination_port": log["destination_port"],
                 "token": log["token"],
                 "honeynode_name": log["honeynode_name"],
-                "log_type": "general",
+                "log_type": "nids",
                 "original_log": log
             }
             dataset.append(data)   
@@ -100,7 +100,8 @@ class DataCorrelator():
                     print(f"new dest ip list: {return_data[source_ip][0]}")
 
                     # add the honeynode_name to the list if the destination ip is not found in the destination_ip_list
-                    return_data[source_ip][2].append(honeynode_name)
+                    if not honeynode_name in return_data[source_ip][2]:
+                        return_data[source_ip][2].append(honeynode_name)
                 # append the log to the log list 
                 return_data[source_ip][1].append(log)
             else:
@@ -322,10 +323,10 @@ nids_logs = [
 }
 ]
 
-dc = DataCorrelator()
-dataset = dc.get_dataset(general_logs,nids_logs)
-cd = dc.rule_2(dataset)
-for x in cd:
-    print(x)
-    print("\n\n")
+# dc = DataCorrelator()
+# dataset = dc.get_dataset(general_logs,nids_logs)
+# cd = dc.rule_2(dataset)
+# for x in cd:
+#     print(x)
+#     print("\n\n")
 # print(cd)
