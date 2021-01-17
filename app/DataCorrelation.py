@@ -21,19 +21,14 @@ dataset = [
 ]
 
 Attack Types:
-    1.  One Attacker Attacking Multiple Honeypots
-    2.  One Attacker Attacking One Honeypot
-    3.  Multiple Attackers Attacking One Honeypot
+    1.  One Attacker Attacking Multiple Honeynodes
+    2.  One Attacker Attacking One Honeynode
+    3.  Multiple Attackers Attacking One Honeynode
 """
 class DataCorrelator():
     def __init__(self,time_threshold):
         self.time_threshold = time_threshold
-        """
-            +   Time Window can be specified by the user
-            +   Pull the logs within this time window and process them
-        """
-    # def correlate_via_time(self,time_window,data):
-
+        
     def get_dataset(self,general_logs,nids_logs):
         dataset = []
         for log in general_logs:
@@ -69,26 +64,24 @@ class DataCorrelator():
     def check_one_attacker_attacking_multiple_honeypots(self,dataset):
         """
             +   Same src ip address + Different dest ip address
+            +   This method is meant to combine all the logs with the same attacker/src ip but different ip address 
             +   src ip == attacker
             +   dest ip == honeypot
-        """
-        """
+
             return_data  = {
                 "src_ip_1" : [
                     [dest_ip_1,dest_ip_2],
-                    [log_1,log_2,log_3]
+                    [log_1,log_2,log_3],
+                    [honeynode_name_1,honeynode_name_2]
                     ],
             }
-
-            for key in return_data.keys():
-                print(f"source ip: {key}")
-                print(f"destination ip list: {return_data.key[0]}")
 
         """
         return_data = dict()
         for log in dataset:
             source_ip = log["source_ip"]
             destination_ip = log["destination_ip"]
+            honeynode_name = log["honeynode_name"]
             # https://stackoverflow.com/questions/1602934/check-if-a-given-key-already-exists-in-a-dictionary
             # for some ds reason, I do not need to call .keys() method
             # check if the source_ip is one the keys in return_data
@@ -104,6 +97,9 @@ class DataCorrelator():
                     # add the destination ip to the list if it is NOT found inside destination_ip_list
                     return_data[source_ip][0].append(destination_ip)
                     print(f"new dest ip list: {return_data[source_ip][0]}")
+
+                    # add the honeynode_name to the list if the destination ip is not found in the destination_ip_list
+                    return_data[source_ip][2].append(honeynode_name)
                 # append the log to the log list 
                 return_data[source_ip][1].append(log)
             else:
@@ -118,18 +114,22 @@ class DataCorrelator():
                 log_list.append(log)
                 return_data[source_ip].append(log_list)
 
+                honeynode_name_list = list()
+                honeynode_name_list.append(honeynode_name)
+                return_data[source_ip].append(honeynode_name_list)
+
         return return_data
                     
-    def check_attacker_attacking_same_honeypot_multiple_times(self,dataset):
+    def check_one_attacker_attacking_one_honeypot_multiple_times(self,dataset):
+
         """ 
             +   Same SRC IP + Same dest ip 
-
-            return_data  = {
-                (source_ip,destination_ip): [log],
-                (source_ip,destination_ip_2): [log1,log2,log3],
-            }        
-
-            the keys are types of (source_ip,destination_ip)
+            +   One nmap scan could give 5 logs that has same src ip + same dest ip --> this method is 
+                meant to combine these 5 logs into 1
+                return_data  = {
+                    (source_ip,destination_ip): [log],
+                    (source_ip,destination_ip_2): [log1,log2,log3],
+                }        
         """
         return_data = dict()
         for log in dataset:
@@ -146,7 +146,7 @@ class DataCorrelator():
                 return_data[source_ip_destination_ip_pair] = log_list
         return return_data
 
-    def check_multiple_attacker_on_same_honeypot(self,dataset):
+    def check_multiple_attackers_attacking_one_honeypot(self,dataset):
         """
             Different Source IP + Same Destination IP 
             +   src ip == attacker
@@ -193,6 +193,76 @@ class DataCorrelator():
 
         return return_data
 
+    def parse_check_one_attacker_attacking_multiple_honeypots(self,cd):
+        # dc = DataCorrelator(5)
+        # dataset = dc.get_dataset(general_logs,nids_logs)
+        # cd = dc.check_one_attacker_attacking_multiple_honeypots(dataset)
+        # print(cd.keys())
+        """
+        [
+            {
+                attacker_ip: "x.x.x.x",
+                honeynode_ip_list:["a.a.a.a","b.b.b.b"],
+                honeynode_name_list:["name_1","name_2"],
+                log_list: [raw_log_1,raw_log_2]
+            }
+        ]
+        """
+        final_data = list()
+        print(cd.keys())
+        for key in cd.keys():
+            parsed_data = dict()
+            parsed_data["attacker_ip"] = key
+            parsed_data["honeynode_ip_list"] = cd[key][0]
+            parsed_data["honeynode_name_list"] = cd[key][2]
+            parsed_data["log_list"] = list()
+            for x in cd[key][1]:
+                parsed_data["log_list"].append(x["original_log"])
+            final_data.append(parsed_data)
+        for data in final_data:
+            print(data)
+            print("\n\n")
+
+    def parse_check_one_attacker_attacking_one_honeypot_multiple_times(self,cd):
+        # dc = DataCorrelator(5)
+        # dataset = dc.get_dataset(general_logs,nids_logs)
+        # cd = dc.check_one_attacker_attacking_one_honeypot_multiple_times(dataset)
+        """
+            [
+                {
+                    attacker_ip: "x.x.x.x",
+                    honeynode_ip: "y.y.y.y",
+                    log_list = [log1,log2,log3]
+                }
+            ]
+        """
+        final_data = list()
+        for key in cd.keys():
+            parsed_data = dict()
+            parsed_data["attacker_ip"] = key[0]
+            parsed_data["honeynode_ip"] = key[1]
+            parsed_data["log_list"] = list()
+            for x in cd[key]:
+                parsed_data["log_list"].append(x["original_log"])
+            final_data.append(parsed_data)
+        for data in final_data:
+            print(data)
+            print("\n")
+            print(len(data["log_list"]))
+            print("\n\n")
+
+    def parse_check_multiple_attackers_attacking_one_honeypot(self,cd):
+        # dc = DataCorrelator(5)
+        # dataset = dc.get_dataset(general_logs,nids_logs)
+        # cd = dc.check_multiple_attackers_attacking_one_honeypot(dataset)
+        print("\n\n")
+        for key in cd.keys():
+            print(f"Target IP: {key}")
+            print(f"Attacker IP: {cd[key][0]}")
+            print("\n\n")
+            print(f"Logs: {cd[key][1]}")
+            print("\n\n")
+
 general_logs = [{
    "capture_date":"2021-01-14 22:31:17",
    "honeynode_name":"dionaea-test",
@@ -206,7 +276,7 @@ general_logs = [{
 }, {
    "capture_date":"2021-01-14 22:31:17",
    "honeynode_name":"dionaea-test-2",
-   "source_ip":"192.168.148.141",
+   "source_ip":"192.168.148.45",
    "source_port":42486,
    "destination_ip":"10.1.1.2",
    "destination_port":22,
@@ -221,9 +291,9 @@ nids_logs = [
    "date":"2021-01-14 22:29:11",
    "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
    "honeynode_name":"dionaea-test",
-   "source_ip":"192.168.148.141",
+   "source_ip":"192.168.148.45",
    "source_port":55010,
-   "destination_ip":"10.1.1.3",
+   "destination_ip":"10.1.1.1",
    "destination_port":3306,
    "priority":2,
    "classification":3,
@@ -233,10 +303,10 @@ nids_logs = [
 {
    "date":"2021-01-14 22:29:11",
    "token":"6efd8740-64c4-4af0-bae5-e5cb41a925a8",
-   "honeynode_name":"dionaea-test-2",
-   "source_ip":"192.168.148.141",
+   "honeynode_name":"dionaea-test",
+   "source_ip":"192.168.148.45",
    "source_port":55010,
-   "destination_ip":"10.1.1.2",
+   "destination_ip":"10.1.1.1",
    "destination_port":3306,
    "priority":2,
    "classification":3,
@@ -245,30 +315,68 @@ nids_logs = [
 }
 ]
 
-def test_one_attack_multiple_honeypots():
+def parse_check_one_attacker_attacking_multiple_honeypots():
     dc = DataCorrelator(5)
     dataset = dc.get_dataset(general_logs,nids_logs)
     cd = dc.check_one_attacker_attacking_multiple_honeypots(dataset)
     # print(cd.keys())
+    """
+    [
+        {
+            attacker_ip: "x.x.x.x",
+            honeynode_ip_list:["a.a.a.a","b.b.b.b"],
+            honeynode_name_list:["name_1","name_2"],
+            log_list: [raw_log_1,raw_log_2]
+        }
+    ]
+    """
+    final_data = list()
+    print(cd.keys())
     for key in cd.keys():
-        print(f"Attacker IP: {key}")
-        print(f"HoneyPots Being Attacked: {cd[key][0]}")
-        print("\n\n\n")
-        print(f"log list:{cd[key][1]}")
-        print("\n\n\n")
+        parsed_data = dict()
+        parsed_data["attacker_ip"] = key
+        parsed_data["honeynode_ip_list"] = cd[key][0]
+        parsed_data["honeynode_name_list"] = cd[key][2]
+        parsed_data["log_list"] = list()
+        for x in cd[key][1]:
+            parsed_data["log_list"].append(x["original_log"])
+        final_data.append(parsed_data)
+    for data in final_data:
+        print(data)
+        print("\n\n")
 
-def test_check_one_attacker_attacking_multiple_honeypots():
+def parse_check_one_attacker_attacking_one_honeypot_multiple_times():
     dc = DataCorrelator(5)
     dataset = dc.get_dataset(general_logs,nids_logs)
-    cd = dc.check_attacker_attacking_same_honeypot_multiple_times(dataset)
-    print("\n\n")
+    cd = dc.check_one_attacker_attacking_one_honeypot_multiple_times(dataset)
+    """
+        [
+            {
+                attacker_ip: "x.x.x.x",
+                honeynode_ip: "y.y.y.y",
+                log_list = [log1,log2,log3]
+            }
+        ]
+    """
+    final_data = list()
     for key in cd.keys():
-        print(key[1])
+        parsed_data = dict()
+        parsed_data["attacker_ip"] = key[0]
+        parsed_data["honeynode_ip"] = key[1]
+        parsed_data["log_list"] = list()
+        for x in cd[key]:
+            parsed_data["log_list"].append(x["original_log"])
+        final_data.append(parsed_data)
+    for data in final_data:
+        print(data)
+        print("\n")
+        print(len(data["log_list"]))
+        print("\n\n")
 
-def test_check_multiple_attacker_on_same_honeypot():
+def parse_check_multiple_attackers_attacking_one_honeypot():
     dc = DataCorrelator(5)
     dataset = dc.get_dataset(general_logs,nids_logs)
-    cd = dc.check_multiple_attacker_on_same_honeypot(dataset)
+    cd = dc.check_multiple_attackers_attacking_one_honeypot(dataset)
     print("\n\n")
     for key in cd.keys():
         print(f"Target IP: {key}")
@@ -276,6 +384,25 @@ def test_check_multiple_attacker_on_same_honeypot():
         print("\n\n")
         print(f"Logs: {cd[key][1]}")
         print("\n\n")
-# test_check_one_attacker_attacking_multiple_honeypots()
-# test_check_multiple_attacker_on_same_honeypot()
-test_one_attack_multiple_honeypots()
+
+# parse_check_one_attacker_attacking_multiple_honeypots()
+parse_check_one_attacker_attacking_one_honeypot_multiple_times()
+
+
+"""
+Attacker IP(s)
+Honeynode IP(s)
+Honeynode Name(s)
+Attack Category
+Raw Log(s)
+
+data = {
+    attacker_ip = [],
+    honeynode_ip = [],
+    honeynode_name = [],
+    attack category = [],
+    raw logs = []
+}
+"""
+
+# test_one_attack_multiple_honeypots()
