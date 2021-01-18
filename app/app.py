@@ -726,11 +726,27 @@ def delete_virus_total_log():
 """
 api route for data correlation - rule 1 - one attacker vs multiple honeynodes
 """
-@app.route('/api/v1/data_correlation/rule_1/datatables')
+@app.route('/api/v1/data_correlation/rule_1/datatables', methods=['POST'])
 def rule_1():
+    date_time = request.form['datetimes'].split(" - ")
     """ Msg: Aaron Insert your db method here"""
-    general_logs = json.loads(db_access.retrieve_all_general_logs())
-    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    general_logs = db_access.retrieve_all_general_logs_date_range(date_time[0], date_time[1])
+    if general_logs == {}:
+        general_logs = []
+    else:
+        general_logs = json.loads(general_logs)
+    
+    nids_logs = db_access.retrieve_all_nids_logs_date_range(date_time[0], date_time[1])
+    if nids_logs == {}:
+        nids_logs = []
+    else:
+        nids_logs = json.loads(nids_logs)
+
+    # general_logs = json.loads(db_access.retrieve_all_general_logs_date_range(date_time[0], date_time[1]))
+    # nids_logs = json.loads(db_access.retrieve_all_nids_logs_date_range(date_time[0], date_time[1]))
+
+    # general_logs = json.loads(db_access.retrieve_all_general_logs())
+    # nids_logs = json.loads(db_access.retrieve_all_nids_logs())
     """----db ----"""
     correlator = DataCorrelator()
     dataset = correlator.get_dataset(general_logs,nids_logs)
@@ -744,11 +760,27 @@ def rule_1():
 """
 api route for data correlation - rule 2 - one attacker vs one honeynode - attack multiple times, 5 nmap scans etc..
 """
-@app.route('/api/v1/data_correlation/rule_2/datatables')
+@app.route('/api/v1/data_correlation/rule_2/datatables', methods=['POST'])
 def rule_2():
+    date_time = request.form['datetimes'].split(" - ")
     """ Msg: Aaron Insert your db method here"""""" Msg: Aaron Insert your db method here"""
-    general_logs = json.loads(db_access.retrieve_all_general_logs())
-    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    general_logs = db_access.retrieve_all_general_logs_date_range(date_time[0], date_time[1])
+    if general_logs == {}:
+        general_logs = []
+    else:
+        general_logs = json.loads(general_logs)
+    
+    nids_logs = db_access.retrieve_all_nids_logs_date_range(date_time[0], date_time[1])
+    if nids_logs == {}:
+        nids_logs = []
+    else:
+        nids_logs = json.loads(nids_logs)
+
+    # general_logs = json.loads(db_access.retrieve_all_general_logs_date_range(date_time[0], date_time[0]))
+    # nids_logs = json.loads(db_access.retrieve_all_nids_logs_date_range(date_time[0], date_time[0]))
+
+    # general_logs = json.loads(db_access.retrieve_all_general_logs())
+    # nids_logs = json.loads(db_access.retrieve_all_nids_logs())
     """----db ----"""
     correlator = DataCorrelator()
     dataset = correlator.get_dataset(general_logs,nids_logs)
@@ -762,11 +794,27 @@ def rule_2():
 """
 api route for data correlation - rule 3 - multiple attackers vs one honeynode 
 """
-@app.route('/api/v1/data_correlation/rule_3/datatables')
+@app.route('/api/v1/data_correlation/rule_3/datatables', methods=['POST'])
 def rule_3():
+    date_time = request.form['datetimes'].split(" - ")
     """ Msg: Aaron Insert your db method here"""
-    general_logs = json.loads(db_access.retrieve_all_general_logs())
-    nids_logs = json.loads(db_access.retrieve_all_nids_logs())
+    general_logs = db_access.retrieve_all_general_logs_date_range(date_time[0], date_time[1])
+    if general_logs == {}:
+        general_logs = []
+    else:
+        general_logs = json.loads(general_logs)
+    
+    nids_logs = db_access.retrieve_all_nids_logs_date_range(date_time[0], date_time[1])
+    if nids_logs == {}:
+        nids_logs = []
+    else:
+        nids_logs = json.loads(nids_logs)
+
+    # general_logs = json.loads(db_access.retrieve_all_general_logs_date_range(date_time[0], date_time[0]))
+    # nids_logs = json.loads(db_access.retrieve_all_nids_logs_date_range(date_time[0], date_time[0]))
+
+    # general_logs = json.loads(db_access.retrieve_all_general_logs())
+    # nids_logs = json.loads(db_access.retrieve_all_nids_logs())
     """----db ----"""
     correlator = DataCorrelator()
     dataset = correlator.get_dataset(general_logs,nids_logs)

@@ -10,6 +10,7 @@
             <div class="card-header">
               <h3 class="card-title">Incident Time Window</h3>
             </div>
+            <form id="correlationForm" method="POST">
               <div class="card-body">
                 <div class="row">
                   <div class="form-group col-md-12">
@@ -20,8 +21,9 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button id="submitbtn" onclick="correlate()" class="btn btn-primary btn-sm">Search</button>
+                <button id="submitbtn" class="btn btn-primary btn-sm">Search</button>
               </div>
+            </form>
           </div>
           <!-- /.card -->
         </div>
@@ -55,6 +57,36 @@
 
   function correlate(){
     console.log($("#dateRange").val());
+    // this is the id of the form
+    $("#correlationForm").submit(function(e) {
+      e.preventDefault(); // avoid to execute the actual submit of the form.
+      var form = $(this);
+      
+      $.ajax({
+        type: "POST",
+        url: "/api/v1/data_correlation/rule_1/datatables",
+        data: form.serialize(), // serializes the form's elements.
+        success: function(data)
+        {
+            alert(data); // show response from the php script.
+        }
+      });
+
+    });
   }
+  $("#correlationForm").submit(function(e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    var form = $(this);
+    
+    $.ajax({
+      type: "POST",
+      url: "/api/v1/data_correlation/rule_1/datatables",
+      data: form.serialize(), // serializes the form's elements.
+      success: function(data){
+          console.log(data);
+      }
+    });
+
+  });
 </script>
 {% endblock %}

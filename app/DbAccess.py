@@ -588,3 +588,29 @@ class DbAccess:
             my_query = self.query_db(cur)
             json_data = json.dumps(my_query, default=self.myconverter)
         return json_data
+
+    def retrieve_all_general_logs_date_range(self, start_date, end_date):
+        json_data = {}
+
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = f"SELECT * FROM general_logs where capture_date between '{start_date}' and '{end_date}';"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+        return json_data
+
+    def retrieve_all_nids_logs_date_range(self, start_date, end_date):
+        json_data = {}
+
+        # Mysql connection
+        cur = self.mysql.connection.cursor()
+
+        sql = f"SELECT * FROM nids_logs where `date` between '{start_date}' and '{end_date}';"
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+        return json_data

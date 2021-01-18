@@ -2,71 +2,73 @@
 
 {% block mainContent %}
         <!-- Small boxes (Stat box) -->
-        <div class="row h-100 justify-content-center align-items-center">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 id="totalNodes"></h3>
+        <div class="col-sm-12" style="padding-bottom: 8%; padding-top: 8%;">
+          <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3 id="totalNodes"></h3>
 
-                <p>Deployed Nodes</p>
+                  <p>Deployed Nodes</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="/nodes" class="small-box-footer">Nodes Listing <i class="fas fa-arrow-circle-right"></i></a>
               </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="/nodes" class="small-box-footer">Nodes Listing <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3 id="activeNodes"></h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3 id="activeNodes"></h3>
 
-                <p>Active Nodes</p>
+                  <p>Active Nodes</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/deactivatenode" class="small-box-footer">Deactivate Node <i class="fas fa-arrow-circle-right"></i></a>
               </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="/deactivatenode" class="small-box-footer">Deactivate Node <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+            <!-- ./col -->
           </div>
-          <!-- ./col -->
+          <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3 id="inactiveNodes"></h3>
+
+                  <p>Inactive Nodes</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="/addnode" class="small-box-footer">Add Node <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3 id="noAttacks"></h3>
+
+                  <p>Number of Attacks</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="/log" class="small-box-footer">Logs <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+          </div>
+          <!-- /.row -->
         </div>
-        <div class="row h-100 justify-content-center align-items-center">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3 id="inactiveNodes"></h3>
-
-                <p>Inactive Nodes</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="/addnode" class="small-box-footer">Add Node <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3 id="noAttacks"></h3>
-
-                <p>Number of Attacks</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="/log" class="small-box-footer">Logs <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-        <!-- /.row -->
 {% endblock %}
 {% block script %}
 <script>
