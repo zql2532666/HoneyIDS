@@ -35,6 +35,29 @@
       </div>
     </div>
 
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Raw Log</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly
+              style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
+
+              </textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -161,9 +184,15 @@
       return '<button type="button" onclick="populateModalTable(`' + JSON.stringify(data).replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Dataset" style="margin:auto;display:block">View Dataset</button>';
     },
     raw_logs: function (data, type, row, meta) {
-      return '<button type="button" onclick="viewLog(`' + data.replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
+      return '<button type="button" onclick="viewLog(`' + JSON.stringify(data).replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal2" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
     }
   };
+
+  function viewLog(input) {
+    var obj = JSON.parse(input.replace(/'/g, '"'));
+    var pretty = JSON.stringify(obj, null, "\t");
+    $('#target-command').val(pretty);
+  }
 
   var table, table2, table3, modalTable;
   var rule1Data = [];
@@ -239,7 +268,8 @@
   });
 
   function populateModalTable(data){
-    modalTable.clear().rows.add(JSON.parse(data.replace(/'/g, '"'))).draw();
+    console.log(data.replace(/'/g, '"').replaceAll("\"{","{").replaceAll("}\"","}"));
+    modalTable.clear().rows.add(JSON.parse(data.replace(/'/g, '"').replaceAll("\"{","{").replaceAll("}\"","}"))).draw();
   }
 
   table = $('#rule1').DataTable({
