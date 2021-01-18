@@ -149,8 +149,7 @@
         "colvis"
       ],
       "ajax": "/api/v1/general_logs/datatables",
-      // "rowId": "log_id",
-      "serverSide": true,
+      'stateSave': true,
       "columns": [
         { "data": "log_id" }, //newline
         { "data": "capture_date" },
@@ -167,8 +166,7 @@
           "orderable": false,
           'targets': 0,
           'checkboxes': {
-            'selectRow': true,
-            'stateSave': true
+            'selectRow': true
           }
         }, //newline
         { "className": "dt-center", "targets": "_all" },
