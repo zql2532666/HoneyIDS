@@ -22,6 +22,13 @@
     background-color: grey;
   }
 </style>
+
+<div hidden>
+  <form id="logDataForm">
+    <input id="logData" type="text" name="logData">
+  </form>
+</div>
+
 <div class="row">
   <div class="col-12">
     <div class="card card-secondary">
@@ -34,6 +41,7 @@
         <table id="example" class="table table-bordered table-hover">
           <thead>
             <tr>
+              <th></th>
               <th>Session</th>
               <th>Time</th>
               <th>Attacker IP</th>
@@ -43,6 +51,7 @@
           </thead>
           <tfoot>
             <tr>
+              <th></th>
               <th>Session</th>
               <th>Time</th>
               <th>Attacker IP</th>
@@ -214,7 +223,9 @@
 
     $('#example tfoot th').each( function () {
         var title = $(this).text();
-        $(this).html( '<input style="width:100%" type="text" placeholder="Search '+title+'" />' );
+        if (title != "") {
+          $(this).html('<input style="width:100%" type="text" placeholder="Search ' + title + '" />');
+        }
     } );
 
     table = $('#example').DataTable({
@@ -236,10 +247,40 @@
       "responsive": true,
       "autoWidth": false,
       "buttons": [
-        "colvis"
+        "colvis",
+        {
+          text: 'Delete Logs',
+          className: "btn-danger",
+          action: function ( e, dt, node, config ) {
+            var rows_selected = table.column(0).checkboxes.selected();
+            $('#logData').val(rows_selected.join(","));
+            console.log($('#logData').val());
+
+            if($('#logData').val()){
+              $.ajax({
+                type: "DELETE",
+                url: "/api/v1/session_logs",
+                data: $('#logDataForm').serialize(),
+                success: function(data){
+                  //$(".showSuccess").prop("hidden", false);
+                  alert("Logs Deleted");
+                },
+                error: function (jqXHR, textStatus, errorThrown) { 
+                  //$(".showError").prop("hidden", false);
+                  alert("Error");
+                }
+              });
+            }else{
+              alert("Please select logs to delete.");
+            }
+
+          }
+        }
       ],
       "ajax": "/api/v1/session_logs/datatables",
+      'stateSave': true,
       "columns": [
+        { "data": "session_log_id" },
         { "data": "session" },
         { "data": "start_time" },
         { "data": "source_ip" },
@@ -247,10 +288,19 @@
         { "data": "commands", "render": CustomRenders.messageCount},
       ],
       "columnDefs": [
-          {"className": "dt-center", "targets": "_all"},
-      ]
-
-      
+        { //newline
+          "orderable": false,
+          'targets': 0,
+          'checkboxes': {
+            'selectRow': true
+          }
+        }, //newline
+        {"className": "dt-center", "targets": "_all"},
+      ],
+      'select': { //newline
+        'style': 'multi'
+      },
+      "order": [[0, 'asc']] //newline
     });
      
     $('#example').on('click', 'tbody tr', function () {

@@ -52,12 +52,19 @@
   </div>
 </div>
 
+<div hidden>
+  <form id="logDataForm">
+    <input id="logData" type="text" name="logData">
+  </form>
+</div>
+
 <div class="row">
   <div class="col-12">
     <div id="hide-column" style="margin-bottom: 20px;"></div>
     <table id="example" class="table table-bordered table-hover display">
       <thead>
         <tr>
+          <th></th>
           <th>Date</th>
           <th>Honeynode Name</th>
           <th>Attacker IP</th>
@@ -69,6 +76,7 @@
       </thead>
       <tfoot>
         <tr>
+          <th></th>
           <th>Date</th>
           <th>Honeynode Name</th>
           <th>Attacker IP</th>
@@ -130,10 +138,40 @@
       "responsive": true,
       "autoWidth": false,
       "buttons": [
-        "colvis"
+        "colvis",
+        {
+          text: 'Delete Logs',
+          className: "btn-danger",
+          action: function ( e, dt, node, config ) {
+            var rows_selected = table.column(0).checkboxes.selected();
+            $('#logData').val(rows_selected.join(","));
+            console.log($('#logData').val());
+
+            if($('#logData').val()){
+              $.ajax({
+                type: "DELETE",
+                url: "/api/v1/snort_logs",
+                data: $('#logDataForm').serialize(),
+                success: function(data){
+                  //$(".showSuccess").prop("hidden", false);
+                  alert("Logs Deleted");
+                },
+                error: function (jqXHR, textStatus, errorThrown) { 
+                  //$(".showError").prop("hidden", false);
+                  alert("Error");
+                }
+              });
+            }else{
+              alert("Please select logs to delete.");
+            }
+
+          }
+        }
       ],
       "ajax": "/api/v1/nids_logs/datatables",
+      'stateSave': true,
       "columns": [
+        { "data": "nids_log_id" },
         { "data": "date" },
         { "data": "honeynode_name" },
         { "data": "source_ip" },
@@ -143,10 +181,21 @@
         { "data": "raw_logs", "render": CustomRenders.raw_logs }
       ],
       "columnDefs": [
+        { //newline
+          "orderable": false,
+          'targets': 0,
+          'checkboxes': {
+            'selectRow': true
+          }
+        }, //newline
         { "className": "dt-center", "targets": "_all" },
-        { "width": '13%', "targets": 0 },
-        { "width": '13%', "targets": 6 },
+        { "width": '13%', "targets": 1 }, //original 0
+        { "width": '13%', "targets": 7 }, //original 6
       ],
+      'select': { //newline
+        'style': 'multi'
+      },
+      "order": [[0, 'asc']] //newline
     });
 
   });
