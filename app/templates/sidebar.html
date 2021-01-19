@@ -26,10 +26,10 @@
       <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-        {{ checkDropdownDashboard(request.endpoint) }}
+        <!-- {{ checkDropdownDashboard(request.endpoint) }} -->
         <!-- <li class="nav-item has-treeview menu-open">
           <a href="#" class="nav-link active"> -->
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <!-- <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
               <i class="right fas fa-angle-left"></i>
@@ -40,12 +40,15 @@
               {{ nav_link('index', 'Dashboard', 'far fa-circle') }}
             </li>
             <li class="nav-item">
-              {{ nav_link('index2', 'Data Correlation', 'far fa-circle') }}
-            </li>
-            <li class="nav-item">
               {{ nav_link('index3', 'Dashboard v3', 'far fa-circle') }}
             </li>
           </ul>
+        </li> -->
+        <li class="nav-item">
+          {{ nav_link('index', 'Dashboard', 'fas fa-tachometer-alt') }}
+        </li>
+        <li class="nav-item">
+          {{ nav_link('index2', 'Data Correlation', 'fas fa-tachometer-alt') }}
         </li>
         <li class="nav-item">
           {{ nav_link('deploy', 'Deploy', 'fas fa-tachometer-alt', '', '') }}
@@ -82,7 +85,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              {{ nav_link('log', 'General Logs', 'far fa-circle', '', '') }}
+              {{ nav_link('log', 'Honeypot Logs', 'far fa-circle', '', '') }}
             </li>
             <li class="nav-item">
               {{ nav_link('snort_log', 'NIDS Logs', 'far fa-circle', '', '') }}

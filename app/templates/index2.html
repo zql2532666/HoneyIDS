@@ -61,8 +61,8 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class = "col-md-2"></div>
-        <div class="col-md-8">
+        <div class = "col-md-4"></div>
+        <div class="col-md-4">
           <div class="card card-secondary">
             <div class="card-header">
               <h3 class="card-title">Incident Time Window</h3>
@@ -92,17 +92,16 @@
           <div class="col-12">
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">One Attacker Attacking Multiple Honeynodes</h3>
+                <h3 class="card-title">One Attacker Attacking One Honeynode Multiple Times</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <div id="hide-column" style="margin-bottom: 20px;"></div>
-                <table id="rule1" class="table table-bordered table-hover">
+                <table id="rule2" class="table table-bordered table-hover">
                   <thead>
                     <tr>
                       <th>Attacker IP</th>
-                      <th>Honeynode IPs</th>
-                      <th>Honeynode Names</th>
+                      <th>Honeynode IP</th>
                       <th>Log Dataset Used</th>
                     </tr>
                   </thead>
@@ -118,16 +117,17 @@
           <div class="col-12">
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">One Attacker Attacking One Honeynode Multiple Times</h3>
+                <h3 class="card-title">One Attacker Attacking Multiple Honeynodes</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <div id="hide-column" style="margin-bottom: 20px;"></div>
-                <table id="rule2" class="table table-bordered table-hover">
+                <table id="rule1" class="table table-bordered table-hover">
                   <thead>
                     <tr>
                       <th>Attacker IP</th>
-                      <th>Honeynode IP</th>
+                      <th>Honeynode IPs</th>
+                      <th>Honeynode Names</th>
                       <th>Log Dataset Used</th>
                     </tr>
                   </thead>
@@ -204,6 +204,7 @@
   $(function() {
     $('input[name="datetimes"]').daterangepicker({
       timePicker: true,
+      alwaysShowCalendars: true,
       timePickerSeconds: true,
       startDate: moment().startOf('hour'),
       endDate: moment().startOf('hour').add(32, 'hour'),
