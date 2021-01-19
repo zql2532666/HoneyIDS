@@ -63,7 +63,6 @@ sed -i "s/SERVER_IP:/SERVER_IP: $SERVER_IP/g" honeyagent.conf
 cd /opt
 git clone https://github.com/zql2532666/drupot.git
 cd drupot
-git checkout v0.2.4
 
 /usr/local/go/bin/go build
 
