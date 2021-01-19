@@ -21,15 +21,17 @@ DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 systemctl disable apt-daily-upgrade.service || true
 
+sudo rm /var/lib/dpkg/lock* || true
+sudo dpkg --configure -a || true
+
 apt update
 
 sudo rm /var/lib/dpkg/lock* || true
 sudo dpkg --configure -a || true
 
-sudo apt install -y python-pip
-pip install -U pip
 
-apt-get -y install git supervisor python3-pip curl
+apt-get -y install git supervisor python-pip python3-pip curl
+pip install -U pip
 pip install virtualenv
 pip install configparser
 pip install requests
