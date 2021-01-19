@@ -71,7 +71,7 @@ class DbAccess:
         # Mysql connection
         cur = self.mysql.connection.cursor()
 
-        sql = "select * from virus_total_logs"
+        sql = "SELECT *, nodes.honeynode_name FROM virus_total_logs, nodes where virus_total_logs.token = nodes.token;"
         result_value = cur.execute(sql)
         if result_value > 0:
             my_query = self.query_db(cur)
