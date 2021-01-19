@@ -679,7 +679,10 @@ api route for deleting general logs
 def delete_general_log():
     if request.form['logData']:
         data = request.form['logData']
-        result_value = db_access.delete_general_logs_by_id(data)
+        data_list = data.split(',')
+        print(type(data_list))
+        print(data_list)
+        result_value = db_access.delete_general_logs_by_id(data_list)
 
         if result_value == 0:
                 abort(404)
@@ -696,7 +699,10 @@ api route for deleting snort logs
 def delete_snort_log():
     if request.form['logData']:
         data = request.form['logData']
-        result_value = db_access.delete_snort_logs_by_id(data)
+        data_list = data.split(',')
+        print(type(data_list))
+        print(data_list)
+        result_value = db_access.delete_snort_logs_by_id(data_list)
 
         if result_value == 0:
                 abort(404)
@@ -714,7 +720,10 @@ api route for deleting session logs
 def delete_session_log():
     if request.form['logData']:
         data = request.form['logData']
-        result_value = db_access.delete_session_logs_by_id(data)
+        data_list = data.split(',')
+        print(type(data_list))
+        print(data_list)
+        result_value = db_access.delete_session_logs_by_id(data_list)
 
         if result_value == 0:
                 abort(404)
@@ -732,7 +741,10 @@ api route for deleting virus total logs
 def delete_virus_total_log():
     if request.form['logData']:
         data = request.form['logData']
-        result_value = db_access.delete_vt_logs_by_id(data)
+        data_list = data.split(',')
+        print(type(data_list))
+        print(data_list)
+        result_value = db_access.delete_vt_logs_by_id(data_list)
 
         if result_value == 0:
                 abort(404)
