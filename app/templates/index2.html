@@ -87,80 +87,82 @@
       </div>
       <!-- /.row -->
 
-      <div class="row">
-        <div class="col-12">
-          <div class="card card-secondary">
-            <div class="card-header">
-              <h3 class="card-title">One Attacker Attacking Multiple Honeynodes</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div id="hide-column" style="margin-bottom: 20px;"></div>
-              <table id="rule1" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Attacker IP</th>
-                    <th>Honeynode IPs</th>
-                    <th>Honeynode Names</th>
-                    <th>Log Dataset Used</th>
-                  </tr>
-                </thead>
-              </table>
+      <div class="toShow" hidden>
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">One Attacker Attacking Multiple Honeynodes</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div id="hide-column" style="margin-bottom: 20px;"></div>
+                <table id="rule1" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Attacker IP</th>
+                      <th>Honeynode IPs</th>
+                      <th>Honeynode Names</th>
+                      <th>Log Dataset Used</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
           </div>
+          <!-- /.col -->
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+        <!-- /.row -->
 
-      <div class="row">
-        <div class="col-12">
-          <div class="card card-secondary">
-            <div class="card-header">
-              <h3 class="card-title">One Attacker Attacking One Honeynode Multiple Times</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div id="hide-column" style="margin-bottom: 20px;"></div>
-              <table id="rule2" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Attacker IP</th>
-                    <th>Honeynode IP</th>
-                    <th>Log Dataset Used</th>
-                  </tr>
-                </thead>
-              </table>
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">One Attacker Attacking One Honeynode Multiple Times</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div id="hide-column" style="margin-bottom: 20px;"></div>
+                <table id="rule2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Attacker IP</th>
+                      <th>Honeynode IP</th>
+                      <th>Log Dataset Used</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
           </div>
+          <!-- /.col -->
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+        <!-- /.row -->
 
-      <div class="row">
-        <div class="col-12">
-          <div class="card card-secondary">
-            <div class="card-header">
-              <h3 class="card-title">Multiple Attackers Attacking One Honeynode</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="rule3" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Attacker IPs</th>
-                    <th>Honeynode IP</th>
-                    <th>Log Dataset Used</th>
-                  </tr>
-                </thead>
-              </table>
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">Multiple Attackers Attacking One Honeynode</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="rule3" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Attacker IPs</th>
+                      <th>Honeynode IP</th>
+                      <th>Log Dataset Used</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
           </div>
+          <!-- /.col -->
         </div>
-        <!-- /.col -->
+        <!-- /.row -->
       </div>
-      <!-- /.row -->
       
     </section>
     <!-- /.content -->
@@ -223,6 +225,8 @@
   });
 
   $("#correlationForm").submit(function(e) {
+    $(".toShow").prop("hidden", false);
+
     e.preventDefault(); // avoid to execute the actual submit of the form.
     var form = $(this);
     
@@ -362,7 +366,7 @@
     ],
     "columnDefs": [
       { "className": "dt-center", "targets": "_all" },
-      { "width": '13%', "targets": 6 },
+      { "width": '18%', "targets": 6 },
     ],
   });
 
