@@ -235,6 +235,7 @@ class DataCorrelator():
                     attacker_ip: "x.x.x.x",
                     honeynode_ip: "y.y.y.y",
                     log_list = [log1,log2,log3]
+                    honeynode_name: "abc"
                 }
             ]
         """
@@ -244,6 +245,11 @@ class DataCorrelator():
             parsed_data["attacker_ip"] = key[0]
             parsed_data["honeynode_ip"] = key[1]
             parsed_data["log_list"] = list()
+            first_log = cd[key][0]
+            parsed_data["honeynode_name"] = first_log["honeynode_name"]
+            print("\n\nRule 2")
+            print(f"parsed_data_honeynode_name: {parsed_data['honeynode_name']}")
+            print("\n\n")
             for x in cd[key]:
                 parsed_data["log_list"].append(x["original_log"])
             final_data.append(parsed_data)
@@ -256,7 +262,8 @@ class DataCorrelator():
             {
                 honeynode_ip: "x.x.x.x",
                 attacker_ip_list: ["a.a.a.a","b.b.b.b"],
-                log_list: [log_1,log_2,log_3]
+                log_list: [log_1,log_2,log_3],
+                honeynode_name = "abc"
             }
         ]
         """
@@ -266,6 +273,11 @@ class DataCorrelator():
             parsed_data["honeynode_ip"] = key
             parsed_data["attacker_ip_list"] = cd[key][0]
             parsed_data["log_list"] = list()
+            first_log = cd[key][1][0]
+            parsed_data["honeynode_name"] = first_log["honeynode_name"]
+            print("\n\nRule 3")
+            print(f"parsed_data_honeynode_name: {parsed_data['honeynode_name']}")
+            print("\n\n")
             for x in cd[key][1]:
                 parsed_data["log_list"].append(x["original_log"])
             if len(parsed_data["attacker_ip_list"]) > 1:

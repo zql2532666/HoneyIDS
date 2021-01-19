@@ -789,6 +789,7 @@ def rule_2():
     # correlated_data = []
     datatable_dict = dict()
     datatable_dict["data"] = correlated_data
+    # print(datatable_dict)
     return datatable_dict
 
 """
@@ -823,6 +824,7 @@ def rule_3():
     # correlated_data = []
     datatable_dict = dict()
     datatable_dict["data"] = correlated_data
+    # print(datatable_dict)
     return datatable_dict
 
 """
