@@ -221,7 +221,7 @@ def parse_shockpot_logs(identifier, payload):
     general_log_data_dict['destination_port'] = payload["dest_port"]
     general_log_data_dict['protocol'] = "tcp"
     general_log_data_dict['token'] = identifier
-    general_log_data_dict['raw_logs'] = json.dumps(payload).replace("\\", "").replace("\'", "")
+    general_log_data_dict['raw_logs'] = json.dumps(payload).replace('\\', '\\\\').replace("\'", "").replace("\\\"", "")
 
     return [(general_log_data_dict, 'general_log')]
 
