@@ -21,14 +21,18 @@ SUBNET=$(ifconfig $INTERFACE | grep "Mask:" | awk '{print $4}' | cut -d ':' -f 2
 DEPLOY_DATE=$(date +"%Y-%m-%d %T")
 
 # install ruby 2.4, default version on ubuntu 16.04 is 2.3, which is not compatible with some packages used by sticky_elephant
+rm /var/lib/dpkg/lock* || true
+dpkg --configure -a || true
+
 apt-get install -y software-properties-common
 apt-add-repository -y ppa:brightbox/ruby-ng
 systemctl disable apt-daily-upgrade.service || true
 
 apt update
 
-sudo rm /var/lib/dpkg/lock* || true
-sudo dpkg --configure -a || true
+rm /var/lib/apt/lists/lock || true
+rm /var/lib/dpkg/lock* || true
+dpkg --configure -a || true
 apt-get install -y ruby2.4 ruby2.4-dev
 
 # install git and supervisor
