@@ -32,6 +32,7 @@ class DataCorrelator():
     def get_dataset(self,general_logs,nids_logs):
         dataset = []
         for log in general_logs:
+            log["date"] = log["capture_date"]
             data = {
                 "date": log["capture_date"],
                 "source_ip": log["source_ip"],
