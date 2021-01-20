@@ -178,7 +178,7 @@
         // Apply the search
         this.api().columns().every(function () {
           var that = this;
-
+          that.search("").draw();
           $('input', this.footer()).on('keyup change clear', function () {
             if (that.search() !== this.value) {
               that
