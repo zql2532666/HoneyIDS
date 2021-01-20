@@ -96,7 +96,7 @@ def index3():
 
 @app.route("/deploy", methods=['GET', 'POST'])
 def deploy():
-    return render_template("deploy.html", title="Honeypot Deployment")
+    return render_template("deploy.html", title="Honeypot Deployment", web_server_ip=WEB_SERVER_IP)
 
 @app.route("/nodes")
 def nodes():

@@ -38,6 +38,7 @@
           </div>
           <!-- /.card -->
         </div>
+
         <div class="col-md-6">
           <div class="card card-secondary h-100">
             <div class="card-header">
@@ -70,26 +71,56 @@
 
         <div class="col-md-6" style="margin-top: 25px; margin-bottom: 25px;">
           <div class="card card-secondary h-100">
+
             <div class="card-header">
               <h3 class="card-title">Troubleshooting</h3>
-
             </div>
+
             <div class="card-body">
               <div class="form-group">
-                <label>Status Checking</label>
-                <p style="margin:0px;">To deploy, copy and paste the command below into the terminal of your machine</p>
+                <label>Checking Connectivity With The C2 Server</label>
+                <p style="margin:0px;">
+                  Run the following ping command on the honey node to check if the honey node is able to reach the C2 server.
+                </p>
                 <div class="form-group">
-                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">
-                  sudo supervisorctl status all
-                  </textarea>
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">ping {{ web_server_ip }}</textarea>
                 </div>
               </div>
+
               <div class="form-group">
-                <label for="command">Restarting The Honeynode Processes</label>
-                <p style="margin:0px;">To deploy, copy and paste the command below into the terminal of your machine</p>
+                <label>Checking The Status Of The Honey Node Processes</label>
+                <p style="margin:0px;">
+                  The following command will display the status of Snort, the honeypot process and Honeyagent when it is run on the honey node. 
+                  If everything works well, you should see their status being displayed as "RUNNING".
+                </p>
                 <div class="form-group">
-                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">
-                  sudo supervisorctl restart all
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo supervisorctl status all</textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="command">Restarting The Honey Node Processes</label>
+                <p style="margin:0px;">
+                  If any of the honeynode processes (Snort, Honeyagent and the honeypot process) does not have a status of "RUNNING", try running the following command on the honeynode to restart it. &#13;&#10;
+                  (Losing connectivity to the HPfeeds broker running on the C2 server may cause Snort and the honeypot process to stop running)
+                </p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo supervisorctl restart &lt;Process_Name&gt;</textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="command">Resolving Package Manager Issues During Deployment</label>
+                <p style="margin:0px;">
+                  If you encounter the following error when running the deployment scripts on the honey node: <br> <br>
+                  E: Could not get lock /var/lib/dpkg/lock-frontend - open (11: Resource temporarily unavailable)  <br>
+                  E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend),  <br>
+                  is another process using it?  <br><br>
+
+                  Run the commands shown below to remove the package locks and run the main deployment script again.
+                </p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#13;&#10;sudo rm /var/lib/dpkg/lock*&#13;&#10;sudo dpkg --configure -a&#13;&#10;./main.sh
                   </textarea>
                 </div>
               </div>

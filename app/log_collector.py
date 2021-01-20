@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 from configparser import ConfigParser
 import os
+import random
 
 
 # run broker :
@@ -185,7 +186,7 @@ def parse_elastichoney_logs(identifier, payload):
     general_log_data_dict['capture_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     general_log_data_dict['honeynode_name'] = honeynode_name
     general_log_data_dict['source_ip'] = payload["source"]
-    general_log_data_dict['source_port'] = 0
+    general_log_data_dict['source_port'] = random.randint(20000, 30000)
     general_log_data_dict['destination_ip'] = payload["honeypot"]
     general_log_data_dict['destination_port'] = payload["headers"]['host'].split(':')[1]
     general_log_data_dict['protocol'] = "tcp"
@@ -236,7 +237,7 @@ def parse_shockpot_logs(identifier, payload):
     general_log_data_dict['capture_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     general_log_data_dict['honeynode_name'] = honeynode_name
     general_log_data_dict['source_ip'] = payload["source_ip"]
-    general_log_data_dict['source_port'] = 0
+    general_log_data_dict['source_port'] = random.randint(20000, 30000)
     general_log_data_dict['destination_ip'] = payload["dest_host"]
     general_log_data_dict['destination_port'] = payload["dest_port"]
     general_log_data_dict['protocol'] = "tcp"
@@ -267,6 +268,9 @@ def parse_sticky_elephant_logs(identifier, payload):
     
 
 def parse_dionaea_connection_logs(identifier, payload):
+    if len(payload['local_host']) == 0 or payload['local_port'] == 0:
+        return []
+
     general_log_data_dict = dict()
     honeynode_name = get_honeynode_name_by_token(identifier)
 
@@ -284,6 +288,10 @@ def parse_dionaea_connection_logs(identifier, payload):
 
 
 def parse_snort_nids_logs(identifier, payload):
+    if payload['source_ip'] == '0.0.0.0' or payload['destination_ip'].split('.')[-1] == '254':
+        return []
+
+
     nids_log_dict = dict()
     honeynode_name = get_honeynode_name_by_token(identifier)
 
@@ -348,13 +356,8 @@ def main():
         print("Payload:")
  
         payload_converted = json.loads(payload.decode())
-        # print(type(payload_converted))
         process_log_data(identifier, channel, payload_converted)
-        # print(general_log_data)
-        # print("\n")
 
-        # store the log to the database
-        # insert_general_log_to_database(general_log_data)
 
     def on_error(payload):
         hpc.stop()
