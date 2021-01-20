@@ -48,6 +48,26 @@ SECRET = 'collector'
 
 BRUTE_FORCE_LOG_TIME_WINDOW = 60 * 10  # 10 mins
 
+def get_honeynode_name_by_token(token):
+    # call the api /api/v1/honeynodes/<string:token> to retrieve single honeynode
+    response = requests.get(GET_NODE_API_ENDPOINT + token)
+    honeynode_data = response.json()
+    # print(honeynode_data)
+    if honeynode_data:
+        return honeynode_data[0]['honeynode_name']
+    else:
+        return " "
+
+
+def insert_log_to_database(log_data_dict, log_type):
+    if log_type not in LOG_API_ENDPOINTS.keys():
+        return 0
+    api_to_call = LOG_API_ENDPOINTS[log_type]
+    headers = {'content-type': 'application/json'}
+    response = requests.post(api_to_call, data=json.dumps(log_data_dict), headers=headers)
+    print(response.text)
+    return 1
+    
 
 def convert_time_format(time_string):
     # example of the format of time_string: {"2020-12-24T14:31:51.443015Z"}
@@ -312,27 +332,6 @@ def process_log_data(identifier, channel, payload):
             
         else:
             print("log insertion successful")
-
-
-def get_honeynode_name_by_token(token):
-    # call the api /api/v1/honeynodes/<string:token> to retrieve single honeynode
-    response = requests.get(GET_NODE_API_ENDPOINT + token)
-    honeynode_data = response.json()
-    # print(honeynode_data)
-    if honeynode_data:
-        return honeynode_data[0]['honeynode_name']
-    else:
-        return " "
-
-
-def insert_log_to_database(log_data_dict, log_type):
-    if log_type not in LOG_API_ENDPOINTS.keys():
-        return 0
-    api_to_call = LOG_API_ENDPOINTS[log_type]
-    headers = {'content-type': 'application/json'}
-    response = requests.post(api_to_call, data=json.dumps(log_data_dict), headers=headers)
-    print(response.text)
-    return 1
 
 
 def main():
