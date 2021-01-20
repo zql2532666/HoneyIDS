@@ -192,7 +192,16 @@
       "responsive": true,
       "autoWidth": false,
       "buttons": [
-        "colvis"
+        "colvis",
+        {
+          "extend": 'excel',
+          "text": 'Export Data',
+          "className": "btn-success",
+          "exportOptions": {
+            "columns": [ 1, 2, 3, 4, 5, 6 ],
+            "selected": true
+          }
+        }
       ],
       "ajax": "/api/v1/nids_logs/datatables",
       'stateSave': true,
