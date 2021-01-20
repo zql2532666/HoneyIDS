@@ -330,11 +330,13 @@
     });
      
     $('#example').on('click', 'tbody tr', function () {
-        $(".toShow").prop("hidden", false);
-        $('#example tbody > tr').removeClass('selected');
-        $(this).addClass('selected');
-        persistSelection( table.row(this).index() );
         var data = table.row( this ).data();
+        $('#example tbody > tr').removeClass('selected');
+        if (data) {
+          $(".toShow").prop("hidden", false);
+          $(this).addClass('selected');
+        }
+        persistSelection( table.row(this).index() );
         $('#startTime').html(data.start_time);
         $('#endTime').html(data.end_time);
 
