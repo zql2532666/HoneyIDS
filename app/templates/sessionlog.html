@@ -349,8 +349,8 @@
 
         var temp = JSON.parse(data.commands);
         temp.forEach(element => table2Data.push([element])); 
-        console.log(data.commands + " " + table2Data);
         table2.clear().rows.add(table2Data).draw();
+        console.log(table2Data);
         table2Data = [];
 
         var temp2 = JSON.parse(data.credentials);
@@ -428,18 +428,27 @@
 
   var start_date;
   var end_date;
+  var allowFilter = ['example']; // setup an array of the ids of tables that should be allowed for datetime filtering
   var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
-     var dateStart = parseDateValue(start_date);
-     var dateEnd = parseDateValue(end_date);
-     var evalDate= parseDateValue(aData[2]);
-       if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
-            ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
-            ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
-            ( dateStart <= evalDate && evalDate <= dateEnd ) )
-       {
-           return true;
-       }
-       return false;
+    var dateStart = parseDateValue(start_date);
+    var dateEnd = parseDateValue(end_date);
+    var evalDate= parseDateValue(aData[2]);
+
+    // check if current table is part of the allow list
+    if ( $.inArray( oSettings.nTable.getAttribute('id'), allowFilter ) == -1 )
+    {
+       // if not table should be ignored
+       return true;
+    }
+
+    if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+        ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+        ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+        ( dateStart <= evalDate && evalDate <= dateEnd ) )
+    {
+        return true;
+    }
+    return false;
  });
 
  function parseDateValue(rawDate) {
