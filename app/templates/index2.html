@@ -102,6 +102,7 @@
                     <tr>
                       <th>Attacker IP</th>
                       <th>Honeynode IP</th>
+                      <th>Honeynode Name</th>
                       <th>Log Dataset Used</th>
                     </tr>
                   </thead>
@@ -152,6 +153,7 @@
                     <tr>
                       <th>Attacker IPs</th>
                       <th>Honeynode IP</th>
+                      <th>Honeynode Name</th>
                       <th>Log Dataset Used</th>
                     </tr>
                   </thead>
@@ -311,6 +313,7 @@
     "columns": [
       { "data": "attacker_ip" },
       { "data": "honeynode_ip" },
+      { "data": "honeynode_name" },
       { "data": "log_list", "render": CustomRenders.modal },
     ],
     "columnDefs": [
@@ -331,6 +334,7 @@
     "columns": [
       { "data": "attacker_ip_list", "render": CustomRenders.listToReadable },
       { "data": "honeynode_ip" },
+      { "data": "honeynode_name" },
       { "data": "log_list", "render": CustomRenders.modal },
     ],
     "columnDefs": [
