@@ -67,6 +67,38 @@
           </div>
           <!-- /.card -->
         </div>
+
+        <div class="col-md-6" style="margin-top: 25px; margin-bottom: 25px;">
+          <div class="card card-secondary h-100">
+            <div class="card-header">
+              <h3 class="card-title">Troubleshooting</h3>
+
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Status Checking</label>
+                <p style="margin:0px;">To deploy, copy and paste the command below into the terminal of your machine</p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">
+                  sudo supervisorctl status all
+                  </textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="command">Restarting The Honeynode Processes</label>
+                <p style="margin:0px;">To deploy, copy and paste the command below into the terminal of your machine</p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">
+                  sudo supervisorctl restart all
+                  </textarea>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
       </div>
         <!-- Don't show for now -->
         <!-- <div class="col-md-6">
