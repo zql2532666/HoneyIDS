@@ -238,7 +238,9 @@ def parse_sticky_elephant_logs(identifier, payload):
     general_log_data_dict['destination_port'] = payload["dest_port"]
     general_log_data_dict['protocol'] = "tcp"
     general_log_data_dict['token'] = identifier
-    general_log_data_dict['raw_logs'] = json.dumps(payload).replace('\\', '')
+    if "query" in payload.keys():
+        payload["query"] = payload["query"].replace("'", '').replace('"', "").replace("\\", "").replace("\n", "")
+    general_log_data_dict['raw_logs'] = json.dumps(payload)
     # general_log_data_dict['raw_logs'] = json.dumps(payload)
 
     return [(general_log_data_dict, 'general_log')]
