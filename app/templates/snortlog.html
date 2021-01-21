@@ -24,6 +24,10 @@
     text-align: center;
   }
 
+  #example tr.selected {
+    background-color: #F0BA11;
+  }
+
   .buttons-columnVisibility.active {
     background-color: grey;
   }
@@ -139,6 +143,9 @@
 
   var CustomRenders = {
     raw_logs: function (data, type, row, meta) {
+      if (type === "exportcsv") {
+        return data;
+      }
       return '<button type="button" onclick="viewLog(`' + data.replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
     }
   };
@@ -195,11 +202,22 @@
         "colvis",
         {
           "extend": 'excel',
-          "text": 'Export Data',
+          "text": 'Export Spreadsheet',
           "className": "btn-success",
           "exportOptions": {
-            "columns": [ 1, 2, 3, 4, 5, 6 ],
-            "selected": true
+            "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "selected": true,
+            "orthogonal": "exportcsv"
+          }
+        },
+        {
+          "extend": 'csv',
+          "text": 'Export CSV',
+          "className": "btn-info",
+          "exportOptions": {
+            "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "selected": true,
+            "orthogonal": "exportcsv"
           }
         }
       ],
@@ -228,7 +246,7 @@
         { "width": '13%', "targets": 7 }, //original 6
       ],
       'select': { //newline
-        'style': 'multi'
+        'style': 'multi+shift'
       },
       "order": [[0, 'asc']] //newline
     });

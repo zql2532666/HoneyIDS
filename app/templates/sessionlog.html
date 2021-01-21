@@ -8,11 +8,7 @@
   p {
     margin: 0;
   }
-  td:hover {
-    cursor: pointer;
-  }
-  tr.selected {
-    /* background-color: #C6FFAB; */
+  #example tr.selected {
     background-color: #F0BA11;
   }
   th.dt-center {
@@ -80,6 +76,8 @@
               <th>Attacker IP</th>
               <th>Honeynode Name</th>
               <th>No. of Commands Entered</th>
+              <th>End Time</th>
+              <th>Credentials</th>
             </tr>
           </thead>
           <tfoot>
@@ -90,6 +88,8 @@
               <th>Attacker IP</th>
               <th>Honeynode Name</th>
               <th>No. of Commands Entered</th>
+              <th></th>
+              <th></th>
             </tr>
           </tfoot>
         </table>
@@ -219,7 +219,10 @@
 <script>
   var CustomRenders = {
     messageCount: function (data, type, row, meta) {
-      return JSON.parse(data).length
+      if (type === "exportcsv") {
+        return JSON.parse(data);
+      }
+      return JSON.parse(data).length;
     }
   };
 
@@ -230,25 +233,6 @@
 
   function loadButton() {
     $('#hide-column').append(table.buttons().container());
-  }
-
-  function selectPersistedRows(table){
-    if (!(sessionStorage.rowKeyStore))
-      return;
-    
-    var rowKeys = JSON.parse(sessionStorage.rowKeyStore);
-    for (var key in rowKeys)
-    {
-      $(table.row(key).node()).addClass('selected');
-    }
-  }
-
-  function persistSelection( index ){
-    var ss = sessionStorage;
-    ss.rowKeyStore = "{}";
-    var rowKeys = JSON.parse(ss.rowKeyStore);
-    rowKeys[index] = true;
-    ss.rowKeyStore = JSON.stringify(rowKeys);
   }
 
   $(function () {
@@ -307,13 +291,48 @@
           "text": 'Export Data',
           "className": "btn-success",
           "exportOptions": {
-            "columns": [ 1, 2, 3, 4, 5 ],
-            "selected": true
+            "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "selected": true,
+            "orthogonal": "exportcsv",
+            "format": {
+              header: function ( data, columnIdx ) {
+                if (columnIdx === 5) {
+                  console.log(columnIdx);
+                  return "Commands Entered";
+                }
+                if (columnIdx === 2) {
+                  return "Start Time";
+                }
+                return data;
+              }
+            }
+          }
+        },
+        {
+          "extend": 'csv',
+          "text": 'Export CSV',
+          "className": "btn-info",
+          "exportOptions": {
+            "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "selected": true,
+            "orthogonal": "exportcsv",
+            "format": {
+              header: function ( data, columnIdx ) {
+                if (columnIdx === 5) {
+                  console.log(columnIdx);
+                  return "Commands Entered";
+                }
+                if (columnIdx === 2) {
+                  return "Start Time";
+                }
+                return data;
+              }
+            }
           }
         }
       ],
-      "ajax": "/api/v1/session_logs/datatables",
       'stateSave': true,
+      "ajax": "/api/v1/session_logs/datatables",
       "columns": [
         { "data": "session_log_id" },
         { "data": "session" },
@@ -321,6 +340,8 @@
         { "data": "source_ip" },
         { "data": "honeynode_name" },
         { "data": "commands", "render": CustomRenders.messageCount},
+        { "data": "end_time" },
+        { "data": "credentials" },
       ],
       "columnDefs": [
         { //newline
@@ -331,21 +352,19 @@
           }
         }, //newline
         {"className": "dt-center", "targets": "_all"},
+        { "targets": [ 6, 7 ], "visible": false }
       ],
       'select': { //newline
-        'style': 'multi'
+        'style': 'multi+shift'
       },
       "order": [[0, 'asc']] //newline
     });
      
     $('#example').on('click', 'tbody tr', function () {
         var data = table.row( this ).data();
-        $('#example tbody > tr').removeClass('selected');
         if (data) {
           $(".toShow").prop("hidden", false);
-          $(this).addClass('selected');
         }
-        persistSelection( table.row(this).index() );
         $('#startTime').html(data.start_time);
         $('#endTime').html(data.end_time);
 
@@ -490,9 +509,7 @@
 
   setInterval(function () {
 
-    table.ajax.reload(function () {
-      selectPersistedRows(table);
-    }, false);
+    table.ajax.reload(null, false);
 
   }, 3000);
   
