@@ -58,6 +58,7 @@ apt --yes install \
 
 pip install configparser
 pip3 install watchdog
+pip3 install pathlib
 
 # fetching honeyagent script + config file from the server
 mkdir /opt/honeyagent

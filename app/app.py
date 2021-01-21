@@ -32,7 +32,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Heartbeats Server and HoneyNode Configuration
 config = ConfigParser()
-config.read(os.path.join(basedir, 'heartbeats_server.conf'))
+config.read(os.path.join(basedir, 'server.conf'))
 
 HBPORT = int(config['HEARTBEATS']['SERVER_HB_PORT']) 
 HELLO_INTERVAL = int(config['HEARTBEATS']['HELLO_INTERVAL'])   

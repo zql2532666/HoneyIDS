@@ -14,7 +14,7 @@ import random
 # hpfeeds-broker -e tcp:port=10000 --auth=auth.json --name=mybroker
 basedir = os.path.abspath(os.path.dirname(__file__))
 config = ConfigParser()
-config.read(os.path.join(basedir, 'heartbeats_server.conf'))
+config.read(os.path.join(basedir, 'server.conf'))
 
 WEB_SERVER_IP = config['WEB-SERVER']['SERVER_IP'] 
 WEB_SERVER_PORT = config['WEB-SERVER']['PORT']
