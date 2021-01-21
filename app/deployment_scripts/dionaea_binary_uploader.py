@@ -5,14 +5,21 @@ import requests
 import json
 import base64
 import hashlib
+import time
 from datetime import datetime
 from configparser import ConfigParser
 import os
 from pathlib import Path
 
+DIRS_TO_MONITOR = [
+r"/opt/dionaea/var/lib/dionaea/binaries", 
+r"/opt/dionaea/var/lib/dionaea/ftp/root",
+r"/opt/dionaea/var/lib/dionaea/http/root",
+r"/opt/dionaea/var/lib/dionaea/tftp/root",
+r"/opt/dionaea/var/lib/dionaea/sip/rtp",
+r"/opt/dionaea/var/lib/dionaea/upnp/root"
 
-DIONAEA_BINARY_FOLDER_PATH = r"/opt/dionaea/var/lib/dionaea/binaries"
-DIONAEA_FTP_FOLDER_PATH = r"/opt/dionaea/var/lib/dionaea/ftp/root"
+]
 HONEY_AGENT_CONFIG_PATH	= r"/opt/honeyagent/honeyagent.conf"
 
 config = ConfigParser()
@@ -42,9 +49,12 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
         if not "httpupload" in event.src_path:
             print("Watchdog received created event - % s" % event.src_path)
 
+            time.sleep(7) # preventing the script from reading the malware file before the malware file is fully uploaded
+
             with open(event.src_path, 'rb') as malware_file:
                 malware_file_base64 = base64.b64encode(malware_file.read())
-
+            
+            print(malware_file_base64)
             malware_file_base64_string = malware_file_base64.decode('utf-8')
 
             data = {
@@ -70,9 +80,9 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 if __name__ == "__main__": 
     try: 
        event_handler = Handler(['*'])
-       observer = watchdog.observers.Observer() 
-       observer.schedule(event_handler, path=DIONAEA_BINARY_FOLDER_PATH, recursive=True)
-       observer.schedule(event_handler, path=DIONAEA_FTP_FOLDER_PATH, recursive=True) 
+       observer = watchdog.observers.Observer()
+       for DIR in DIRS_TO_MONITOR: 
+          observer.schedule(event_handler, path=DIR, recursive=True) 
        observer.start() 
     except KeyboardInterrupt: 
         observer.stop() 
