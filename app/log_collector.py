@@ -208,6 +208,11 @@ def parse_wordpot_logs(identifier, payload):
     general_log_data_dict['destination_port'] = payload["dest_port"]
     general_log_data_dict['protocol'] = "tcp"
     general_log_data_dict['token'] = identifier
+    if "username" in payload.keys():
+        payload["username"] = payload["username"].replace("'", "").replace("\\", "")
+    if "password" in payload.keys():
+        payload["password"] = payload["password"].replace("'", "").replace("\\", "")
+
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
     return [(general_log_data_dict, 'general_log')]
@@ -225,6 +230,11 @@ def parse_drupot_logs(identifier, payload):
     general_log_data_dict['destination_port'] = payload["dest_port"]
     general_log_data_dict['protocol'] = "tcp"
     general_log_data_dict['token'] = identifier
+    if "agave_username" in payload.keys():
+        payload['agave_username'] = payload["agave_username"].replace("'", "").replace("\\", "")
+
+    if "agave_password" in payload.keys():
+        payload['agave_password'] = payload["agave_password"].replace("'", "").replace("\\", "")
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
     return [(general_log_data_dict, 'general_log')]
