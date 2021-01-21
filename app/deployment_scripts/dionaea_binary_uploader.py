@@ -18,8 +18,8 @@ r"/opt/dionaea/var/lib/dionaea/http/root",
 r"/opt/dionaea/var/lib/dionaea/tftp/root",
 r"/opt/dionaea/var/lib/dionaea/sip/rtp",
 r"/opt/dionaea/var/lib/dionaea/upnp/root"
-
 ]
+
 HONEY_AGENT_CONFIG_PATH	= r"/opt/honeyagent/honeyagent.conf"
 
 config = ConfigParser()
