@@ -338,5 +338,13 @@
     });
     table.ajax.reload(null, false);
   }
+
+  // refresh page only once when loaded (once every session)
+  window.onload = function() {
+    if(!sessionStorage.loadedSnort) {
+        sessionStorage.loadedSnort = "loaded";
+        window.location.reload();
+    }
+  }
 </script>
 {% endblock %}

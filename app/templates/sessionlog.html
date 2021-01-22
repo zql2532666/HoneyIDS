@@ -220,9 +220,17 @@
   var CustomRenders = {
     messageCount: function (data, type, row, meta) {
       if (type === "exportcsv") {
-        return JSON.parse(data);
+        return data; //.push(JSON.parse(row.logged_in)
       }
       return JSON.parse(data).length;
+    },
+    credentials: function (data, type, row, meta) {
+      if (type === "exportcsv") {
+        var tempCredential = JSON.parse(data);
+        tempCredential.push(JSON.parse(row.logged_in));
+        return JSON.stringify(tempCredential);
+      }
+      return data;
     }
   };
 
@@ -341,7 +349,7 @@
         { "data": "honeynode_name" },
         { "data": "commands", "render": CustomRenders.messageCount},
         { "data": "end_time" },
-        { "data": "credentials" },
+        { "data": "credentials", "render": CustomRenders.credentials },
       ],
       "columnDefs": [
         { //newline
@@ -553,6 +561,14 @@
     $(".toShow").prop("hidden", true);
     sessionStorage.rowKeyStore = "{}"; //clear tablestate
     table.ajax.reload(null, false);
+  }
+
+  // refresh page only once when loaded (once every session)
+  window.onload = function() {
+    if(!sessionStorage.loadedSession) {
+        sessionStorage.loadedSession = "loaded";
+        window.location.reload();
+    }
   }
 </script>
 {% endblock %}

@@ -345,5 +345,13 @@
     });
     table.ajax.reload(null, false);
   }
+
+  // refresh page only once when loaded (once every session)
+  window.onload = function() {
+    if(!sessionStorage.loadedLog) {
+        sessionStorage.loadedLog = "loaded";
+        window.location.reload();
+    }
+  }
 </script>
 {% endblock %}
