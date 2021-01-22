@@ -49,7 +49,7 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
         if not "httpupload" in event.src_path:
             print("Watchdog received created event - % s" % event.src_path)
 
-            time.sleep(7) # preventing the script from reading the malware file before the malware file is fully uploaded
+            time.sleep(3) # preventing the script from reading the malware file before the malware file is fully uploaded
 
             with open(event.src_path, 'rb') as malware_file:
                 malware_file_base64 = base64.b64encode(malware_file.read())
