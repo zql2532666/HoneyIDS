@@ -43,12 +43,12 @@ DEBIAN_FRONTEND=noninteractive apt-get -y install build-essential libpcap-dev li
 # Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-Vdd4DT/setuptools/
 # solution found: https://github.com/googleapis/google-cloud-python/issues/3884
 # pip install --upgrade pip
-pip install setuptools
+# pip install setuptools
 
 
 # pip install --upgrade distribute
-pip install distribute
-pip install virtualenv
+# pip install distribute
+# pip install virtualenv
 
 # Install hpfeeds and required libs...
 

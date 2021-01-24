@@ -30,9 +30,9 @@ apt update
 sudo rm /var/lib/dpkg/lock* || true
 sudo dpkg --configure -a || true
 
-apt-get -y install git python-pip supervisor python3-pip curl
-pip install -U pip
-pip install virtualenv
+apt-get -y install git python-pip supervisor python3-pip curl python-virtualenv
+# pip install -U pip
+# pip install virtualenv
 pip install configparser
 pip install requests
 

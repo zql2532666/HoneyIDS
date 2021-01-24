@@ -632,24 +632,30 @@ def retrieve_latest_bruteforce_log():
     print(f"/api/v1/latest_bruteforce_log:")
     if request.json:
         new_bruteforce_log = request.json
-        all_session_logs = json.loads(db_access.retrieve_all_session_logs())
+        all_session_logs = db_access.retrieve_all_session_logs()
 
-        bruteforce_logs = []
+        if all_session_logs:
+            
+            all_session_logs = json.loads(all_session_logs)
+            bruteforce_logs = []
 
-        for session_log in all_session_logs:
-            if (len(ast.literal_eval(session_log['credentials'])) > 0 and 
-                session_log['token'] == new_bruteforce_log['token'] and 
-                session_log['source_ip'] == new_bruteforce_log['peerIP']):
-                bruteforce_logs.append(session_log)
-                
-                print(f"Bruteforce log ==> \n {session_log}")
+            for session_log in all_session_logs:
+                if (len(ast.literal_eval(session_log['credentials'])) > 0 and 
+                    session_log['token'] == new_bruteforce_log['token'] and 
+                    session_log['source_ip'] == new_bruteforce_log['peerIP']):
+                    bruteforce_logs.append(session_log)
+                    
+                    print(f"Bruteforce log ==> \n {session_log}")
 
-        # bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
+            # bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
 
-        if len(bruteforce_logs) == 0:
-            return jsonify({"bruteforce_log_empty": True}), 201
+            if len(bruteforce_logs) == 0:
+                return jsonify({"bruteforce_log_empty": True}), 201
+            else:
+                return jsonify({"bruteforce_log_empty": False, "latest_bruteforce_log": json.dumps(bruteforce_logs[-1])}), 201
+
         else:
-            return jsonify({"bruteforce_log_empty": False, "latest_bruteforce_log": json.dumps(bruteforce_logs[-1])}), 201
+            return jsonify({"bruteforce_log_empty": True}), 201
 
     else:
         abort(404)
