@@ -26,7 +26,6 @@ dpkg --configure -a || true
 
 apt-get install -y software-properties-common
 apt-add-repository -y ppa:brightbox/ruby-ng
-systemctl disable apt-daily-upgrade.service || true
 
 rm /var/lib/apt/lists/lock || true
 rm /var/lib/dpkg/lock* || true
