@@ -11,6 +11,9 @@
   #example tr.selected {
     background-color: #F0BA11;
   }
+  #example tr.selectedRow {
+    background-color:  #c4a23f
+  }
   th.dt-center {
     text-align: center;
   }
@@ -243,6 +246,25 @@
     $('#hide-column').append(table.buttons().container());
   }
 
+  function selectPersistedRows(table){	
+    if (!(sessionStorage.rowKeyStore))	
+      return;	
+
+    var rowKeys = JSON.parse(sessionStorage.rowKeyStore);	
+    for (var key in rowKeys)	
+    {	
+      $(table.row(key).node()).addClass('selectedRow');	
+    }	
+  }	
+
+  function persistSelection( index ){	
+    var ss = sessionStorage;	
+    ss.rowKeyStore = "{}";	
+    var rowKeys = JSON.parse(ss.rowKeyStore);	
+    rowKeys[index] = true;	
+    ss.rowKeyStore = JSON.stringify(rowKeys);	
+  }
+
   $(function () {
     sessionStorage.rowKeyStore = "{}"; //clear tablestate
 
@@ -343,13 +365,13 @@
       "ajax": "/api/v1/session_logs/datatables",
       "columns": [
         { "data": "session_log_id" },
-        { "data": "session" },
-        { "data": "start_time" },
-        { "data": "source_ip" },
-        { "data": "honeynode_name" },
-        { "data": "commands", "render": CustomRenders.messageCount},
-        { "data": "end_time" },
-        { "data": "credentials", "render": CustomRenders.credentials },
+        { "data": "session", "className": "selectable" },
+        { "data": "start_time", "className": "selectable" },
+        { "data": "source_ip", "className": "selectable" },
+        { "data": "honeynode_name", "className": "selectable" },
+        { "data": "commands", "render": CustomRenders.messageCount, "className": "selectable" },
+        { "data": "end_time", "className": "selectable" },
+        { "data": "credentials", "render": CustomRenders.credentials, "className": "selectable" },
       ],
       "columnDefs": [
         { //newline
@@ -363,16 +385,20 @@
         { "targets": [ 6, 7 ], "visible": false }
       ],
       'select': { //newline
-        'style': 'multi+shift'
+        'style': 'multi+shift',
+        'selector': 'td:nth-child(1)'
       },
       "order": [[0, 'asc']] //newline
     });
      
-    $('#example').on('click', 'tbody tr', function () {
+    $('#example').on('click', 'tbody tr td.selectable', function () {
         var data = table.row( this ).data();
+        $('#example tbody > tr').removeClass('selectedRow');
         if (data) {
           $(".toShow").prop("hidden", false);
+          $(this).parents("tr").addClass("selectedRow");
         }
+        persistSelection( table.row(this).index() );
         $('#startTime').html(data.start_time);
         $('#endTime').html(data.end_time);
 
@@ -517,7 +543,9 @@
 
   setInterval(function () {
 
-    table.ajax.reload(null, false);
+    table.ajax.reload(function () {
+      selectPersistedRows(table);	
+    }, false);
 
   }, 3000);
   
