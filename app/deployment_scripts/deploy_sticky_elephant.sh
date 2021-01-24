@@ -28,12 +28,21 @@ apt-get install -y software-properties-common
 apt-add-repository -y ppa:brightbox/ruby-ng
 systemctl disable apt-daily-upgrade.service || true
 
+rm /var/lib/apt/lists/lock || true
+rm /var/lib/dpkg/lock* || true
+dpkg --configure -a || true
+
 apt update
 
 rm /var/lib/apt/lists/lock || true
 rm /var/lib/dpkg/lock* || true
 dpkg --configure -a || true
+
 apt-get install -y ruby2.4 ruby2.4-dev
+
+rm /var/lib/apt/lists/lock || true
+rm /var/lib/dpkg/lock* || true
+dpkg --configure -a || true
 
 # install git and supervisor
 apt-get -y install git supervisor curl python-pip python3-pip
