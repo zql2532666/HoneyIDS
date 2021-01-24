@@ -16,6 +16,7 @@ from DataCorrelation import *
 import pyminizip
 import warnings
 import base64
+import ast
 from threading import Thread
 import log_collector
 
@@ -628,20 +629,22 @@ api route for retrieving the latest cowrie bruteforce log based on token
 """
 @app.route("/api/v1/latest_bruteforce_log", methods=['POST'])
 def retrieve_latest_bruteforce_log():
-    # bruteforce_logs = list()
+    print(f"/api/v1/latest_bruteforce_log:")
     if request.json:
         new_bruteforce_log = request.json
         all_session_logs = json.loads(db_access.retrieve_all_session_logs())
 
-        # for session_log in all_session_logs:
-        #    if len(session_log['credentials']) > 0:
-        #        bruteforce_logs.append(session_log)
+        bruteforce_logs = []
 
-        bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
+        for session_log in all_session_logs:
+            if (len(ast.literal_eval(session_log['credentials'])) > 0 and 
+                session_log['token'] == new_bruteforce_log['token'] and 
+                session_log['source_ip'] == new_bruteforce_log['peerIP']):
+                bruteforce_logs.append(session_log)
+                
+                print(f"Bruteforce log ==> \n {session_log}")
 
-
-        print(f"/api/v1/latest_bruteforce_log:")
-        print(f"Bruteforce log ==> \n {bruteforce_logs}")
+        # bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
 
         if len(bruteforce_logs) == 0:
             return jsonify({"bruteforce_log_empty": True}), 201

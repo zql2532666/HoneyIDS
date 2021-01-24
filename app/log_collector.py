@@ -143,13 +143,9 @@ def parse_cowrie_logs(identifier, payload):
         return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
     elif len(payload['credentials']) > 0:  # meaning this is a bruteforce log
-        latest_bruteforce_log = json.loads(get_latest_cowrie_bruteforce_log(identifier, payload))
-
-        print(convert_time_format(payload['endTime']))
-        print(latest_bruteforce_log['end_time'])
-        time_elapsed_since_last_brutefoce_log = datetime.strptime(convert_time_format(payload['endTime']), "%Y-%m-%d %H:%M:%S") - datetime.strptime(latest_bruteforce_log['end_time'], "%Y-%m-%d %H:%M:%S")
-
-        if latest_bruteforce_log is None or (time_elapsed_since_last_brutefoce_log.total_seconds() > BRUTE_FORCE_LOG_TIME_WINDOW):  # meaning this is the first bruteforce log associated with this cowrie honeypot
+        latest_bruteforce_log = get_latest_cowrie_bruteforce_log(identifier, payload)
+        
+        if latest_bruteforce_log is None:  # meaning this is the first bruteforce log associated with this cowrie honeypot
             session_log_data_dict = dict()
             session_log_data_dict['token'] = identifier
             session_log_data_dict['honeynode_name'] = honeynode_name
@@ -170,11 +166,34 @@ def parse_cowrie_logs(identifier, payload):
             print(session_log_data_dict)
             return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
-        elif time_elapsed_since_last_brutefoce_log.total_seconds() <= BRUTE_FORCE_LOG_TIME_WINDOW:
-            print(type(latest_bruteforce_log['credentials']))
-            print(type(payload['credentials']))
-            update_bruteforce_log(identifier, payload['peerIP'], json.loads(latest_bruteforce_log['credentials']) + payload['credentials'], payload['endTime'])
-            return []
+        else:
+            latest_bruteforce_log_dict = json.loads(latest_bruteforce_log)
+            time_elapsed_since_last_brutefoce_log = datetime.strptime(convert_time_format(payload['endTime']), "%Y-%m-%d %H:%M:%S") - datetime.strptime(latest_bruteforce_log_dict['end_time'], "%Y-%m-%d %H:%M:%S")
+            if time_elapsed_since_last_brutefoce_log.total_seconds() > BRUTE_FORCE_LOG_TIME_WINDOW:
+                session_log_data_dict = dict()
+                session_log_data_dict['token'] = identifier
+                session_log_data_dict['honeynode_name'] = honeynode_name
+                session_log_data_dict['source_ip'] = payload["peerIP"]
+                session_log_data_dict['source_port'] = payload["peerPort"]
+                session_log_data_dict['destination_ip'] = payload["hostIP"]
+                session_log_data_dict['destination_port'] = payload["hostPort"]
+                session_log_data_dict['commands'] = payload['commands']
+                session_log_data_dict['logged_in'] = payload['loggedin']
+                session_log_data_dict['start_time'] = convert_time_format(payload['startTime'])
+                session_log_data_dict['end_time'] = convert_time_format(payload['endTime'])
+                session_log_data_dict['session'] = payload['session']
+                session_log_data_dict['urls'] = payload['urls']
+                session_log_data_dict['credentials'] = payload['credentials']
+                session_log_data_dict['version'] = payload['version']
+                session_log_data_dict['hashes'] = payload['hashes']
+                session_log_data_dict['unknown_commands'] = payload['unknownCommands']
+                print(session_log_data_dict)
+                return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
+
+            # elif time_elapsed_since_last_brutefoce_log.total_seconds() <= BRUTE_FORCE_LOG_TIME_WINDOW:
+            else:
+                update_bruteforce_log(identifier, payload['peerIP'], json.loads(latest_bruteforce_log_dict['credentials']) + payload['credentials'], payload['endTime'])
+                return []
 
     return [(general_log_data_dict, "general_log")]
 
