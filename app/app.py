@@ -640,9 +640,11 @@ def retrieve_latest_bruteforce_log():
             bruteforce_logs = []
 
             for session_log in all_session_logs:
+                print(type(session_log['commands']))
                 if (len(ast.literal_eval(session_log['credentials'])) > 0 and 
                     session_log['token'] == new_bruteforce_log['token'] and 
-                    session_log['source_ip'] == new_bruteforce_log['peerIP']):
+                    session_log['source_ip'] == new_bruteforce_log['peerIP'] and 
+                    len(ast.literal_eval(session_log['commands'])) == 0 ):
                     bruteforce_logs.append(session_log)
                     
                     print(f"Bruteforce log ==> \n {session_log}")
@@ -669,9 +671,8 @@ def update_bruteforce_log():
     if request.json:
         bruteforce_log_data = request.json
         print("/api/v1/update_bruteforce_log:")
-        print(bruteforce_log_data)
         result_value = db_access.update_bruteforce_log(bruteforce_log_data)
-
+        print(str(result_value) + " rows updated")
         if result_value == 0:
             abort(404)
 

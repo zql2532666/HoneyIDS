@@ -463,11 +463,12 @@ class DbAccess:
         cur = self.mysql.connection.cursor()
         
         token = bruteforce_log_data['token']
+        start_time = bruteforce_log_data['start_time']
         end_time = bruteforce_log_data['end_time']
         source_ip = bruteforce_log_data['source_ip']
         credentials = json.dumps(bruteforce_log_data['credentials'])
 
-        sql = f"update session_logs set end_time='{end_time}', credentials='{credentials}' where token = '{token}' and source_ip = '{source_ip}'"
+        sql = f"update session_logs set end_time='{end_time}', credentials='{credentials}' where token = '{token}' and source_ip = '{source_ip}' and start_time='{start_time}'"
 
         result_value = 0
 

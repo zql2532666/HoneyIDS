@@ -90,12 +90,13 @@ def get_latest_cowrie_bruteforce_log(identifier, payload):
         return response_data['latest_bruteforce_log']
 
 
-def update_bruteforce_log(token, source_ip, credentials, end_time):
+def update_bruteforce_log(token, source_ip, credentials, end_time, start_time):
     data = {
         "token": token,
         "source_ip": source_ip,
         "credentials": credentials,
-        "end_time": convert_time_format(end_time)
+        "end_time": convert_time_format(end_time),
+        "start_time": start_time
     }
     headers = {'content-type': 'application/json'}
     response = requests.post(LOG_API_ENDPOINTS['update_bruteforce_log'], data=json.dumps(data), headers=headers)
@@ -169,6 +170,7 @@ def parse_cowrie_logs(identifier, payload):
         else:
             latest_bruteforce_log_dict = json.loads(latest_bruteforce_log)
             time_elapsed_since_last_brutefoce_log = datetime.strptime(convert_time_format(payload['endTime']), "%Y-%m-%d %H:%M:%S") - datetime.strptime(latest_bruteforce_log_dict['end_time'], "%Y-%m-%d %H:%M:%S")
+
             if time_elapsed_since_last_brutefoce_log.total_seconds() > BRUTE_FORCE_LOG_TIME_WINDOW:
                 session_log_data_dict = dict()
                 session_log_data_dict['token'] = identifier
@@ -192,7 +194,7 @@ def parse_cowrie_logs(identifier, payload):
 
             # elif time_elapsed_since_last_brutefoce_log.total_seconds() <= BRUTE_FORCE_LOG_TIME_WINDOW:
             else:
-                update_bruteforce_log(identifier, payload['peerIP'], json.loads(latest_bruteforce_log_dict['credentials']) + payload['credentials'], payload['endTime'])
+                update_bruteforce_log(identifier, payload['peerIP'], json.loads(latest_bruteforce_log_dict['credentials']) + payload['credentials'], payload['endTime'], latest_bruteforce_log_dict['start_time'])
                 return []
 
     return [(general_log_data_dict, "general_log")]
