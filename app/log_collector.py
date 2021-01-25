@@ -121,7 +121,7 @@ def parse_cowrie_logs(identifier, payload):
         payload['version'] = payload['version'].replace("\\", "").replace("\'", "")
     general_log_data_dict['raw_logs'] = json.dumps(payload)
 
-    if payload['loggedin'] is not None:  # meaning this is a session log
+    if len(payload['commands']) > 0:  # meaning this is a session log
         session_log_data_dict = dict()
         session_log_data_dict['token'] = identifier
         session_log_data_dict['honeynode_name'] = honeynode_name
