@@ -78,6 +78,7 @@
               <th>Time</th>
               <th>Attacker IP</th>
               <th>Honeynode Name</th>
+              <th>Login Successful</th>
               <th>No. of Commands Entered</th>
               <th>End Time</th>
               <th>Credentials</th>
@@ -90,6 +91,7 @@
               <th>Time</th>
               <th>Attacker IP</th>
               <th>Honeynode Name</th>
+              <th>Login Successful</th>
               <th>No. of Commands Entered</th>
               <th></th>
               <th></th>
@@ -107,7 +109,7 @@
   <div class="col-12">
     <div class="card card-secondary">
       <div class="card-header">
-        <h3 class="card-title">Session Time</h3>
+        <h3 class="card-title">Time</h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -237,6 +239,14 @@
         return JSON.stringify(tempCredential);
       }
       return data;
+    },
+    login_successful: function(data){
+      if (data === "null"){
+        return "False";
+      }
+      else{
+        return "True";
+      }
     }
   };
 
@@ -381,6 +391,7 @@
         { "data": "start_time", "className": "selectable" },
         { "data": "source_ip", "className": "selectable" },
         { "data": "honeynode_name", "className": "selectable" },
+        { "data": "logged_in", "render": CustomRenders.login_successful, "className": "selectable" },
         { "data": "commands", "render": CustomRenders.messageCount, "className": "selectable" },
         { "data": "end_time", "className": "selectable" },
         { "data": "credentials", "render": CustomRenders.credentials, "className": "selectable" },
@@ -394,7 +405,7 @@
           }
         }, //newline
         {"className": "dt-center", "targets": "_all"},
-        { "targets": [ 6, 7 ], "visible": false }
+        { "targets": [ 7, 8 ], "visible": false }
       ],
       'select': { //newline
         'style': 'multi+shift',
