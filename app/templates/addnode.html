@@ -152,6 +152,7 @@
       //$("#exampleModal").modal("show"); //hide modal for now
       $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
       Adding Node...');
+      $('#submitbtn').prop('disabled', true);
       $('#progress').prop('hidden', false);
       var fiveMinutes = 24,
       display = document.querySelector('#time');
