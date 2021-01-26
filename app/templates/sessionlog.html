@@ -152,6 +152,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        <div id="hide-column-username" style="margin-bottom: 20px;"></div>
         <table id="usernameAttempted" class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -171,6 +172,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        <div id="hide-column-password" style="margin-bottom: 20px;"></div>
         <table id="passwordAttempted" class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -193,6 +195,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        <div id="hide-column-table2" style="margin-bottom: 20px;"></div>
         <table id="example2" class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -244,6 +247,9 @@
 
   function loadButton() {
     $('#hide-column').append(table.buttons().container());
+    $('#hide-column-username').append(usernameTable.buttons().container());
+    $('#hide-column-password').append(passwordTable.buttons().container());
+    $('#hide-column-table2').append(table2.buttons().container());
   }
 
   function selectPersistedRows(table){	
@@ -319,6 +325,9 @@
         {
           "extend": 'excel',
           "text": 'Export Excel',
+          init: function ( dt, node, config ) {
+            node.css("margin-left", "5px");
+          },
           "className": "btn-success",
           "exportOptions": {
             "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
@@ -341,6 +350,9 @@
         {
           "extend": 'csv',
           "text": 'Export CSV',
+          init: function ( dt, node, config ) {
+            node.css("margin-left", "5px");
+          },
           "className": "btn-info",
           "exportOptions": {
             "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
@@ -445,9 +457,25 @@
       "data": table2Data,
       "columnDefs": [
         {"className": "dt-center", "targets": "_all"},
-      ]
-
-      
+      ],
+      "buttons": [
+        {
+          "extend": 'csv',
+          "text": 'Export CSV',
+          "className": "btn-success",
+          "header": false,
+        },
+        {
+          "extend": 'copy',
+          "text": 'Copy',
+          init: function ( dt, node, config ) {
+            node.css("margin-left", "5px");
+          },
+          "className": "btn-info",
+          "header": false,
+          "title": ""
+        }
+      ],
     });
 
     usernameTable = $('#usernameAttempted').DataTable({
@@ -463,9 +491,25 @@
       "data": usernameData,
       "columnDefs": [
         {"className": "dt-center", "targets": "_all"},
-      ]
-
-      
+      ],
+      "buttons": [
+        {
+          "extend": 'csv',
+          "text": 'Export CSV',
+          "className": "btn-success",
+          "header": false,
+        },
+        {
+          "extend": 'copy',
+          "text": 'Copy',
+          init: function ( dt, node, config ) {
+            node.css("margin-left", "5px");
+          },
+          "className": "btn-info",
+          "header": false,
+          "title": ""
+        }
+      ],
     });
 
     passwordTable = $('#passwordAttempted').DataTable({
@@ -481,9 +525,25 @@
       "data": passwordData,
       "columnDefs": [
         {"className": "dt-center", "targets": "_all"},
-      ]
-
-      
+      ],
+      "buttons": [
+        {
+          "extend": 'csv',
+          "text": 'Export CSV',
+          "className": "btn-success",
+          "header": false,
+        },
+        {
+          "extend": 'copy',
+          "text": 'Copy',
+          init: function ( dt, node, config ) {
+            node.css("margin-left", "5px");
+          },
+          "className": "btn-info",
+          "header": false,
+          "title": ""
+        }
+      ],
     });
     
   });
@@ -550,9 +610,9 @@
   }, 3000);
   
   setTimeout(loadButton, 200);
-  $("*").mouseover(function () {
-    loadButton();
-  });
+  //$("*").mouseover(function () {
+  //  loadButton();
+  //});
 
   $('#confirmModal').on('show.bs.modal', function (event) {
     $("#deleteButton").attr("onclick","confirmDelete()");
