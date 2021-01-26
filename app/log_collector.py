@@ -66,7 +66,7 @@ def insert_log_to_database(log_data_dict, log_type):
     api_to_call = LOG_API_ENDPOINTS[log_type]
     headers = {'content-type': 'application/json'}
     response = requests.post(api_to_call, data=json.dumps(log_data_dict), headers=headers)
-    print(response.text)
+    # print(response.text)
     return 1
     
 
@@ -80,13 +80,13 @@ def get_latest_cowrie_bruteforce_log(identifier, payload):
     headers = {'content-type': 'application/json'}
     payload['token'] = identifier
     response = requests.post(LOG_API_ENDPOINTS['latest_bruteforce_log'], data=json.dumps(payload), headers=headers)
-    print(response.text)
+    # print(response.text)
     response_data = response.json()
     if response_data['bruteforce_log_empty'] == True:
         return None
     if response_data['bruteforce_log_empty'] == False and response_data['latest_bruteforce_log'] is not None:
-        print("latest bruteforce log ==> ")
-        print(response_data['latest_bruteforce_log'])
+        # print("latest bruteforce log ==> ")
+        # print(response_data['latest_bruteforce_log'])
         return response_data['latest_bruteforce_log']
 
 
@@ -100,7 +100,7 @@ def update_bruteforce_log(token, source_ip, credentials, end_time, start_time):
     }
     headers = {'content-type': 'application/json'}
     response = requests.post(LOG_API_ENDPOINTS['update_bruteforce_log'], data=json.dumps(data), headers=headers)
-    print(response.text)
+    # print(response.text)
 
 
 def parse_cowrie_logs(identifier, payload):
@@ -140,7 +140,7 @@ def parse_cowrie_logs(identifier, payload):
         session_log_data_dict['version'] = payload['version']
         session_log_data_dict['hashes'] = payload['hashes']
         session_log_data_dict['unknown_commands'] = payload['unknownCommands']
-        print(session_log_data_dict)
+        # print(session_log_data_dict)
         return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
     elif len(payload['credentials']) > 0:  # meaning this is a bruteforce log
@@ -164,7 +164,6 @@ def parse_cowrie_logs(identifier, payload):
             session_log_data_dict['version'] = payload['version']
             session_log_data_dict['hashes'] = payload['hashes']
             session_log_data_dict['unknown_commands'] = payload['unknownCommands']
-            print(session_log_data_dict)
             return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
         else:
@@ -189,7 +188,6 @@ def parse_cowrie_logs(identifier, payload):
                 session_log_data_dict['version'] = payload['version']
                 session_log_data_dict['hashes'] = payload['hashes']
                 session_log_data_dict['unknown_commands'] = payload['unknownCommands']
-                print(session_log_data_dict)
                 return [(general_log_data_dict, "general_log"), (session_log_data_dict, "session_log")]
 
             # elif time_elapsed_since_last_brutefoce_log.total_seconds() <= BRUTE_FORCE_LOG_TIME_WINDOW:
@@ -382,9 +380,9 @@ def main():
 
     def on_message(identifier, channel, payload):
 
-        print(f"Identifier : {identifier}")
-        print(f"Channel: {channel}")
-        print("Payload:")
+        # print(f"Identifier : {identifier}")
+        # print(f"Channel: {channel}")
+        # print("Payload:")
  
         payload_converted = json.loads(payload.decode())
         process_log_data(identifier, channel, payload_converted)

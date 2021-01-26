@@ -475,6 +475,27 @@ class DbAccess:
         try:
             result_value = cur.execute(sql)
             self.mysql.connection.commit()
+            
+            sql1 = f"SELECT raw_logs from general_logs where token = '{token}' and source_ip = '{source_ip}'"
+            result_value_1 = cur.execute(sql1)
+            if result_value_1 > 0:
+                raw_logs = self.query_db(cur)
+                for raw_log in raw_logs:
+                    # print(raw_log['raw_logs'])
+                    # print(type(json.loads(raw_log['raw_logs'])))
+                    raw_log_dict = json.loads(raw_log['raw_logs'])
+                    # print("start_time_Rawlog:" + raw_log_dict['startTime'].split(".")[0].replace("T", " "))
+                    # print(start_time)
+                    if raw_log_dict['startTime'].split(".")[0].replace("T", " ") == start_time:
+                        print("IF CALLED ")
+                        raw_log_dict_new = raw_log_dict
+                        raw_log_dict_new['credentials'] = credentials
+                        sql3 = f"update general_logs set raw_logs='%s' where token = '{token}'" % (json.dumps(raw_log_dict_new))
+                        print(sql3)
+                        result_value_2 = cur.execute(sql)
+                        print(result_value_2)
+                        self.mysql.connection.commit()
+
             cur.close()
         except Exception as err:
             print(err)

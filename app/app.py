@@ -572,7 +572,7 @@ def insert_general_log():
     if request.json:
         general_log_data = request.json
         print("/api/v1/general_logs:")
-        print(general_log_data)
+        # print(general_log_data)
         result_value = db_access.insert_general_log(general_log_data)
 
         if result_value == 0:
@@ -592,7 +592,7 @@ def insert_snort_log():
     if request.json:
         snort_log_data = request.json
         print("/api/v1/snort_logs:")
-        print(snort_log_data)
+        # print(snort_log_data)
         result_value = db_access.insert_snort_log(snort_log_data)
 
         if result_value == 0:
@@ -612,7 +612,7 @@ def insert_session_log():
     if request.json:
         session_log_data = request.json
         print("/api/v1/session_logs:")
-        print(session_log_data)
+        # print(session_log_data)
         result_value = db_access.insert_session_log(session_log_data)
 
         if result_value == 0:
@@ -640,14 +640,14 @@ def retrieve_latest_bruteforce_log():
             bruteforce_logs = []
 
             for session_log in all_session_logs:
-                print(type(session_log['commands']))
+                # print(type(session_log['commands']))
                 if (len(ast.literal_eval(session_log['credentials'])) > 0 and 
                     session_log['token'] == new_bruteforce_log['token'] and 
                     session_log['source_ip'] == new_bruteforce_log['peerIP'] and 
                     len(ast.literal_eval(session_log['commands'])) == 0 ):
                     bruteforce_logs.append(session_log)
                     
-                    print(f"Bruteforce log ==> \n {session_log}")
+                    # print(f"Bruteforce log ==> \n {session_log}")
 
             # bruteforce_logs = [session_log for session_log in all_session_logs if (len(session_log['credentials']) > 0 and session_log['token'] == new_bruteforce_log['token'] and session_log['source_ip'] == new_bruteforce_log['peerIP'])]
 
@@ -672,7 +672,7 @@ def update_bruteforce_log():
         bruteforce_log_data = request.json
         print("/api/v1/update_bruteforce_log:")
         result_value = db_access.update_bruteforce_log(bruteforce_log_data)
-        print(str(result_value) + " rows updated")
+        # print(str(result_value) + " rows updated")
         if result_value == 0:
             abort(404)
 
