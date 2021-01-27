@@ -236,15 +236,19 @@
       if (type === "exportcsv") {
         var tempCredential = JSON.parse(data);
         tempCredential.push(JSON.parse(row.logged_in));
-        return JSON.stringify(tempCredential);
+        console.log(JSON.stringify(tempCredential).replace("\"",""));
+        return JSON.stringify(tempCredential).replace(/"/g,"");
       }
       return data;
     },
     login_successful: function(data){
+      var booleanData;
       if (data === "null"){
+        booleanData = "False";
         return "False";
       }
       else{
+        booleanData = "True";
         return "True";
       }
     }
@@ -340,7 +344,7 @@
           },
           "className": "btn-success",
           "exportOptions": {
-            "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "columns": [ 1, 2, 3, 4, 5, 6, 7, 8 ],
             "selected": true,
             "orthogonal": "exportcsv",
             "format": {
@@ -365,12 +369,12 @@
           },
           "className": "btn-info",
           "exportOptions": {
-            "columns": [ 1, 2, 3, 4, 5, 6, 7 ],
+            "columns": [ 1, 2, 3, 4, 5, 6, 7, 8 ],
             "selected": true,
             "orthogonal": "exportcsv",
             "format": {
               header: function ( data, columnIdx ) {
-                if (columnIdx === 5) {
+                if (columnIdx === 6) {
                   console.log(columnIdx);
                   return "Commands Entered";
                 }
