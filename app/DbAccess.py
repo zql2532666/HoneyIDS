@@ -640,3 +640,58 @@ class DbAccess:
             my_query = self.query_db(cur)
             json_data = json.dumps(my_query, default=self.myconverter)
         return json_data
+
+    def check_user_exists(self, email):
+    
+        json_data = {}
+
+        cur = self.mysql.connection.cursor()
+
+        sql = f"select * from user where name='{email}'"
+        cur.execute(sql)
+        
+        result_value = cur.execute(sql)
+        if result_value > 0:
+            my_query = self.query_db(cur)
+            json_data = json.dumps(my_query, default=self.myconverter)
+        else:
+            json_data = "{}"
+
+        return json_data
+
+    def update_password(self, password, email):
+        
+        cur = self.mysql.connection.cursor()
+
+        sql = f"update user set \
+            password='{password}' where email='{email}'"
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value
+
+    def insert_user(self, email, name, password):
+    
+        cur = self.mysql.connection.cursor()
+
+        sql = f"insert into user(email, name, password) \
+            values('%s', '%s', '%s')" % (email, name, password)
+
+
+        result_value = 0
+
+        try:
+            result_value = cur.execute(sql)
+            self.mysql.connection.commit()
+            cur.close()
+        except Exception as err:
+            print(err)
+
+        return result_value

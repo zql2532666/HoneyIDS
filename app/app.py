@@ -1,9 +1,11 @@
 import yaml, json, requests
+from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 from time import sleep
 from DbAccess import *
 from gevent.pywsgi import WSGIServer
 from flask_mysqldb import MySQL
-from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash,send_file
+from flask import Flask, render_template, request, jsonify, abort, redirect, url_for, flash, send_file, session
 import os
 from HpfeedsDB import *
 import subprocess
@@ -64,46 +66,152 @@ db_access = DbAccess(app)
 # Initialize Hpfeeds credential database
 hpfeeds_db = HPfeedsDB(app.config['HPFEEDS_DATABASE_PATH'])
 
-# For testing purposes with jinja. Remove later
-# Usage: {{ mdebug("whatever to print here") }}
-@app.context_processor
-def utility_functions():
-    def print_in_console(message):
-        print(str(message))
-
-    return dict(mdebug=print_in_console)
-
 @app.errorhandler(404)
-def resource_not_found(e):
-    return jsonify(error=str(e)), 404
+def resource_not_found():
+    return render_template("404.html", title="404 Error Page")
+
+""" 
+User Authentication Routes
+Author: Aaron
+"""
+
+# Decorator for registering routes for login (Usage: @app.register_login)
+def register_login(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        # Check if user is loggedin
+        if 'loggedin' not in session:
+            # User not logged in, redirect to login page
+            flash(u'Log in first', 'danger')
+            return redirect(url_for('login'))
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+# Decorator to disable certain routes (Usage: @app.disable)
+def disable(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        return abort(500)
+
+    return decorated_function
+
+@app.route("/")
+@app.route('/login')
+def login():
+    return render_template("login.html")
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = json.loads(db_access.check_user_exists(email))
+
+    # check if the user actually exists
+    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    if len(user) != 1 or not check_password_hash(user[0]['password'], password):
+        flash(u'Please check your login details and try again.', 'danger')
+        return redirect(url_for('login')) # if the user doesn't exist or password is wrong, reload the page
+
+    # Create session data, we can access this data in other routes
+    session['loggedin'] = True
+    session['id'] = user[0]['id']
+    session['name'] = user[0]['name'].title()
+    session['email'] = user[0]['email']
+
+    # if the above check passes, then we know the user has the right credentials
+    return redirect(url_for('index'))
+
+@app.route('/changepassword')
+@register_login
+def changepassword():
+    return render_template("changepassword.html", title="Change Password")
+
+@app.route('/changepassword', methods=['POST'])
+def changepassword_post():
+    email = session['email']
+    password = request.form.get('password')
+
+    if(db_access.update_password(generate_password_hash(password, method='sha256'), email) == 0):
+        flash(u'Error occured', 'danger')
+        return redirect(url_for('changepassword'))
+
+    flash(u'Password Changed', 'success')
+    return redirect(url_for('changepassword'))
+
+@app.route('/signup')
+@disable
+def signup():
+    return render_template("register.html")
+
+@app.route('/signup', methods=['POST'])
+@disable
+def signup_post():
+    email = request.form.get('email')
+    name = request.form.get('name')
+    password = request.form.get('password')
+
+    user = json.loads(db_access.check_user_exists(email))
+    if len(user) == 1: # if a user is found, we want to redirect back to signup page so user can try again
+        flash(u'Email address already exists', 'danger')
+        return redirect(url_for('signup'))
+
+    if(db_access.insert_user(email, name, generate_password_hash(password, method='sha256')) == 0):
+        flash(u'Error occured', 'danger')
+        return redirect(url_for('signup'))
+
+    flash(u'Successfully registered', 'success')
+    return redirect(url_for('login'))
+
+@app.route('/logout')
+@register_login
+def logout():
+
+    # Remove session data, this will log the user out
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('name', None)
+    session.pop('email', None)
+
+    # Redirect to login page
+    return redirect(url_for('login'))
 
 """ 
 API Routes for web pages
 Author: Aaron
 """
 
-@app.route("/")
 @app.route("/index")
+@register_login
 def index():
     return render_template("index.html", title="Dashboard")
 
 @app.route("/index2")
+@register_login
 def index2():
     return render_template("index2.html", title="Data Correlation")
 
 @app.route("/index3")
+@register_login
 def index3():
     return render_template("index3.html", title="Dashboard V3")
 
 @app.route("/deploy", methods=['GET', 'POST'])
+@register_login
 def deploy():
     return render_template("deploy.html", title="Honey Node Deployment", web_server_ip=WEB_SERVER_IP)
 
 @app.route("/nodes")
+@register_login
 def nodes():
     return render_template("nodes.html", title="Nodes Listing")
 
 @app.route("/addnode", methods=['GET', 'POST'])
+@register_login
 def add_node():
 
     if request.method == 'POST':
@@ -126,6 +234,7 @@ def add_node():
     return render_template("addnode.html", title="Add Node")
 
 @app.route("/deactivatenode", methods=['GET', 'POST'])
+@register_login
 def kill_node():
 
     if request.method == 'POST':
@@ -162,21 +271,25 @@ def list_nodes_for_web():
     return dict(list_nodes=list_nodes)
 
 @app.route("/log", methods=['GET', 'POST'])
+@register_login
 def log():
 
     return render_template("log.html", title="Honeypot Logs")
 
 @app.route("/sessionlog", methods=['GET', 'POST'])
+@register_login
 def session_log():
 
     return render_template("sessionlog.html", title="Session Logs")
 
 @app.route("/snortlog", methods=['GET', 'POST'])
+@register_login
 def snort_log():
 
     return render_template("snortlog.html", title="NIDS Logs")
 
 @app.route("/malwarelog", methods=['GET', 'POST'])
+@register_login
 def malware_log():
 
     return render_template("malwarelog.html", title="Malware Logs")

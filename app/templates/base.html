@@ -46,6 +46,9 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/changepassword" class="nav-link">Change Password</a>
+      </li>
       <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="index" class="nav-link">Home</a>
       </li>
@@ -55,13 +58,16 @@
     </ul>
 
     <!-- Right navbar links -->
-    <!-- <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
+    <ul class="navbar-nav ml-auto">
+      <!-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
         </a>
+      </li> -->
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/logout" class="nav-link">Logout</a>
       </li>
-    </ul> -->
+    </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -153,7 +159,6 @@
 {% block script %} {% endblock %}
 <!-- DataTables -->
 <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../../plugins/datatables/dataTables.tableTools.nightly.js"></script>
 <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js"></script>
