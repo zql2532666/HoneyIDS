@@ -153,6 +153,7 @@
       $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
       Adding Node...');
       $('#submitbtn').prop('disabled', true);
+      $("#nodeForm").submit();
       $('#progress').prop('hidden', false);
       var fiveMinutes = 24,
       display = document.querySelector('#time');
