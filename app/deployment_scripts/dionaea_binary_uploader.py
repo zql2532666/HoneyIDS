@@ -46,7 +46,7 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
                                                              ignore_directories=True, case_sensitive=False) 
   
     def on_created(self, event):
-        if not "httpupload" in event.src_path and not ".tmp" in event.src_path::
+        if not "httpupload" in event.src_path and not ".tmp" in event.src_path:
             print("Watchdog received created event - % s" % event.src_path)
 
             time.sleep(3) # preventing the script from reading the malware file before the malware file is fully uploaded
