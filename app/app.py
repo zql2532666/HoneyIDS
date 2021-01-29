@@ -498,7 +498,7 @@ def delete_node(token):
         abort(400)
 
     resultValue = db_access.delete_node(token)
-    sleep(3)
+    # sleep(3)
 
     if resultValue == 0:
         flash(u'Node not deleted.', 'danger')
