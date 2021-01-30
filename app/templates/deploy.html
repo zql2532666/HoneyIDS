@@ -117,10 +117,10 @@
                   E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend),  <br>
                   is another process using it?  <br><br>
 
-                  Run the commands shown below to remove the package locks and run the main deployment script again.
+                  Run the commands shown below to remove the package locks and run the deployment command again.
                 </p>
                 <div class="form-group">
-                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#13;&#10;sudo rm /var/lib/dpkg/lock*&#13;&#10;sudo dpkg --configure -a&#13;&#10;./main.sh
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#13;&#10;sudo rm /var/lib/dpkg/lock*&#13;&#10;sudo dpkg --configure -a
                   </textarea>
                 </div>
               </div>
