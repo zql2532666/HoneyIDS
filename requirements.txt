@@ -6,3 +6,4 @@ hpfeeds
 hpfeeds[broker]
 aionotify
 pyminizip
+aiorun
