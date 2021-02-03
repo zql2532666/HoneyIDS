@@ -120,7 +120,7 @@ sed -i 's/version = SSH-2.0-OpenSSH_6.0p1 Debian-4+deb7u2/version = SSH-2.0-Open
 
 # ssh root user password configuration
 cp userdb.example userdb.txt
-sed -i 's/root:x:\*/root:x:sunshine/g' userdb.txt
+sed -i 's/root:x:\*/root:x:cherry/g' userdb.txt
 sed -i 's/tomcat:x:\*/john:x:flower/g' userdb.txt
 sed -i 's/oracle:x:\*/anthony:x:anthony/g' userdb.txt
 
