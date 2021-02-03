@@ -195,11 +195,6 @@ def index():
 def index2():
     return render_template("index2.html", title="Data Correlation")
 
-@app.route("/index3")
-@register_login
-def index3():
-    return render_template("index3.html", title="Dashboard V3")
-
 @app.route("/deploy", methods=['GET', 'POST'])
 @register_login
 def deploy():

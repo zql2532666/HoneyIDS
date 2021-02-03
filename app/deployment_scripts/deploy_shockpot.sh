@@ -31,7 +31,7 @@ sudo dpkg --configure -a || true
 
 
 apt-get -y install git supervisor python-pip python3-pip curl
-pip install -U pip
+# pip install -U pip
 pip install virtualenv
 pip install configparser
 pip install requests
