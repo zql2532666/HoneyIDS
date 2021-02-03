@@ -32,7 +32,7 @@ sudo dpkg --configure -a || true
 
 apt-get -y install git supervisor python-pip python3-pip curl
 # pip install -U pip
-pip install virtualenv
+# pip install virtualenv
 pip install configparser
 pip install requests
 
@@ -57,8 +57,8 @@ cd /opt
 git clone https://github.com/zql2532666/shockpot.git
 cd shockpot
 
-virtualenv env
-. env/bin/activate
+# virtualenv env
+# . env/bin/activate
 pip install -r requirements.txt
 
 # api call to join the honeynet
@@ -105,7 +105,7 @@ EOF
 # Config for supervisor.
 cat > /etc/supervisor/conf.d/shockpot.conf <<EOF
 [program:shockpot]
-command=/opt/shockpot/env/bin/python /opt/shockpot/shockpot.py 
+command=python /opt/shockpot/shockpot.py 
 directory=/opt/shockpot
 stdout_logfile=/opt/shockpot/shockpot.out
 stderr_logfile=/opt/shockpot/shockpot.err
