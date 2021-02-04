@@ -34,9 +34,6 @@ SERVER_IP=$(cat /opt/honeyagent/honeyagent.conf | grep "SERVER_IP" | awk -F: '{p
 TOKEN=$(cat /opt/honeyagent/honeyagent.conf | grep "TOKEN" | awk -F: '{print $2}' | xargs)
 
 
-apt-get update
-sudo rm /var/lib/dpkg/lock* || true
-sudo dpkg --configure -a || true
 DEBIAN_FRONTEND=noninteractive apt-get -y install build-essential libpcap-dev libjansson-dev libpcre3-dev libdnet-dev libdumbnet-dev libdaq-dev flex bison python-pip git make automake libtool zlib1g-dev
 
 # without the following 2 commands, i get this error:
