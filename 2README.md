@@ -104,34 +104,20 @@ This section should list any major frameworks that you built your project using.
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+### Downloading Local Copy
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/zql2532666/HoneyIDS.git
    ```
-3. Install NPM packages
+2. Install Python Packages
    ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
+   pip install -r requirements.txt
    ```
 
+### Framework Set Up
+3. Follow the set up guide at Section F.1 User Guide of the project report to set up the server and get the framework running
 
 
 <!-- USAGE EXAMPLES -->
@@ -140,6 +126,31 @@ This is an example of how to list things you need to use the software and how to
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
+
+### 1. Login
+Users can sign in to the HoneyIDS web applications using the following default credentials:
+
+| Username | Password |
+|----------|----------|
+| admin_1  | admin    |
+| admin_2  | admin    | 
+
+### 2. Dashboard 
+
+### 3. Data Correlation
+
+### 4. Deployment 
+
+### 5. Nodes
+#### 5.1 Nodes Listing
+#### 5.2 Add Node
+#### 5.3 Deactivate Node 
+
+### 6. Logs
+#### 6.1 Honeypot Logs
+#### 6.2 NIDS Logs
+#### 6.3 Session Logs
+#### 6.4 Malware Logs
 
 
 
