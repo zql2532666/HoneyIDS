@@ -127,7 +127,7 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-### 1. Login
+#### 1. Login
 Users can sign in to the HoneyIDS web applications using the following default credentials:
 
 | Username | Password |
@@ -135,22 +135,15 @@ Users can sign in to the HoneyIDS web applications using the following default c
 | admin_1  | admin    |
 | admin_2  | admin    | 
 
-### 2. Dashboard 
+#### 2. Dashboard 
 
-### 3. Data Correlation
+#### 3. Data Correlation
 
-### 4. Deployment 
+#### 4. Deployment 
 
-### 5. Nodes
-#### 5.1 Nodes Listing
-#### 5.2 Add Node
-#### 5.3 Deactivate Node 
+#### 5. Nodes
 
-### 6. Logs
-#### 6.1 Honeypot Logs
-#### 6.2 NIDS Logs
-#### 6.3 Session Logs
-#### 6.4 Malware Logs
+#### 6. Logs
 
 
 
