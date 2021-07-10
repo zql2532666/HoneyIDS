@@ -70,19 +70,33 @@ Currently, HoneyIDS supports 7 different types of open-source honeypots that can
 Log collection from the honey nodes are also done in real-time and displayed on the web interface. Through the web interface, a user can also opt to perform data correlation by specifying an incident time window. Data correlation will help the user get a high-level abstracted view of the attacks happening inside the network ecosystem.
 
 <p align="center">
-  <img src="img/arch.png" alt="" width="1030px" height="706px">  
+  <img src="img/arch.png" alt="" width="70%" height="70%">  
 </p>
 
 
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+The following technologies are used in this project:
 
+* [Flask](https://flask.palletsprojects.com)
+* [MySQL](https://www.mysql.com)
+* [Hp-Feeds](https://hpfeeds.org/)
+* [Snort](https://www.snort.org/)
 
+Open source honeypots used:
+
+* [Cowrie](https://github.com/cowrie/cowrie)
+* [Dionaea](https://github.com/DinoTools/dionaea)
+* [Shockpot](https://github.com/pwnlandia/shockpot)
+* [Drupot](https://github.com/d1str0/drupot)
+* [Elastichoney](https://github.com/jordan-wright/elastichoney)
+* [Sticky Elephant](https://github.com/betheroot/sticky_elephant)
+* [Wordpot](https://github.com/gbrindisi/wordpot)
+
+Frontend template used:
+
+* [AdminLTE](https://github.com/ColorlibHQ/AdminLTE)
 
 <!-- GETTING STARTED -->
 ## Getting Started
