@@ -7,23 +7,6 @@
 
 
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -80,18 +63,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+HoneyIDS is an internal attack and intrusion detection framework that makes use of distributed honeypot nodes. It meshes honeypots, a deception-based technology, with a traditional open-source NIDS to tackle network intrusion detection in a distinctive way. 
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Currently, HoneyIDS supports 7 different types of open-source honeypots that can be deployed throughout a network in a simple and intuitive manner. The framework also has a built-in heartbeat server which allows one to monitor the state & status of the honey nodes at any point in time.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
+Log collection from the honey nodes are also done in real-time and displayed on the web interface. Through the web interface, a user can also opt to perform data correlation by specifying an incident time window. Data correlation will help the user get a high-level abstracted view of the attacks happening inside the network ecosystem.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
+<p align="center">
+  <img src="img/arch.png" alt="Table1: 18 Activities" width="70%" height="70%">  
+</p>
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+
 
 ### Built With
 
