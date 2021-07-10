@@ -127,7 +127,7 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-#### 1. Login
+#### Login
 Users can sign in to the HoneyIDS web applications using the following default credentials:
 
 | Username | Password |
@@ -135,22 +135,22 @@ Users can sign in to the HoneyIDS web applications using the following default c
 | admin_1  | admin    |
 | admin_2  | admin    | 
 
-#### 2. Dashboard 
+#### Dashboard 
 
 
-#### 3. Data Correlation
+#### Data Correlation
 https://user-images.githubusercontent.com/29125030/125169393-86780780-e1dc-11eb-99e8-9ddcf48030e6.mp4
 
 
-#### 4. Deployment 
+#### Deployment 
 
 https://user-images.githubusercontent.com/29125030/125169432-b6270f80-e1dc-11eb-8abe-2bf3988fb47a.mp4
 
 
-#### 5. Nodes
+#### Nodes
 
 
-#### 6. Logs
+#### Logs
 
 https://user-images.githubusercontent.com/29125030/125169454-c9d27600-e1dc-11eb-8257-acee1f266012.mp4
 
