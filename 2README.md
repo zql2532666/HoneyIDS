@@ -28,7 +28,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/zql2532666/HoneyIDS">
-    <img src="img/honey-ids-logo.png" alt="Logo" width="200" height="300">
+    <img src="img/honey-ids-logo.png" alt="Logo" width="700" height="295">
   </a>
 
   <h3 align="center">Best-README-Template</h3>
