@@ -137,13 +137,27 @@ Users can sign in to the HoneyIDS web applications using the following default c
 
 #### 2. Dashboard 
 
+
 #### 3. Data Correlation
+https://user-images.githubusercontent.com/29125030/125169393-86780780-e1dc-11eb-99e8-9ddcf48030e6.mp4
+
 
 #### 4. Deployment 
 
+https://user-images.githubusercontent.com/29125030/125169432-b6270f80-e1dc-11eb-8abe-2bf3988fb47a.mp4
+
+
 #### 5. Nodes
 
+
 #### 6. Logs
+
+https://user-images.githubusercontent.com/29125030/125169454-c9d27600-e1dc-11eb-8257-acee1f266012.mp4
+
+
+https://user-images.githubusercontent.com/29125030/125169471-de167300-e1dc-11eb-8545-b949fa456215.mp4
+
+
 
 
 
