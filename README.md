@@ -65,12 +65,17 @@
 
 HoneyIDS is an internal attack and intrusion detection framework that makes use of distributed honeypot nodes. It meshes honeypots, a deception-based technology, with a traditional open-source NIDS to tackle network intrusion detection in a distinctive way. 
 
-Currently, HoneyIDS supports 7 different types of open-source honeypots that can be deployed throughout a network in a simple and intuitive manner. The framework also has a built-in heartbeat server which allows one to monitor the state & status of the honey nodes at any point in time.
+### Features
 
-Log collection from the honey nodes are also done in real-time and displayed on the web interface. Through the web interface, a user can also opt to perform data correlation by specifying an incident time window. Data correlation will help the user get a high-level abstracted view of the attacks happening inside the network ecosystem.
+* Streamlined deployment mechanism for easy honey nodes deployment
+* Full stack web gui for easy management and pleasant user experience 
+* Real-time log collection
+* Data correlation to help the user get a high-level abstracted view of the attacks happening inside the network ecosystem
+* Real-time status monitoring of honey nodes deployed    
 
+### System Architecture
 <p align="center">
-  <img src="img/arch.png" alt="" width="70%" height="70%">  
+  <img src="img/arch.png" alt="" width="80%" height="80%">  
 </p>
 
 
@@ -97,6 +102,7 @@ Open source honeypots used:
 Frontend template used:
 
 * [AdminLTE](https://github.com/ColorlibHQ/AdminLTE)
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -159,52 +165,22 @@ Contributions are what make the open source community such an amazing place to b
 
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+zql2532666 - zql2532666@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/zql2532666/HoneyIDS](https://github.com/zql2532666/HoneyIDS)
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+* [Cowrie](https://github.com/cowrie/cowrie)
+* [Dionaea](https://github.com/DinoTools/dionaea)
+* [Shockpot](https://github.com/pwnlandia/shockpot)
+* [Drupot](https://github.com/d1str0/drupot)
+* [Elastichoney](https://github.com/jordan-wright/elastichoney)
+* [Sticky Elephant](https://github.com/betheroot/sticky_elephant)
+* [Wordpot](https://github.com/gbrindisi/wordpot)
+* [AdminLTE](https://github.com/ColorlibHQ/AdminLTE)
