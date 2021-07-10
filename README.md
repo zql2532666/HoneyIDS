@@ -70,7 +70,7 @@ Currently, HoneyIDS supports 7 different types of open-source honeypots that can
 Log collection from the honey nodes are also done in real-time and displayed on the web interface. Through the web interface, a user can also opt to perform data correlation by specifying an incident time window. Data correlation will help the user get a high-level abstracted view of the attacks happening inside the network ecosystem.
 
 <p align="center">
-  <img src="img/arch.png" alt="Table1: 18 Activities" width="70%" height="70%">  
+  <img src="img/arch.png" alt="" width="1030px" height="706px">  
 </p>
 
 
