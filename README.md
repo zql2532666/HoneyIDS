@@ -138,10 +138,34 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+#### Login
+Users can sign in to the HoneyIDS web applications using the following default credentials:
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+| Username | Password |
+|----------|----------|
+| admin_1  | admin    |
+| admin_2  | admin    | 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+#### Dashboard 
+
+
+#### Data Correlation
+https://user-images.githubusercontent.com/29125030/125169393-86780780-e1dc-11eb-99e8-9ddcf48030e6.mp4
+
+
+#### Deployment 
+
+https://user-images.githubusercontent.com/29125030/125169432-b6270f80-e1dc-11eb-8abe-2bf3988fb47a.mp4
+
+
+#### Nodes
+
+
+#### Logs
+
+https://user-images.githubusercontent.com/29125030/125169454-c9d27600-e1dc-11eb-8257-acee1f266012.mp4
+
+
 
 
 
