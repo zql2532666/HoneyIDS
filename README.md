@@ -124,7 +124,7 @@ Contributions are what make the open source community such an amazing place to b
 <!-- CONTACT -->
 ## Contact
 Please contact us anytime for </br>
-1. Help regarding Deployment </br>
+1. Help regarding deployment </br>
 2. Full documenation and report of the project </br>
 3. Any questions regardin the project </br>
 
