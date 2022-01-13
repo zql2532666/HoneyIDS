@@ -38,10 +38,12 @@
 
 
 <!-- ABOUT THE PROJECT -->
+<details open="open">
 ## About The Project
 
 HoneyIDS is an internal attack and intrusion detection framework that makes use of distributed honeypot nodes. It meshes honeypots, a deception-based technology, with a traditional open-source NIDS to tackle network intrusion detection in a distinctive way. 
-
+</details>
+ 
 ### Problem Statements 
 
 ### How HoneyIDS solves the problems
