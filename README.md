@@ -15,7 +15,7 @@
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#problem-statements">Problem Statements/a></li>
-    <li><a href="#usage">How HoneyIDS solves the problems</a></li>
+    <li><a href="#proposed solutionse">Proposed Solutions</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -34,7 +34,7 @@ HoneyIDS is an internal attack and intrusion detection framework that makes use 
 
 ### Problem Statements 
 
-### How HoneyIDS solves the problems
+### Proposed Solutions
 
 ### Features
 
