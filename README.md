@@ -160,8 +160,10 @@ Contributions are what make the open source community such an amazing place to b
 
 <!-- CONTACT -->
 ## Contact
-Derek, Thein Than Zaw - derekdewreck@gmail.com
-Jimmy, Zhang Rongtao - zql2532666@gmail.com
+Please contact us anytime for full documenation or further questions.</br>
+
+Derek, Thein Than Zaw - derekdewreck@gmail.com </br>
+Jimmy, Zhang Rongtao - zql2532666@gmail.com </br>
 
 Project Link: [https://github.com/zql2532666/HoneyIDS](https://github.com/zql2532666/HoneyIDS)
 
