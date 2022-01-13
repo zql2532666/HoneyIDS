@@ -158,7 +158,7 @@ Project Link: [https://github.com/zql2532666/HoneyIDS](https://github.com/zql253
 
 
 ## Poster
-![FYP poster RGB](https://user-images.githubusercontent.com/29125030/149321336-d03cca89-1b48-4319-a80a-5f8b65a211f8.jpg | width=80% height=80%)
+![FYP poster RGB](https://user-images.githubusercontent.com/29125030/149321336-d03cca89-1b48-4319-a80a-5f8b65a211f8.jpg | width=80%)
 
 
 
