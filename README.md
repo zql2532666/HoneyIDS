@@ -152,7 +152,8 @@ Youtube Channel: https://www.youtube.com/channel/UCVIpT8lazmAvDrK9LE9H3GA/featur
 
 
 ## Poster
-![FYP poster RGB](https://user-images.githubusercontent.com/29125030/149321336-d03cca89-1b48-4319-a80a-5f8b65a211f8.jpg)
+![edited_FYP poster RGB](https://user-images.githubusercontent.com/29125030/149350230-456f709a-6d0d-4aa3-b90f-a69873b1b455.jpg)
+
 
 
 
