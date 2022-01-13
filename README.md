@@ -129,7 +129,7 @@ Contributions are what make the open source community such an amazing place to b
 Please contact us anytime for </br>
 1. Help regarding deployment </br>
 2. Full documenation and report of the project </br>
-3. Any questions regardin the project </br>
+3. Any questions regarding the project </br>
 
 Derek, Thein Than Zaw - derekdewreck@gmail.com </br>
 Jimmy, Zhang Rongtao - zql2532666@gmail.com </br>
