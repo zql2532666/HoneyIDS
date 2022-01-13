@@ -155,3 +155,8 @@ Project Link: [https://github.com/zql2532666/HoneyIDS](https://github.com/zql253
 * [Sticky Elephant](https://github.com/betheroot/sticky_elephant)
 * [Wordpot](https://github.com/gbrindisi/wordpot)
 * [AdminLTE](https://github.com/ColorlibHQ/AdminLTE)
+
+
+## Poster
+![FYP poster RGB](https://user-images.githubusercontent.com/29125030/149321336-d03cca89-1b48-4319-a80a-5f8b65a211f8.jpg)
+
