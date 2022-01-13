@@ -5,7 +5,6 @@
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-r
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -159,6 +158,7 @@ https://user-images.githubusercontent.com/29125030/125169432-b6270f80-e1dc-11eb-
 #### Nodes
 
 
+
 #### Logs
 
 https://user-images.githubusercontent.com/29125030/125169454-c9d27600-e1dc-11eb-8257-acee1f266012.mp4
@@ -181,8 +181,8 @@ Contributions are what make the open source community such an amazing place to b
 
 <!-- CONTACT -->
 ## Contact
-
-zql2532666 - zql2532666@gmail.com
+Derek, Thein Than Zaw - derekdewreck@gmail.com
+Jimmy, Zhang Rongtao - zql2532666@gmail.com
 
 Project Link: [https://github.com/zql2532666/HoneyIDS](https://github.com/zql2532666/HoneyIDS)
 
