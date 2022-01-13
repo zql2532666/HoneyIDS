@@ -5,8 +5,7 @@
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-
-
+r
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -50,7 +49,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -165,14 +163,6 @@ https://user-images.githubusercontent.com/29125030/125169432-b6270f80-e1dc-11eb-
 
 https://user-images.githubusercontent.com/29125030/125169454-c9d27600-e1dc-11eb-8257-acee1f266012.mp4
 
-
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
 
 
 
