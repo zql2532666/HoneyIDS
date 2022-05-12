@@ -1010,16 +1010,16 @@ if __name__ == "__main__":
     try:
         http_server = WSGIServer(('0.0.0.0', 5000), app)
         # run hpfeeds broker, this will also create the sqlite.db file in the current dir if it doesn't exist
-        hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
+        # hpfeeds_broker_process = subprocess.Popen(["hpfeeds-broker", "-e", "tcp:port=10000"], stdout=subprocess.PIPE, cwd=basedir)
         sleep(5)
-        log_collector_thread = Thread(target=log_collector.main, args=())
+        # log_collector_thread = Thread(target=log_collector.main, args=())
         app.debug = True
-        log_collector_thread.start()
+        # log_collector_thread.start()
         print('Waiting for requests.. ')
         http_server.serve_forever()
         
 
     except:
-        hpfeeds_broker_process.terminate()
+        # hpfeeds_broker_process.terminate()
         print("Exception")
 
