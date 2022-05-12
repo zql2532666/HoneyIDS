@@ -29,7 +29,8 @@ LOG_API_ENDPOINTS = {
     "update_bruteforce_log": f"http://{WEB_SERVER_IP}:{WEB_SERVER_PORT}/api/v1/update_bruteforce_log"
 }
 
-HOST = 'localhost'
+# HOST = 'localhost'
+HOST = '127.0.0.1'
 PORT = 10000
 
 CHANNELS = [
