@@ -1,33 +1,47 @@
-{% extends "base.html" %}
-
-{% block mainContent %}
+{% extends "base.html" %} {% block mainContent %}
 <!-- Alert after adding node -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-      {{message}}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+  {{message}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %} {% endif %} {% endwith %}
 <!-- alert end -->
 
 <style>
   .buttons-columnVisibility.active {
     background-color: grey;
   }
+  .node-body {
+    box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    -webkit-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    -moz-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    margin-bottom: 30px;
+    background-color: #fff;
+  }
 </style>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Node</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -37,16 +51,25 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="deleteButton" type="button" onlick="deleteNode()" class="btn btn-primary">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          id="deleteButton"
+          type="button"
+          onlick="deleteNode()"
+          class="btn btn-primary"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row">
+<div class="row node-body">
   <div class="col-12">
-    <div id="hide-column" style="margin-bottom: 20px;"></div>
+    <div id="hide-column" style="margin-bottom: 20px"></div>
     <table id="example2" class="table table-bordered table-hover">
       <thead>
         <tr>
@@ -66,22 +89,20 @@
   <!-- /.col -->
 </div>
 <!-- /.row -->
-{% endblock %}
-{% block script %}
+{% endblock %} {% block script %}
 <!-- DataTables -->
 <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script>
-
   var CustomRenders = {
     status: function (data, type, row, meta) {
       var button = "";
-      if(data == "True") {
-        return '<h5><span style="width:100%" class="right badge badge-success">Active</span></h5>'
-      }else {
-        return '<h5><span style="width:100%" class="right badge badge-danger">Inactive</span></h5>'
+      if (data == "True") {
+        return '<h5><span style="width:100%" class="right badge badge-success">Active</span></h5>';
+      } else {
+        return '<h5><span style="width:100%" class="right badge badge-danger">Inactive</span></h5>';
       }
 
       // Old code for backup onclick="deleteNode()"
@@ -90,11 +111,16 @@
       //}else {
       //  return '<button style="width:100%" onmouseover="activateTooltip()" class="statusbutton btn btn-danger">Unactive</button>'
       //}
-    }, delete:function (data, type, row, meta) {
-      if(row.heartbeat_status == "False") {
-        return '<button style="margin:auto;display:block" type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' + row.token + '"><i class="fas fa-trash-alt"></i></button>'
-      }else {
-        return '<button style="margin:auto;display:block" disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>'
+    },
+    delete: function (data, type, row, meta) {
+      if (row.heartbeat_status == "False") {
+        return (
+          '<button style="margin:auto;display:block" type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' +
+          row.token +
+          '"><i class="fas fa-trash-alt"></i></button>'
+        );
+      } else {
+        return '<button style="margin:auto;display:block" disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
       }
     },
   };
@@ -102,57 +128,57 @@
   var table;
 
   function loadButton() {
-    $('#hide-column').append(table.buttons().container());
+    $("#hide-column").append(table.buttons().container());
   }
 
   $(function () {
-    table = $('#example2').DataTable({
-      "ordering": true,
-      "responsive": true,
-      "autoWidth": false,
-      "buttons": [
-        "colvis"
-      ],
-      "ajax": "/api/v1/honeynodes/datatables",
-      "columns": [
-            { "data": "honeynode_name" },
-            { "data": "date_deployed"},
-            { "data": "ip_addr" },
-            { "data": "honeypot_type" },
-            { "data": "nids_type" },
-            { "data": "token" },
-            { "data": "last_heard"},
-            { "data": "heartbeat_status", "render":CustomRenders.status},
-            { "render": CustomRenders.delete}
+    table = $("#example2").DataTable({
+      ordering: true,
+      responsive: true,
+      autoWidth: false,
+      buttons: ["colvis"],
+      ajax: "/api/v1/honeynodes/datatables",
+      columns: [
+        { data: "honeynode_name" },
+        { data: "date_deployed" },
+        { data: "ip_addr" },
+        { data: "honeypot_type" },
+        { data: "nids_type" },
+        { data: "token" },
+        { data: "last_heard" },
+        { data: "heartbeat_status", render: CustomRenders.status },
+        { render: CustomRenders.delete },
       ],
     });
   });
 
-  setInterval(function(){ 
-    table.ajax.reload( null, false );
+  setInterval(function () {
+    table.ajax.reload(null, false);
   }, 3000);
 
-  $('#exampleModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var token = button.data('token') // Extract info from data-* attributes
+  $("#exampleModal").on("show.bs.modal", function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var token = button.data("token"); // Extract info from data-* attributes
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    $("#deleteButton").attr("onclick","deleteNode('" + token + "')");
-  })
+    var modal = $(this);
+    $("#deleteButton").attr("onclick", "deleteNode('" + token + "')");
+  });
 
   function deleteNode(token) {
-    console.log('/api/v1/honeynodes/' + token);
+    console.log("/api/v1/honeynodes/" + token);
     $.ajax({
-      url: '/api/v1/honeynodes/' + token,
-      type: 'DELETE',
-      success: function(result) {
+      url: "/api/v1/honeynodes/" + token,
+      type: "DELETE",
+      success: function (result) {
         console.log(result);
         location.reload();
-      }
+      },
     });
-    $('#myModal').modal('hide');
-    setTimeout(() => {  location.reload(); }, 500);
+    $("#myModal").modal("hide");
+    setTimeout(() => {
+      location.reload();
+    }, 500);
   }
 
   setTimeout(loadButton, 200);

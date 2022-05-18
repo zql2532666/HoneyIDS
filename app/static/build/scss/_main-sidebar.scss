@@ -14,11 +14,12 @@
       outline: none;
     }
   }
-
 }
 
 .sidebar {
-  height: calc(100% - (#{$main-header-height-inner} + #{$main-header-bottom-border-width}));
+  height: calc(
+    100% - (#{$main-header-height-inner} + #{$main-header-bottom-border-width})
+  );
   overflow-y: auto;
   padding-bottom: $sidebar-padding-y;
   padding-left: $sidebar-padding-x;
@@ -30,11 +31,11 @@
 .user-panel {
   position: relative;
 
-  [class*='sidebar-dark'] & {
+  [class*="sidebar-dark"] & {
     border-bottom: 1px solid lighten($dark, 12%);
   }
 
-  [class*='sidebar-light'] & {
+  [class*="sidebar-light"] & {
     border-bottom: 1px solid $gray-300;
   }
 
@@ -46,7 +47,7 @@
 
   .image {
     display: inline-block;
-    padding-left: $nav-link-padding-x - .2;
+    padding-left: $nav-link-padding-x - 0.2;
   }
 
   img {
@@ -70,7 +71,7 @@
   // All levels
   .nav-item {
     > .nav-link {
-      margin-bottom: .2rem;
+      margin-bottom: 0.2rem;
 
       .right {
         @include transition(transform $transition-fn $transition-speed);
@@ -82,11 +83,11 @@
   .nav-link > p > .right {
     position: absolute;
     right: 1rem;
-    top: .7rem;
+    top: 0.7rem;
 
     i,
     span {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
     }
 
     &:nth-child(2) {
@@ -111,9 +112,9 @@
     margin-bottom: 0;
 
     .nav-icon {
-      margin-left: .05rem;
+      margin-left: 0.05rem;
       font-size: 1.2rem;
-      margin-right: .2rem;
+      margin-right: 0.2rem;
       text-align: center;
       width: $sidebar-nav-icon-width;
 
@@ -153,19 +154,19 @@
       padding-left: 1rem;
 
       .text-sm & {
-        padding-left: .5rem;
+        padding-left: 0.5rem;
       }
     }
 
     &.nav-legacy {
-      .nav-treeview {      
+      .nav-treeview {
         .nav-treeview {
           padding-left: 2rem;
           margin-left: -1rem;
 
-          .text-sm & {          
+          .text-sm & {
             padding-left: 1rem;
-            margin-left: -.5rem;
+            margin-left: -0.5rem;
           }
         }
       }
@@ -173,11 +174,11 @@
   }
 
   .nav-header {
-    font-size: .9rem;
+    font-size: 0.9rem;
     padding: $nav-link-padding-y;
 
     &:not(:first-of-type) {
-      padding: 1.7rem 1rem .5rem;
+      padding: 1.7rem 1rem 0.5rem;
     }
   }
 
@@ -207,7 +208,7 @@
   z-index: $zindex-main-sidebar - 1;
 }
 
-[class*='sidebar-light-'] {
+[class*="sidebar-light-"] {
   // Sidebar background color
   background-color: $sidebar-light-bg;
 
@@ -230,7 +231,7 @@
     }
 
     .dropdown-menu {
-      @include box-shadow(0 2px 4px rgba(0, 0, 0, .4));
+      @include box-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
       border-color: darken($sidebar-light-hover-bg, 5%);
     }
 
@@ -330,7 +331,7 @@
   }
 }
 
-[class*='sidebar-dark-'] {
+[class*="sidebar-dark-"] {
   // Sidebar background color
   background-color: $sidebar-dark-bg;
 
@@ -353,7 +354,7 @@
     }
 
     .dropdown-menu {
-      @include box-shadow(0 2px 4px rgba(0, 0, 0, .4));
+      @include box-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
       border-color: darken($sidebar-dark-hover-bg, 5%);
     }
 
@@ -375,7 +376,7 @@
     // Hover and active states
     &.menu-open > .nav-link,
     &:hover > .nav-link,
-    & > .nav-link:focus  {
+    & > .nav-link:focus {
       background-color: $sidebar-dark-hover-bg;
       color: $sidebar-dark-hover-color;
     }
@@ -461,14 +462,14 @@
 @each $name, $color in $theme-colors {
   .sidebar-dark-#{$name},
   .sidebar-light-#{$name} {
-    @include sidebar-color($color)
+    @include sidebar-color($color);
   }
 }
 
 @each $name, $color in $colors {
   .sidebar-dark-#{$name},
   .sidebar-light-#{$name} {
-    @include sidebar-color($color)
+    @include sidebar-color($color);
   }
 }
 
@@ -478,9 +479,9 @@
 .sidebar-mini-md .main-sidebar:not(.sidebar-no-expand):hover,
 .sidebar-mini .main-sidebar.sidebar-focused,
 .sidebar-mini-md .main-sidebar.sidebar-focused {
- .nav-compact.nav-sidebar.nav-child-indent:not(.nav-flat) .nav-treeview {
+  .nav-compact.nav-sidebar.nav-child-indent:not(.nav-flat) .nav-treeview {
     padding-left: 1rem;
-    margin-left: -.5rem;
+    margin-left: -0.5rem;
   }
 }
 
@@ -494,17 +495,17 @@
       margin-bottom: 0;
 
       > .nav-icon {
-        margin-left: .55rem;
+        margin-left: 0.55rem;
       }
     }
   }
 
   &:not(.nav-child-indent) {
-    .nav-treeview {  
+    .nav-treeview {
       .nav-item {
         > .nav-link {
           > .nav-icon {
-            margin-left: .4rem;
+            margin-left: 0.4rem;
           }
         }
       }
@@ -516,11 +517,11 @@
       padding-left: 0;
 
       .nav-icon {
-        margin-left: .85rem;
+        margin-left: 0.85rem;
       }
 
       .nav-treeview {
-        border-left: .2rem solid;
+        border-left: 0.2rem solid;
 
         .nav-icon {
           margin-left: 1.15rem;
@@ -550,31 +551,31 @@
   .sidebar-collapse &.nav-child-indent {
     .nav-treeview {
       .nav-icon {
-        margin-left: .55rem;
+        margin-left: 0.55rem;
       }
 
       .nav-link {
-        padding-left: calc(#{$nav-link-padding-x} - .2rem);
+        padding-left: calc(#{$nav-link-padding-x} - 0.2rem);
       }
 
       .nav-treeview {
         .nav-icon {
-          margin-left: .35rem;
+          margin-left: 0.35rem;
         }
 
         .nav-treeview {
           .nav-icon {
-            margin-left: .15rem;
+            margin-left: 0.15rem;
           }
 
           .nav-treeview {
             .nav-icon {
-              margin-left: -.15rem;
+              margin-left: -0.15rem;
             }
 
             .nav-treeview {
               .nav-icon {
-                margin-left: -.35rem;
+                margin-left: -0.35rem;
               }
             }
           }
@@ -589,13 +590,13 @@
   .sidebar-mini-md .main-sidebar.sidebar-focused & {
     &.nav-compact.nav-sidebar .nav-treeview {
       .nav-icon {
-        margin-left: .4rem;
+        margin-left: 0.4rem;
       }
     }
 
     &.nav-sidebar.nav-child-indent .nav-treeview {
       .nav-icon {
-        margin-left: .85rem;
+        margin-left: 0.85rem;
       }
 
       .nav-treeview {
@@ -630,18 +631,18 @@
 
   .nav-treeview {
     .nav-icon {
-      margin-left: -.2rem;
+      margin-left: -0.2rem;
     }
   }
 
   &.nav-sidebar > .nav-item {
     .nav-treeview,
     > .nav-treeview {
-      background: rgba($white, .05);
+      background: rgba($white, 0.05);
 
       .nav-item {
         > .nav-link {
-          border-left: .2rem solid;
+          border-left: 0.2rem solid;
         }
       }
     }
@@ -657,10 +658,10 @@
       margin-bottom: 0;
 
       > .nav-icon {
-        margin-left: .55rem;
+        margin-left: 0.55rem;
 
         .text-sm & {
-          margin-left: .75rem;
+          margin-left: 0.75rem;
         }
       }
     }
@@ -674,10 +675,10 @@
         box-shadow: none;
 
         > .nav-icon {
-          margin-left: calc(.55rem - 3px);
-          
+          margin-left: calc(0.55rem - 3px);
+
           .text-sm & {
-            margin-left: calc(.75rem - 3px);
+            margin-left: calc(0.75rem - 3px);
           }
         }
       }
@@ -688,7 +689,7 @@
     .nav-item {
       > .nav-link {
         > .nav-icon {
-          margin-left: calc(.75rem - 3px);
+          margin-left: calc(0.75rem - 3px);
         }
       }
     }
@@ -699,14 +700,18 @@
     > .nav-item .nav-link {
       .nav-icon {
         @include transition(margin-left $transition-fn $transition-speed);
-        margin-left: .75rem;
+        margin-left: 0.75rem;
       }
     }
   }
 
-  .sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused &.nav-child-indent,
+  .sidebar-mini.sidebar-collapse
+    .main-sidebar.sidebar-focused
+    &.nav-child-indent,
   .sidebar-mini.sidebar-collapse .main-sidebar:hover &.nav-child-indent,
-  .sidebar-mini-md.sidebar-collapse .main-sidebar.sidebar-focused &.nav-child-indent,
+  .sidebar-mini-md.sidebar-collapse
+    .main-sidebar.sidebar-focused
+    &.nav-child-indent,
   .sidebar-mini-md.sidebar-collapse .main-sidebar:hover &.nav-child-indent {
     .nav-treeview {
       padding-left: 1rem;
@@ -718,16 +723,22 @@
     }
   }
 
-  .sidebar-mini.sidebar-collapse.text-sm .main-sidebar.sidebar-focused &.nav-child-indent,
+  .sidebar-mini.sidebar-collapse.text-sm
+    .main-sidebar.sidebar-focused
+    &.nav-child-indent,
   .sidebar-mini.sidebar-collapse.text-sm .main-sidebar:hover &.nav-child-indent,
-  .sidebar-mini-md.sidebar-collapse.text-sm .main-sidebar.sidebar-focused &.nav-child-indent,
-  .sidebar-mini-md.sidebar-collapse.text-sm .main-sidebar:hover &.nav-child-indent {
+  .sidebar-mini-md.sidebar-collapse.text-sm
+    .main-sidebar.sidebar-focused
+    &.nav-child-indent,
+  .sidebar-mini-md.sidebar-collapse.text-sm
+    .main-sidebar:hover
+    &.nav-child-indent {
     .nav-treeview {
-      padding-left: .5rem;
+      padding-left: 0.5rem;
 
       .nav-treeview {
         padding-left: 1rem;
-        margin-left: -.5rem;
+        margin-left: -0.5rem;
       }
     }
   }
@@ -736,47 +747,46 @@
   .sidebar-mini-md.sidebar-collapse & {
     > .nav-item > .nav-link {
       .nav-icon {
-        margin-left: .55rem;
+        margin-left: 0.55rem;
       }
 
       &.active {
-        > .nav-icon{
-          margin-left: .36rem;
+        > .nav-icon {
+          margin-left: 0.36rem;
         }
       }
     }
 
-    &.nav-child-indent {   
+    &.nav-child-indent {
       .nav-treeview {
         .nav-treeview {
           padding-left: 0;
           margin-left: 0;
         }
       }
-      }
     }
-
+  }
 
   .sidebar-mini.sidebar-collapse.text-sm &,
   .sidebar-mini-md.sidebar-collapse.text-sm & {
     > .nav-item > .nav-link {
       .nav-icon {
-        margin-left: .75rem;
+        margin-left: 0.75rem;
       }
 
       &.active {
-        > .nav-icon{
-          margin-left: calc(.75rem - 3px);
+        > .nav-icon {
+          margin-left: calc(0.75rem - 3px);
         }
       }
     }
   }
 
-  [class*='sidebar-dark'] & {
+  [class*="sidebar-dark"] & {
     &.nav-sidebar > .nav-item {
       .nav-treeview,
       > .nav-treeview {
-        background: rgba($white, .05);
+        background: rgba($white, 0.05);
       }
 
       > .nav-link.active {
@@ -794,11 +804,11 @@
     }
   }
 
-  [class*='sidebar-light'] & {
+  [class*="sidebar-light"] & {
     &.nav-sidebar > .nav-item {
       .nav-treeview,
       > .nav-treeview {
-        background: rgba($black, .05);
+        background: rgba($black, 0.05);
       }
 
       > .nav-link.active {
@@ -816,7 +826,6 @@
     }
   }
 }
-
 
 .nav-collapse-hide-child {
   .menu-open > .nav-treeview {
@@ -863,19 +872,19 @@
 
   .nav-link > .right,
   .nav-link > p > .right {
-    top: .465rem;
+    top: 0.465rem;
   }
 
   .text-sm & {
     .nav-link > .right,
     .nav-link > p > .right {
-      top: .7rem;
+      top: 0.7rem;
     }
   }
 }
 
 // Sidebar Form Control
-[class*='sidebar-dark'] {
+[class*="sidebar-dark"] {
   .form-control-sidebar,
   .btn-sidebar {
     background: lighten($sidebar-dark-bg, 5%);
@@ -897,7 +906,7 @@
   }
 }
 
-[class*='sidebar-light'] {
+[class*="sidebar-light"] {
   .form-control-sidebar,
   .btn-sidebar {
     background: darken($sidebar-light-bg, 5%);
@@ -924,7 +933,7 @@
   width: 100%;
 }
 .sidebar nav .form-inline {
-  margin-bottom: .2rem;
+  margin-bottom: 0.2rem;
 }
 
 // Sidebar Collapse on Layout Boxed
@@ -933,7 +942,7 @@
   &.sidebar-collapse .main-sidebar {
     margin-left: 0;
   }
-  .content-wrapper, 
+  .content-wrapper,
   .main-header,
   .main-footer {
     z-index: 9999;

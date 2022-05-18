@@ -1,50 +1,81 @@
-{% extends "base.html" %}
-
-{% block mainContent %}
+{% extends "base.html" %} {% block mainContent %}
 <!-- Alert after adding node -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
 <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
   {{message}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-{% endfor %}
-{% endif %}
-{% endwith %}
+{% endfor %} {% endif %} {% endwith %}
 <!-- alert end -->
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade modal-body"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Raw Log</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly
-          style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
-
-          </textarea>
+        <textarea
+          class="form-control"
+          id="target-command"
+          rows="10"
+          placeholder=""
+          readonly
+          style="
+            height: auto;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            height: 500px;
+            resize: none;
+          "
+        >
+        </textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="confirmModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Log</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -54,8 +85,17 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="deleteButton" type="button" onlick="deleteLogs()" class="btn btn-primary">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          id="deleteButton"
+          type="button"
+          onlick="deleteLogs()"
+          class="btn btn-primary"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </div>
@@ -63,7 +103,7 @@
 
 <div hidden>
   <form id="logDataForm">
-    <input id="logData" type="text" name="logData">
+    <input id="logData" type="text" name="logData" />
   </form>
 </div>
 
@@ -83,19 +123,39 @@
   .buttons-columnVisibility.active {
     background-color: grey;
   }
+  .modal-body {
+    box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    -webkit-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    -moz-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    margin-bottom: 40px;
+    background-color: #fff;
+  }
 </style>
 <div class="row">
-  <div class="col-12">
-    <label for="datetimes" style="width: 23%; margin-bottom: 10px;">
+  <div class="col-12 modal-body">
+    <label for="datetimes" style="width: 23%; margin-bottom: 10px">
       Search Date Time Range:
-      <input id="dateRange" autocomplete="off" type="text" class="form-control" name="datetimes" style="width: 110%;"/>
+      <input
+        id="dateRange"
+        autocomplete="off"
+        type="text"
+        class="form-control"
+        name="datetimes"
+        style="width: 110%"
+      />
     </label>
     <div class="row">
       <div class="col-6">
-        <div id="hide-column" style="margin-bottom: 20px;"></div>
+        <div id="hide-column" style="margin-bottom: 20px"></div>
       </div>
       <div class="col-6">
-        <button class="btn btn-danger float-right" onclick="deleteLog()" style="margin-bottom: 20px;">Delete Logs</button>
+        <button
+          class="btn btn-danger float-right"
+          onclick="deleteLog()"
+          style="margin-bottom: 20px"
+        >
+          Delete Logs
+        </button>
       </div>
     </div>
     <table id="example" class="table table-bordered table-hover">
@@ -130,8 +190,7 @@
   <!-- /.col -->
 </div>
 <!-- /.row -->
-{% endblock %}
-{% block script %}
+{% endblock %} {% block script %}
 <!-- DataTables -->
 <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -141,7 +200,7 @@
   var table;
 
   function loadButton() {
-    $('#hide-column').append(table.buttons().container());
+    $("#hide-column").append(table.buttons().container());
   }
 
   $(function () {
@@ -150,14 +209,22 @@
         if (type === "exportcsv") {
           return data;
         }
-        return '<button type="button" onclick="viewLog(`' + data.replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
-      }
+        return (
+          '<button type="button" onclick="viewLog(`' +
+          data.replace(/"/g, "'") +
+          '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
+        );
+      },
     };
 
-    $('#example tfoot th').each(function () {
+    $("#example tfoot th").each(function () {
       var title = $(this).text();
       if (title != "") {
-        $(this).html('<input style="width:100%" type="text" placeholder="Search ' + title + '" />');
+        $(this).html(
+          '<input style="width:100%" type="text" placeholder="Search ' +
+            title +
+            '" />'
+        );
       }
     });
 
@@ -165,152 +232,177 @@
       timePicker: true,
       alwaysShowCalendars: true,
       timePickerSeconds: true,
-      startDate: moment().startOf('hour'),
-      endDate: moment().startOf('hour').add(32, 'hour'),
+      startDate: moment().startOf("hour"),
+      endDate: moment().startOf("hour").add(32, "hour"),
       locale: {
-        format: 'YYYY-MM-DD HH:mm:ss'
+        format: "YYYY-MM-DD HH:mm:ss",
       },
       showDropdowns: true,
-        opens: 'center',
-        ranges: {
-          'Today': [moment().startOf('day'), moment().endOf('day')],
-          'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-          'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-          'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
-          'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
-        },
+      opens: "center",
+      ranges: {
+        Today: [moment().startOf("day"), moment().endOf("day")],
+        Yesterday: [
+          moment().subtract(1, "days").startOf("day"),
+          moment().subtract(1, "days").endOf("day"),
+        ],
+        "Last 7 Days": [
+          moment().subtract(6, "days").startOf("day"),
+          moment().endOf("day"),
+        ],
+        "Last 30 Days": [
+          moment().subtract(29, "days").startOf("day"),
+          moment().endOf("day"),
+        ],
+        "This Month": [
+          moment().startOf("month").startOf("day"),
+          moment().endOf("month").endOf("day"),
+        ],
+        "Last Month": [
+          moment().subtract(1, "month").startOf("month").startOf("day"),
+          moment().subtract(1, "month").endOf("month").endOf("day"),
+        ],
+      },
     });
 
-    table = $('#example').DataTable({
+    table = $("#example").DataTable({
       initComplete: function () {
         // Apply the search
-        this.api().columns().every(function () {
-          var that = this;
-          that.search("").draw();
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
+        this.api()
+          .columns()
+          .every(function () {
+            var that = this;
+            that.search("").draw();
+            $("input", this.footer()).on("keyup change clear", function () {
+              if (that.search() !== this.value) {
+                that.search(this.value).draw();
+              }
+            });
           });
-        });
       },
-      "ordering": true,
-      "responsive": true,
-      "autoWidth": false,
-      "buttons": [
+      ordering: true,
+      responsive: true,
+      autoWidth: false,
+      buttons: [
         "colvis",
         {
-          "extend": 'excel',
-          "text": 'Export Excel',
-          init: function ( dt, node, config ) {
+          extend: "excel",
+          text: "Export Excel",
+          init: function (dt, node, config) {
             node.css("margin-left", "5px");
           },
-          "className": "btn-success",
-          "exportOptions": {
-            "columns": [ 1, 2, 3, 4, 5, 6, 7, 8 ],
-            "selected": true,
-            "orthogonal": "exportcsv"
-          }
+          className: "btn-success",
+          exportOptions: {
+            columns: [1, 2, 3, 4, 5, 6, 7, 8],
+            selected: true,
+            orthogonal: "exportcsv",
+          },
         },
         {
-          "extend": 'csv',
-          "text": 'Export CSV',
-          init: function ( dt, node, config ) {
+          extend: "csv",
+          text: "Export CSV",
+          init: function (dt, node, config) {
             node.css("margin-left", "5px");
           },
-          "className": "btn-info",
-          "exportOptions": {
-            "columns": [ 1, 2, 3, 4, 5, 6, 7, 8 ],
-            "selected": true,
-            "orthogonal": "exportcsv"
-          }
-        }
+          className: "btn-info",
+          exportOptions: {
+            columns: [1, 2, 3, 4, 5, 6, 7, 8],
+            selected: true,
+            orthogonal: "exportcsv",
+          },
+        },
       ],
-      "ajax": "/api/v1/general_logs/datatables",
-      'stateSave': true,
-      "columns": [
-        { "data": "log_id" }, //newline
-        { "data": "capture_date" },
-        { "data": "honeynode_name" },
-        { "data": "source_ip" },
-        { "data": "source_port" },
-        { "data": "destination_ip" },
-        { "data": "destination_port" },
-        { "data": "protocol" },
-        { "data": "raw_logs", "render": CustomRenders.raw_logs }
+      ajax: "/api/v1/general_logs/datatables",
+      stateSave: true,
+      columns: [
+        { data: "log_id" }, //newline
+        { data: "capture_date" },
+        { data: "honeynode_name" },
+        { data: "source_ip" },
+        { data: "source_port" },
+        { data: "destination_ip" },
+        { data: "destination_port" },
+        { data: "protocol" },
+        { data: "raw_logs", render: CustomRenders.raw_logs },
       ],
-      "columnDefs": [
-        { //newline
-          "orderable": false,
-          'targets': 0,
-          'checkboxes': {
-            'selectRow': true
-          }
+      columnDefs: [
+        {
+          //newline
+          orderable: false,
+          targets: 0,
+          checkboxes: {
+            selectRow: true,
+          },
         }, //newline
-        { "className": "dt-center", "targets": "_all" },
-        { "width": '13%', "targets": 8 }, // original value:7
+        { className: "dt-center", targets: "_all" },
+        { width: "13%", targets: 8 }, // original value:7
       ],
-      'select': { //newline
-        'style': 'multi+shift',
-        'selector': 'td:nth-child(1)'
+      select: {
+        //newline
+        style: "multi+shift",
+        selector: "td:nth-child(1)",
       },
-      "order": [[0, 'asc'], [1, 'desc']] //newline
+      order: [
+        [0, "asc"],
+        [1, "desc"],
+      ], //newline
     });
   });
 
   var start_date;
   var end_date;
-  var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
-     var dateStart = parseDateValue(start_date);
-     var dateEnd = parseDateValue(end_date);
-     var evalDate= parseDateValue(aData[1]);
-       if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
-            ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
-            ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
-            ( dateStart <= evalDate && evalDate <= dateEnd ) )
-       {
-           return true;
-       }
-       return false;
- });
+  var DateFilterFunction = function (oSettings, aData, iDataIndex) {
+    var dateStart = parseDateValue(start_date);
+    var dateEnd = parseDateValue(end_date);
+    var evalDate = parseDateValue(aData[1]);
+    if (
+      (isNaN(dateStart) && isNaN(dateEnd)) ||
+      (isNaN(dateStart) && evalDate <= dateEnd) ||
+      (dateStart <= evalDate && isNaN(dateEnd)) ||
+      (dateStart <= evalDate && evalDate <= dateEnd)
+    ) {
+      return true;
+    }
+    return false;
+  };
 
- function parseDateValue(rawDate) {
-     var parsedDate= new Date(rawDate);
-     return parsedDate;
- }    
+  function parseDateValue(rawDate) {
+    var parsedDate = new Date(rawDate);
+    return parsedDate;
+  }
 
- $( document ).ready(function() {
-
-   $('#dateRange').on('apply.daterangepicker', function(ev, picker) {
-      $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm:ss') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
-      start_date=picker.startDate.format('YYYY-MM-DD HH:mm:ss');
+  $(document).ready(function () {
+    $("#dateRange").on("apply.daterangepicker", function (ev, picker) {
+      $(this).val(
+        picker.startDate.format("YYYY-MM-DD HH:mm:ss") +
+          " - " +
+          picker.endDate.format("YYYY-MM-DD HH:mm:ss")
+      );
+      start_date = picker.startDate.format("YYYY-MM-DD HH:mm:ss");
       console.log(start_date);
-      end_date=picker.endDate.format('YYYY-MM-DD HH:mm:ss');
+      end_date = picker.endDate.format("YYYY-MM-DD HH:mm:ss");
       $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
       table.draw();
-   });
+    });
 
-   $('#dateRange').on('cancel.daterangepicker', function(ev, picker) {
-     $(this).val('');
-     start_date='';
-     end_date='';
-     $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
-     table.draw();
-   });
- });
+    $("#dateRange").on("cancel.daterangepicker", function (ev, picker) {
+      $(this).val("");
+      start_date = "";
+      end_date = "";
+      $.fn.dataTable.ext.search.splice(
+        $.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1)
+      );
+      table.draw();
+    });
+  });
 
   setInterval(function () {
     table.ajax.reload(null, false);
   }, 3000);
 
-
   function viewLog(input) {
     var obj = JSON.parse(input.replace(/'/g, '"'));
     var pretty = JSON.stringify(obj, null, "\t");
-    $('#target-command').val(pretty);
+    $("#target-command").val(pretty);
   }
 
   setTimeout(loadButton, 200);
@@ -318,47 +410,46 @@
     loadButton();
   });
 
-  $('#confirmModal').on('show.bs.modal', function (event) {
-    $("#deleteButton").attr("onclick","confirmDelete()");
-  })
+  $("#confirmModal").on("show.bs.modal", function (event) {
+    $("#deleteButton").attr("onclick", "confirmDelete()");
+  });
 
   function deleteLog(token) {
-
     var rows_selected = table.column(0).checkboxes.selected();
-    $('#logData').val(rows_selected.join(","));
-    console.log($('#logData').val());
+    $("#logData").val(rows_selected.join(","));
+    console.log($("#logData").val());
 
-    if($('#logData').val()){
-      $('#confirmModal').modal('show');
-    }else{
+    if ($("#logData").val()) {
+      $("#confirmModal").modal("show");
+    } else {
       alert("Please select logs to delete.");
     }
   }
 
   function confirmDelete() {
-    $('#confirmModal').modal('hide');
+    $("#confirmModal").modal("hide");
     $.ajax({
       type: "DELETE",
       url: "/api/v1/general_logs",
-      data: $('#logDataForm').serialize(),
-      success: function(data){
+      data: $("#logDataForm").serialize(),
+      success: function (data) {
         //$(".showSuccess").prop("hidden", false);
         //alert("Logs Deleted");
       },
-      error: function (jqXHR, textStatus, errorThrown) { 
+      error: function (jqXHR, textStatus, errorThrown) {
         //$(".showError").prop("hidden", false);
         alert("Error");
-      }
+      },
     });
     table.ajax.reload(null, false);
   }
 
   // refresh page only once when loaded (once every session)
-  window.onload = function() {
-    if(!sessionStorage.loadedLog) {
-        sessionStorage.loadedLog = "loaded";
-        window.location.reload();
+  window.onload = function () {
+    if (!sessionStorage.loadedLog) {
+      sessionStorage.loadedLog = "loaded";
+      window.location.reload();
     }
-  }
+  };
 </script>
 {% endblock %}
