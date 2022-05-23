@@ -140,3 +140,4 @@ app/heartbeats_server.config
 
 # sqlite database
 app/sqlite.db
+db.yaml
