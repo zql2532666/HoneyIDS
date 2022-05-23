@@ -6,10 +6,10 @@
 -->
 
 <!-- PROJECT LOGO -->
-<!-- <p align="center">
+<p align="center">
 <img width="346" alt="honeyids" src="https://user-images.githubusercontent.com/29125030/149339485-06c983cb-3fd3-439f-ad6a-9c3d11634a3d.png">
-</p> -->
-# Threatspan Deception 
+</p>
+ 
 
 
 
