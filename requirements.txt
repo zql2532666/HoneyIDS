@@ -7,3 +7,6 @@ hpfeeds[broker]
 aionotify
 pyminizip
 aiorun
+pyyaml
+requests
+mysql-connector-python	

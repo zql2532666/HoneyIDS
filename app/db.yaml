@@ -1,5 +1,5 @@
 # File to configure DB connection
 mysql_host: "localhost"
 mysql_user: "root"
-mysql_password: "jonas"
-mysql_db: "honeyids"
+mysql_password: "honeyids"
+mysql_db: "HoneyIDS"
