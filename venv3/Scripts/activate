@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\user\Documents\projects\upwork\threatspan\threatspan-deception\venv3"
+VIRTUAL_ENV="C:\Users\syed_\Desktop\TS1\threatspan-deception\venv3"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
