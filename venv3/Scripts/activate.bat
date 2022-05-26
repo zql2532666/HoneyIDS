@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\user\Documents\projects\upwork\threatspan\threatspan-deception\venv3
+set VIRTUAL_ENV=C:\Users\syed_\Desktop\TS1\threatspan-deception\venv3
 
 if not defined PROMPT set PROMPT=$P$G
 
