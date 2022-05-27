@@ -22,41 +22,52 @@
     margin-bottom: 30px;
     background-color: #fff;
   }
-  .node-listing{
+  .node-listing {
     margin-bottom: 20px;
-    display:flex;
-    justify-content:flex-end;
+    display: flex;
+    justify-content: flex-end;
   }
-  .add-node{
-    position:relative;
-    left:72em;
+  .add-node {
+
     margin-bottom: 10px;
   }
-  #add-node{
-    display:none;
+  #add-node {
+    display: none;
   }
-  .card-cancel{
+  .card-cancel {
     display: flex;
     justify-content: space-between;
   }
-  .cancel{
-    position:relative;
+  .cancel {
+    position: relative;
     left: 19em;
   }
-  .cancel:hover{
+  .cancel:hover {
     cursor: pointer;
     color: #e28743;
   }
-  #deactivate-node{
-    display:none;
-  }
-  .cancel-deactivate{
-    position:relative;
+  /* #deactivate-node {
+    display: none;
+  } */
+  .cancel-deactivate {
+    position: relative;
     left: 36em;
   }
-  
+  .popu-content{
+    margin-top: 10% !important;
+  }
+  .node-input{
+display: flex;
+justify-content: flex-end;
+  }
+  .popup-card{
+    display:none
+  }
+  .popup-add-card{
+    display:none
+  }
 </style>
-
+<div class="node-input"><button type="button" class="btn btn-secondary add-node" data-toggle="modal" data-target="#staticBackdropAddNode">Add Node</button></div>
 <div
   class="modal fade"
   id="exampleModal"
@@ -99,7 +110,7 @@
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-secondary add-node">Add Node</button>
+
 <div class="row node-body">
   <div class="col-12">
     <div class="node-listing">
@@ -107,83 +118,129 @@
       <!-- <button type="button" class="btn btn-secondary deactivate-node" id="d-node">Deactivate Node</button> -->
     </div>
     <div id="table-container">
-    <div id="hide-column" style="margin-bottom: 20px"></div>
-    <table id="example2" class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Deployed Date</th>
-          <th>Ip Address</th>
-          <th>Honeypot Type</th>
-          <th>NIDS Type</th>
-          <th>Token</th>
-          <th>Deactivate Node</th>
-          <th>Time Last Heard</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
+      <div id="hide-column" style="margin-bottom: 20px"></div>
+      <table id="example2" class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Deployed Date</th>
+            <th>Ip Address</th>
+            <th>Honeypot Type</th>
+            <th>NIDS Type</th>
+            <!-- <th>Token</th> -->
+            <th>Deactivate Node</th>
+            <th>Time Last Heard</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </div>
   <!-- /.col -->
 </div>
-<!-- /.row -->
-<!-- Main content -->
-<section class="content" id="add-node">
-  <div class="row">
-    <div class = "col-md-2"></div>
-    <div class="col-md-8">
-      <div class="card card-secondary modal-body">
-        <div class="card-header card-cancel">
-          <h3 class="card-title">Add Node</h3>
-          <h3 class="card-title cancel">X</h3>
+    </div>
+  </div>
+</section> -->
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropAddNode" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="card card-secondary popup-add-card">
+      <div class="card-header">
+        <h5 class="card-title" >Add Node</h5>
+        
+      </div>
+      <div class="modal-body">
+        <div>
+          <p class="mainText">
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Adding Node... (Approx. <span id="time">00:25</span>)
+          </p>
         </div>
-        <form id="nodeForm" action="addnode" method="POST">
+      </div>
+    
+      <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+      </div>
+    </div>
+  
+
+    <div class="modal-content  popu-content">
+      <section class="content" id="add-node">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add Node</h5>
+        <button
+        type="button"
+        class="close"
+        id="close"
+        data-dismiss="modal"
+        onclick="cancelAdd()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+      <form id="nodeForm" action="addnode" method="POST">
+      <div class="modal-body">
+        
           <div class="card-body">
             <div class="row">
               <div class="form-group col-md-12">
                 <label for="ipaddress">IP Address</label>
-                <input type="text" class="form-control" name="ipaddress" 
-                data-parsley-required-message="IP Address is required."
-                required=""
-                data-parsley-ip="">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="ipaddress"
+                  data-parsley-required-message="IP Address is required."
+                  required=""
+                  data-parsley-ip=""
+                />
               </div>
             </div>
           </div>
           <!-- /.card-body -->
-          <div class="card-footer">
-            <button id="submitbtn" type="submit" onclick="add()" class="btn btn-outline-primary btn-sm">Activate</button>
-          </div>
-        </form>
+     
+   
       </div>
-      <!-- /.card -->
+      <div class="modal-footer">
+        <button
+        id="submitbtn"
+        type="submit"
+        onclick="add()"
+        class="btn btn-outline-primary btn-sm"
+      >
+        Activate
+      </button>
+      </div>
+    </form>
+    </section>
     </div>
   </div>
-</section>
+</div>
 <!-- /.content -->
 
 <!-- /.content -->
+
+<!-- Main content -->
+
 <div
   class="modal fade"
-  id="exampleModal"
+  id="staticBackdrop"
+  data-backdrop="static"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="staticBackdropLabel"
   aria-hidden="true"
 >
+
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Kill Node</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="card card-secondary popup-card ">
+      <div class="card-header">
+        <h5 class="card-title" id="exampleModalLabel">Kill Node</h5>
       </div>
       <div class="modal-body">
         <div>
@@ -197,223 +254,250 @@
           </p>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div
-  id="progress"
-  class="progress"
-  hidden
-  style="margin-bottom: 2%; height: 20px"
->
-  <div class="progress-bar" style="min-width: 20px; width: 2%">25s</div>
-</div>
-
-<!-- Main content -->
-<section class="content" id="deactivate-node">
-  <div class="row">
-    <div class = "col-md-2"></div>
-    <div class="col-md-8">
-      <div class="card card-secondary modal-body">
-        <div class="card-header card-cance">
-          <h3 class="card-title">Deactivate Node</h3>
-          <h3 class="card-title cancel cancel-deactivate">X</h3>
+    
+        <div class="progress">
+          <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
         </div>
-        <form id="nodeForm" action="deactivatenode" method="POST">
-          <div class="card-body">
-            <div class="row">
-              <div class="form-group col-md-12">
-                <label for="selectkill">Nodes</label>
-                <select id="selectkill" name="selectkill" class="form-control custom-select">
-                  <option selected value="">Select one</option>
-                  {% for node in list_nodes %}
-                    <option value="{{ node.ip_addr }}">{{ node.honeynode_name }}</option>
-                  {% endfor %}
-                </select>
-                <input type="hidden" name="">
-              </div>
+
+    </div>
+    <div class="modal-content popu-content">
+      <section class="content w-100" id="deactivate-node">
+       
+            <div class="modal-header header-secondary">
+              <h3 class="modal-title" id="staticBackdropLabel">Deactivate Node</h3>
+              
+                <button
+                  type="button"
+                  class="close"
+                  id="close"
+                  data-dismiss="modal"
+                  onclick="cancelDeactivation()"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+           
             </div>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <button id="submitbtn" onclick="kill()" type="submit" class="btn btn-outline-primary btn-sm">Deactivate</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.card -->
+            <form id="nodeForm" action="deactivatenode" method="POST">
+            <div class="modal-body">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="selectkill">Nodes</label>
+                      <select
+                        id="selectkill"
+                        name="selectkill"
+                        class="form-control custom-select"
+                      >
+                        <option selected value="">Select one</option>
+                        {% for node in list_nodes %}
+                        <option value="{{ node.ip_addr }}">
+                          {{ node.honeynode_name }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                      <input type="hidden" name="" />
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="modal-footer">
+                  <button
+                    id="submitbtn"
+                    onclick="kill()"
+                    type="submit"
+                    class="btn btn-outline-primary btn-sm"                 
+                  >
+                    Deactivate
+                  </button>
+
+                  
+                </div>
+           
+            
+            </div>
+         
+          </form>
+      </section>
     </div>
   </div>
-</section>
-<!-- /.content -->
+</div>
 
-{% endblock %} {% block script %}
-<!-- DataTables -->
-<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="dist/js/autosize.js"></script>
-<!-- parsley validator -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
-<script>
-  var CustomRenders = {
-    status: function (data, type, row, meta) {
-      var button = "";
-      if (data == "True") {
-        return '<h5><span style="width:100%" class="right badge badge-success">Active</span></h5>';
-      } else {
-        return '<h5><span style="width:100%" class="right badge badge-danger">Inactive</span></h5>';
-      }
+  </div>
+  <!-- /.content -->
 
-      // Old code for backup onclick="deleteNode()"
-      //if(data == "True") {
-      //  return '<button style="width:100%" onmouseover="activateTooltip()" onclick="callActivateAPI(' + row.token + ')" class="statusbutton btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactivate Node">Active</button>'
-      //}else {
-      //  return '<button style="width:100%" onmouseover="activateTooltip()" class="statusbutton btn btn-danger">Unactive</button>'
-      //}
-    },
+  {% endblock %} {% block script %}
+  <!-- DataTables -->
+  <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="dist/js/autosize.js"></script>
+  <!-- parsley validator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
+  <script>
+    var CustomRenders = {
+      status: function (data, type, row, meta) {
+        var button = "";
+        if (data == "True") {
+          return '<h5><span style="width:100%" class="right badge badge-success">Active</span></h5>';
+        } else {
+          return '<h5><span style="width:100%" class="right badge badge-danger">Inactive</span></h5>';
+        }
 
-    deactivate: function (data, type, row, meta) {
-      // var button = "";
-        return '<h5><button type="button" class="btn btn-secondary deactivate-node" data-target="#deactivate-node">Deactivate</button></h5>';
-    },
-
-
-    delete: function (data, type, row, meta) {
-      if (row.heartbeat_status == "False") {
-        return (
-          '<button style="margin:auto;display:block" type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' +
-          row.token +
-          '"><i class="fas fa-trash-alt"></i></button>'
-        );
-      } else {
-        return '<button style="margin:auto;display:block" disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
-      }
-    },
-  };
-
-  var table;
-
-  function loadButton() {
-    $("#hide-column").append(table.buttons().container());
-  }
-
-  $(function () {
-    table = $("#example2").DataTable({
-      ordering: true,
-      responsive: true,
-      autoWidth: false,
-      buttons: ["colvis"],
-      ajax: "/api/v1/honeynodes/datatables",
-      columns: [
-        { data: "honeynode_name" },
-        { data: "date_deployed" },
-        { data: "ip_addr" },
-        { data: "honeypot_type" },
-        { data: "nids_type" },
-        { data: "token" },
-        { render: CustomRenders.deactivate },
-        { data: "last_heard" },
-        { data: "heartbeat_status", render: CustomRenders.status },
-        { render: CustomRenders.delete },
-      ],
-    });
-  });
-
-  setInterval(function () {
-    table.ajax.reload(null, false);
-  }, 3000);
-
-  $("#exampleModal").on("show.bs.modal", function (event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var token = button.data("token"); // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this);
-    $("#deleteButton").attr("onclick", "deleteNode('" + token + "')");
-  });
-
-  function deleteNode(token) {
-    console.log("/api/v1/honeynodes/" + token);
-    $.ajax({
-      url: "/api/v1/honeynodes/" + token,
-      type: "DELETE",
-      success: function (result) {
-        console.log(result);
-        location.reload();
+        // Old code for backup onclick="deleteNode()"
+        //if(data == "True") {
+        //  return '<button style="width:100%" onmouseover="activateTooltip()" onclick="callActivateAPI(' + row.token + ')" class="statusbutton btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactivate Node">Active</button>'
+        //}else {
+        //  return '<button style="width:100%" onmouseover="activateTooltip()" class="statusbutton btn btn-danger">Unactive</button>'
+        //}
       },
-    });
-    $("#myModal").modal("hide");
-    setTimeout(() => {
-      location.reload();
-    }, 500);
-  }
 
-  setTimeout(loadButton, 200);
-  $("*").mouseover(function () {
-    loadButton();
-  });
-  // Add Node
+      deactivate: function (data, type, row, meta) {
+        // var button = "";
+        return '<h5><button type="button" class="btn btn-secondary deactivate-node"   data-toggle="modal" data-target="#staticBackdrop">Deactivate</button></h5>';
+      },
 
-autosize(document.querySelectorAll('textarea'));
+      delete: function (data, type, row, meta) {
+        if (row.heartbeat_status == "False") {
+          return (
+            '<button style="margin:auto;display:block" type="button" class="deletebutton btn btn-danger" data-toggle="modal" data-target="#exampleModal" title="Delete Node" data-token="' +
+            row.token +
+            '"><i class="fas fa-trash-alt"></i></button>'
+          );
+        } else {
+          return '<button style="margin:auto;display:block" disabled class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
+        }
+      },
+    };
 
-var parsleyConfig = {
-  errorClass: 'has-danger',
-  successClass: 'has-success',
-  classHandler: function (field) {
-      return field.$element.parents('.form-group');
-  },
-  errorsContainer: function (field) {
-      return field.$element.parents('.form-group');
-  },
-  errorsWrapper: '<span class="form-text text-danger">',
-  errorTemplate: '<div></div>'
-};
+    var table;
 
-//FORM VALIDATION
-$(document).ready(function () {
-  // Register custom validators
-  window.Parsley.addValidator('ip', {
-    validateString: function(value) {
-      var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
-      return pattern.test(value);
-    },
-    messages: {
-      en: 'IP address is not valid'
+    function loadButton() {
+      $("#hide-column").append(table.buttons().container());
     }
-  });
 
-  // Activate parsley
-  $('#nodeForm').parsley(parsleyConfig);
-});
+    $(function () {
+      table = $("#example2").DataTable({
+        ordering: true,
+        responsive: true,
+        autoWidth: false,
+        buttons: ["colvis"],
+        ajax: "/api/v1/honeynodes/datatables",
+        columns: [
+          { data: "honeynode_name" },
+          { data: "date_deployed" },
+          { data: "ip_addr" },
+          { data: "honeypot_type" },
+          { data: "nids_type" },
+          // { data: "token" },
+          { render: CustomRenders.deactivate },
+          { data: "last_heard" },
+          { data: "heartbeat_status", render: CustomRenders.status },
+          { render: CustomRenders.delete },
+        ],
+      });
+    });
 
-function add() {
-  if($('#nodeForm').parsley().validate()){
-    //$("#exampleModal").modal("show"); //hide modal for now
-    $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
-    Adding Node...');
-    $('#submitbtn').prop('disabled', true);
-    $("#nodeForm").submit();
-    $('#progress').prop('hidden', false);
-    var fiveMinutes = 24,
-    display = document.querySelector('#time');
-    startTimer(fiveMinutes, display);
-    setTimeout(function(){ 
-      location.reload(); 
-    }, 25000);
-  }
-}
-
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    var i = 4;
     setInterval(function () {
+      table.ajax.reload(null, false);
+    }, 3000);
+
+    setInterval(function () {
+      $(".deactivate-node").click(function () {
+        deactivateNode();
+      });
+    }, 300);
+
+    $("#exampleModal").on("show.bs.modal", function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var token = button.data("token"); // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this);
+      $("#deleteButton").attr("onclick", "deleteNode('" + token + "')");
+    });
+
+    function deleteNode(token) {
+      console.log("/api/v1/honeynodes/" + token);
+      $.ajax({
+        url: "/api/v1/honeynodes/" + token,
+        type: "DELETE",
+        success: function (result) {
+          console.log(result);
+          location.reload();
+        },
+      });
+      $("#myModal").modal("hide");
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }
+
+    setTimeout(loadButton, 200);
+    $("*").mouseover(function () {
+      loadButton();
+    });
+    // Add Node
+
+    autosize(document.querySelectorAll("textarea"));
+
+    var parsleyConfig = {
+      errorClass: "has-danger",
+      successClass: "has-success",
+      classHandler: function (field) {
+        return field.$element.parents(".form-group");
+      },
+      errorsContainer: function (field) {
+        return field.$element.parents(".form-group");
+      },
+      errorsWrapper: '<span class="form-text text-danger">',
+      errorTemplate: "<div></div>",
+    };
+
+    //FORM VALIDATION
+    $(document).ready(function () {
+      // Register custom validators
+      window.Parsley.addValidator("ip", {
+        validateString: function (value) {
+          var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
+          return pattern.test(value);
+        },
+        messages: {
+          en: "IP address is not valid",
+        },
+      });
+
+      // Activate parsley
+      $("#nodeForm").parsley(parsleyConfig);
+    });
+
+    function add() {
+      document.querySelector(
+      ".popup-add-card").style.display="block"
+      if ($("#nodeForm").parsley().validate()) {
+        //$("#exampleModal").modal("show"); //hide modal for now
+        $("#submitbtn").html(
+          '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
+    Adding Node...'
+        );
+        $("#submitbtn").prop("disabled", true);
+        $("#nodeForm").submit();
+        $("#progress").prop("hidden", false);
+        var fiveMinutes = 24,
+          display = document.querySelector("#time");
+        startTimer(fiveMinutes, display);
+        setTimeout(function () {
+          location.reload();
+        }, 25000);
+      }
+    }
+
+    function startTimer(duration, display) {
+      var timer = duration,
+        minutes,
+        seconds;
+      var i = 4;
+      setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
@@ -422,126 +506,157 @@ function startTimer(duration, display) {
 
         //display.textContent = minutes + ":" + seconds;
         i = i + 4;
-        $(".progress-bar").css("width", i + "%").text(seconds + "s");
+        $(".progress-bar")
+          .css("width", i + "%")
+          .text(seconds + "s");
 
         if (--timer < 0) {
-            timer = duration;
+          timer = duration;
         }
-    }, 1000);
-}
-// Add Node
-const addNodeSection = document.querySelector("#add-node")
-const addNodeBtn = document.querySelector(".add-node")
-const tableContainer = document.querySelector("#table-container")
-// const deactivateNodeSection1= document.querySelector("#deactivate-node")
-const addNode = () => {
-  addNodeSection.style.display="block";
-  tableContainer.style.display="none";
-  deactivateNodeSection.style.display="none";
-}
-addNodeBtn.addEventListener("click", addNode);
-const showTable = () => {
-  addNodeSection.style.display="none";
-  tableContainer.style.display="block";
-}
-const cancel = document.querySelector(".cancel");
-cancel.addEventListener("click", showTable);
+      }, 1000);
+    }
+    // Add Node
+    const addNodeSection = document.querySelector("#add-node");
+    const addNodeBtn = document.querySelector(".add-node");
+    const tableContainer = document.querySelector("#table-container");
+    // const deactivateNodeSection1= document.querySelector("#deactivate-node")
+    const addNode = () => {
+      addNodeSection.style.display = "block";
+      deactivateNodeSection.style.display = "none";
+    };
+    const cancelAdd = () => {
+      document.querySelector("popup-add-card").style.display = "none";
+    };
+    const cancelDeactivation = () => {
+      document.querySelector("popup-card").style.display = "none";
+    };
+    addNodeBtn.addEventListener("click", addNode);
+    const showTable = () => {
+      addNodeSection.style.display = "none";
+      tableContainer.style.display = "block";
+    };
+    const cancel = document.querySelector(".cancel");
+    cancel.addEventListener("click", showTable);
 
-// #Deactivate Node
+    // #Deactivate Node
 
-autosize(document.querySelectorAll('textarea'));
+    autosize(document.querySelectorAll("textarea"));
 
-  var parsleyConfig = {
-    errorClass: 'has-danger',
-    successClass: 'has-success',
-    classHandler: function (field) {
-        return field.$element.parents('.form-group');
-    },
-    errorsContainer: function (field) {
-        return field.$element.parents('.form-group');
-    },
-    errorsWrapper: '<span class="form-text text-danger">',
-    errorTemplate: '<div></div>'
-  };
-
-  //FORM VALIDATION
-  $(document).ready(function () {
-    // Register custom validators
-    window.Parsley.addValidator('ip', {
-      validateString: function(value) {
-        var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
-        return pattern.test(value);
+    var parsleyConfig = {
+      errorClass: "has-danger",
+      successClass: "has-success",
+      classHandler: function (field) {
+        return field.$element.parents(".form-group");
       },
-      messages: {
-        en: 'IP address is not valid'
+      errorsContainer: function (field) {
+        return field.$element.parents(".form-group");
+      },
+      errorsWrapper: '<span class="form-text text-danger">',
+      errorTemplate: "<div></div>",
+    };
+
+    //FORM VALIDATION
+    $(document).ready(function () {
+      // Register custom validators
+      window.Parsley.addValidator("ip", {
+        validateString: function (value) {
+          var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
+          return pattern.test(value);
+        },
+        messages: {
+          en: "IP address is not valid",
+        },
+      });
+      // Activate parsley
+      $("#nodeForm").parsley(parsleyConfig);
+    });
+
+    $("#selectkill").on("change", function () {
+      if ($("#selectkill").val()) {
+        $("#submitbtn").prop("disabled", false);
+      } else {
+        $("#submitbtn").prop("disabled", "disabled");
       }
     });
-    // Activate parsley
-    $('#nodeForm').parsley(parsleyConfig);
-  });
 
-  $('#selectkill').on('change', function() {
-    if ($("#selectkill").val()) {
-        $('#submitbtn').prop('disabled', false);  
-    } else {
-        $('#submitbtn').prop('disabled', 'disabled');
+    function kill() {
+      document.querySelector(
+      ".popup-card").style.display="block"
+      document.getElementById("nodeForm").submit();
+      //$("#exampleModal").modal("show"); //hide modal for now
+      $("#submitbtn").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
+    Killing Node...'
+      );
+      $("#submitbtn").prop("disabled", true);
+      $("#progress").prop("hidden", false);
+      var fiveMinutes = 24,
+        display = document.querySelector("#time");
+      startTimer(fiveMinutes, display);
+      setTimeout(function () {
+        location.reload();
+      }, 25000);
     }
-});
 
-  function kill() {
-    document.getElementById("nodeForm").submit();
-    //$("#exampleModal").modal("show"); //hide modal for now
-    $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
-    Killing Node...');
-    $('#submitbtn').prop("disabled", true);
-    $('#progress').prop('hidden', false);
-    var fiveMinutes = 24,
-    display = document.querySelector('#time');
-    startTimer(fiveMinutes, display);
-    setTimeout(function(){ 
-      location.reload(); 
-    }, 25000);
-  }
-
-  function startTimer(duration, display) {
-      var timer = duration, minutes, seconds;
+    function startTimer(duration, display) {
+      var timer = duration,
+        minutes,
+        seconds;
       var i = 4;
       setInterval(function () {
-          minutes = parseInt(timer / 60, 10);
-          seconds = parseInt(timer % 60, 10);
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
 
-          minutes = minutes < 10 ? "0" + minutes : minutes;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
 
-          //display.textContent = minutes + ":" + seconds;
-          i = i + 4;
-          $(".progress-bar").css("width", i + "%").text(seconds + "s");
+        //display.textContent = minutes + ":" + seconds;
+        i = i + 4;
+        $(".progress-bar")
+          .css("width", i + "%")
+          .text(seconds + "s");
 
-          if (--timer < 0) {
-              timer = duration;
-          }
+        if (--timer < 0) {
+          timer = duration;
+        }
       }, 1000);
-  }
-  // Deactivate node
+    }
+    // Deactivate node
 
-const deactivateNodeSection = document.querySelector("#deactivate-node")
-const deactivateNodeBtn = document.querySelector(".deactivate-node")
-const tableContainer1 = document.querySelector("#table-container")
-const deactivateNode = () => {
-  deactivateNodeSection.style.display="block";
-  tableContainer.style.display="none";
-  addNodeSection.style.display="none";
-}
-deactivateNodeBtn.addEventListener("click", deactivateNode);
-const showTable1 = () => {
-  deactivateNodeSection.style.display="none";
-  tableContainer.style.display="block";
-}
+    const deactivateNodeSection = document.querySelector(".deactivate-node");
+    const deactivateNodeBtn = document.querySelector(".deactivate-node");
+    const tableContainer1 = document.querySelector("#table-container");
+    const deactivateNode = () => {
+      deactivateNodeSection.style.display = "block";
+      //console.log(1233);
+      // tableContainer.style.display="";
+      addNodeSection.style.display = "none";
+    };
+    //deactivateNodeBtn.addEventListener("click", deactivateNode);
+    const showTable1 = () => {
+      deactivateNodeSection.style.display = "none";
+      tableContainer.style.display = "block";
+    };
+
+    $(".cancel-deactivate").click(function () {
+      deactivateNodeSection.style.display = "none";
+      //console.log(4321);
+      tableContainer.style.display = "block";
+      addNodeSection.style.display = "block";
+    });
+    /*
 const cancel1 = document.querySelector(".cancel-deactivate");
 cancel1.addEventListener("click", showTable);
 $('#deactivate-node').click(function() {
     // $('#modalwindow').modal('hide');
     console.log('clicked')
 });
-</script>
-{% endblock %}
+
+*/
+
+    $("#close").on("click", function () {
+      $("#exampleModalCenter").modal("hide");
+    });
+  </script>
+  {% endblock %}
+</div>
