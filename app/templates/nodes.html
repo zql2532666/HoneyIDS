@@ -128,7 +128,7 @@ justify-content: flex-end;
             <th>Honeypot Type</th>
             <th>NIDS Type</th>
             <!-- <th>Token</th> -->
-            <th>Deactivate Node</th>
+            <!-- <th>Deactivate Node</th> -->
             <th>Time Last Heard</th>
             <th>Status</th>
             <th>Action</th>
@@ -354,7 +354,7 @@ justify-content: flex-end;
 
       deactivate: function (data, type, row, meta) {
         // var button = "";
-        return '<h5><button type="button" class="btn btn-secondary deactivate-node"   data-toggle="modal" data-target="#staticBackdrop">Deactivate</button></h5>';
+        return '<h5><button type="button" class="btn btn-secondary deactivate-node" id="deactivate-node"  data-toggle="modal" data-target="#staticBackdrop">Deactivate</button></h5>';
       },
 
       delete: function (data, type, row, meta) {
@@ -390,7 +390,7 @@ justify-content: flex-end;
           { data: "honeypot_type" },
           { data: "nids_type" },
           // { data: "token" },
-          { render: CustomRenders.deactivate },
+          // { render: CustomRenders.deactivate },
           { data: "last_heard" },
           { data: "heartbeat_status", render: CustomRenders.status },
           { render: CustomRenders.delete },
@@ -402,6 +402,11 @@ justify-content: flex-end;
       table.ajax.reload(null, false);
     }, 3000);
 
+    $(document).ready(function() {
+       $("#deactivate-node").click(function () {
+       console.log("sssss")
+      });
+    })
     setInterval(function () {
       $(".deactivate-node").click(function () {
         deactivateNode();
@@ -651,7 +656,6 @@ $('#deactivate-node').click(function() {
     // $('#modalwindow').modal('hide');
     console.log('clicked')
 });
-
 */
 
     $("#close").on("click", function () {
