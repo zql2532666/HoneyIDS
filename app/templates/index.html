@@ -1,120 +1,107 @@
-{% extends "base.html" %} {% block mainContent %}
-<!-- Small boxes (Stat box) -->
-<div class="col-sm-12 dash-home" style="padding-bottom: 5%; padding-top: 5%">
-  <div class="row h-100 justify-content-center align-items-center">
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-info">
-        <div class="inner">
-          <h3 id="totalNodes">0</h3>
+{% extends "base.html" %}
 
-          <p>Deployed Nodes <br /><br /></p>
-        </div>
-        <div class="icon">
-          <i class="fas fa-code-branch"></i>
-        </div>
-        <a href="/nodes" class="small-box-footer"
-          >Nodes Listing <i class="fas fa-arrow-circle-right"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-success">
-        <div class="inner">
-          <h3 id="activeNodes">0</h3>
+{% block mainContent %}
+        <!-- Small boxes (Stat box) -->
+        <div class="col-sm-12" style="padding-bottom: 5%; padding-top: 5%;">
+          <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3 id="totalNodes">0</h3>
 
-          <p>Active Nodes <br /><br /></p>
-        </div>
-        <div class="icon">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <a href="/deactivatenode" class="small-box-footer"
-          >Deactivate Node <i class="fas fa-arrow-circle-right"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-  </div>
-  <div class="row h-100 justify-content-center align-items-center">
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-warning">
-        <div class="inner">
-          <h3 id="inactiveNodes">0</h3>
+                  <p>Deployed Nodes <br><br></p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-code-branch"></i>
+                </div>
+                <a href="/nodes" class="small-box-footer">Nodes Listing <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3 id="activeNodes">0</h3>
 
-          <p>Inactive Nodes <br /><br /></p>
-        </div>
-        <div class="icon">
-          <i class="fas fa-times-circle"></i>
-        </div>
-        <a href="/nodes" class="small-box-footer"
-          >Nodes Listing <i class="fas fa-arrow-circle-right"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-danger">
-        <div class="inner">
-          <h3 id="noAttacks">0</h3>
+                  <p>Active Nodes <br><br></p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <a href="/deactivatenode" class="small-box-footer">Deactivate Node <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+          </div>
+          <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3 id="inactiveNodes">0</h3>
 
-          <p>Attack(s) in last 24 hours <br /><br /></p>
+                  <p>Inactive Nodes <br><br></p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-times-circle"></i>
+                </div>
+                <a href="/nodes" class="small-box-footer">Nodes Listing <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3 id="noAttacks">0</h3>
+
+                  <p>Attack(s) in last 24 hours <br><br></p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-skull-crossbones"></i>
+                </div>
+                <a href="/log" class="small-box-footer">Logs <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+          </div>
+          <!-- /.row -->
         </div>
-        <div class="icon">
-          <i class="fas fa-skull-crossbones"></i>
-        </div>
-        <a href="/log" class="small-box-footer"
-          >Logs <i class="fas fa-arrow-circle-right"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-  </div>
-  <!-- /.row -->
-</div>
-<style>
-  .dash-home {
-    box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    -webkit-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    -moz-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    margin-bottom: 40px;
-    background-color: #fff;
-  }
-</style>
-{% endblock %} {% block script %}
+{% endblock %}
+{% block script %}
 <script>
   function getNodes() {
     $.ajax({
-      url: "/api/v1/honeynodes",
-      type: "GET",
+      url: '/api/v1/honeynodes',
+      type: 'GET',
       success: function (result) {
         var active = 0;
         var inactive = 0;
         data = JSON.parse(result);
-        data.forEach(function (element) {
-          if (element.heartbeat_status == "True") {
+        data.forEach(function(element) {
+          if(element.heartbeat_status == "True"){
             active++;
-          } else {
+          }else{
             inactive++;
           }
         });
         $("#totalNodes").html(data.length);
         $("#activeNodes").html(active);
         $("#inactiveNodes").html(inactive);
-      },
+        
+      }
     });
   }
 
-  function getTotalAttacks() {
+  function getTotalAttacks(){
     $.ajax({
-      url: "/api/v1/data_correlation/rule_2/num_of_attacks",
-      type: "GET",
+      url: '/api/v1/data_correlation/rule_2/num_of_attacks',
+      type: 'GET',
       success: function (result) {
         $("#noAttacks").html(result.num_of_attacks);
-      },
+      }
     });
   }
 

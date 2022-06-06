@@ -1,156 +1,116 @@
-{% extends "base.html" %} {% block mainContent %}
-<!-- Alert after adding node -->
-{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
-%} {% for category, message in messages %}
-<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-  {{message}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endfor %} {% endif %} {% endwith %}
+{% extends "base.html" %}
 
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Kill Node</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+{% block mainContent %}
+    <!-- Alert after adding node -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div>
-          <p class="mainText">
-            <span
-              class="spinner-border spinner-border-sm"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Killing Node... (Approx. <span id="time">00:25</span>)
-          </p>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-<div
-  id="progress"
-  class="progress"
-  hidden
-  style="margin-bottom: 2%; height: 20px"
->
-  <div class="progress-bar" style="min-width: 20px; width: 2%">25s</div>
-</div>
-
-<!-- Main content -->
-<section class="content">
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <div class="card card-secondary modal-body">
-        <div class="card-header">
-          <h3 class="card-title">Deactivate Node</h3>
-        </div>
-        <form id="nodeForm" action="deactivatenode" method="POST">
-          <div class="card-body">
-            <div class="row">
-              <div class="form-group col-md-12">
-                <label for="selectkill">Nodes</label>
-                <select
-                  id="selectkill"
-                  name="selectkill"
-                  class="form-control custom-select"
-                >
-                  <option selected value="">Select one</option>
-                  {% for node in list_nodes %}
-                  <option value="{{ node.ip_addr }}">
-                    {{ node.honeynode_name }}
-                  </option>
-                  {% endfor %}
-                </select>
-                <input type="hidden" name="" />
-              </div>
-            </div>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            <button
-              id="submitbtn"
-              onclick="kill()"
-              type="submit"
-              class="btn btn-outline-primary btn-sm"
-              disabled=""
-            >
-              Deactivate
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Kill Node</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
-        </form>
+          <div class="modal-body">
+            <div>
+              <p class="mainText"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Killing Node... (Approx. <span id="time">00:25</span>)</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
-      <!-- /.card -->
     </div>
-  </div>
-</section>
-<style>
-  .modal-body {
-    box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    -webkit-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    -moz-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    margin-bottom: 40px;
-    background-color: #fff;
-  }
-</style>
-<!-- /.content -->
-{% endblock %} {% block script %}
+
+    <div id="progress" class="progress" hidden style="margin-bottom: 2%; height:20px;">
+        <div class="progress-bar" style="min-width: 20px; width: 2%;">
+            25s
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class = "col-md-2"></div>
+        <div class="col-md-8">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Deactivate Node</h3>
+            </div>
+            <form id="nodeForm" action="deactivatenode" method="POST">
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label for="selectkill">Nodes</label>
+                    <select id="selectkill" name="selectkill" class="form-control custom-select">
+                      <option selected value="">Select one</option>
+                      {% for node in list_nodes %}
+                        <option value="{{ node.ip_addr }}">{{ node.honeynode_name }}</option>
+                      {% endfor %}
+                    </select>
+                    <input type="hidden" name="">
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button id="submitbtn" onclick="kill()" type="submit" class="btn btn-outline-primary btn-sm" disabled="">Deactivate</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block script %}
 <!-- auto textarea expand  -->
 <script src="dist/js/autosize.js"></script>
 <!-- parsley validator -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
 <script>
-  autosize(document.querySelectorAll("textarea"));
+  autosize(document.querySelectorAll('textarea'));
 
   var parsleyConfig = {
-    errorClass: "has-danger",
-    successClass: "has-success",
+    errorClass: 'has-danger',
+    successClass: 'has-success',
     classHandler: function (field) {
-      return field.$element.parents(".form-group");
+        return field.$element.parents('.form-group');
     },
     errorsContainer: function (field) {
-      return field.$element.parents(".form-group");
+        return field.$element.parents('.form-group');
     },
     errorsWrapper: '<span class="form-text text-danger">',
-    errorTemplate: "<div></div>",
+    errorTemplate: '<div></div>'
   };
 
   //FORM VALIDATION
   $(document).ready(function () {
     // Register custom validators
-    window.Parsley.addValidator("ip", {
-      validateString: function (value) {
+    window.Parsley.addValidator('ip', {
+      validateString: function(value) {
         var pattern = /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/;
         return pattern.test(value);
       },
       messages: {
-        en: "IP address is not valid",
-      },
+        en: 'IP address is not valid'
+      }
     });
     //window.Parsley.addValidator("email", CustomParsleyValidators.email);
     //window.Parsley.addValidator("identification", CustomParsleyValidators.identification);
@@ -162,56 +122,50 @@
     //window.Parsley.addValidator("fileMimeTypes", CustomParsleyValidators.fileMimeTypes);
 
     // Activate parsley
-    $("#nodeForm").parsley(parsleyConfig);
+    $('#nodeForm').parsley(parsleyConfig);
   });
 
-  $("#selectkill").on("change", function () {
+  $('#selectkill').on('change', function() {
     if ($("#selectkill").val()) {
-      $("#submitbtn").prop("disabled", false);
+        $('#submitbtn').prop('disabled', false);  
     } else {
-      $("#submitbtn").prop("disabled", "disabled");
+        $('#submitbtn').prop('disabled', 'disabled');
     }
-  });
+});
 
   function kill() {
     document.getElementById("nodeForm").submit();
     //$("#exampleModal").modal("show"); //hide modal for now
-    $("#submitbtn").html(
-      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
-    Killing Node...'
-    );
-    $("#submitbtn").prop("disabled", true);
-    $("#progress").prop("hidden", false);
+    $('#submitbtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> \
+    Killing Node...');
+    $('#submitbtn').prop("disabled", true);
+    $('#progress').prop('hidden', false);
     var fiveMinutes = 24,
-      display = document.querySelector("#time");
+    display = document.querySelector('#time');
     startTimer(fiveMinutes, display);
-    setTimeout(function () {
-      location.reload();
+    setTimeout(function(){ 
+      location.reload(); 
     }, 25000);
   }
 
   function startTimer(duration, display) {
-    var timer = duration,
-      minutes,
-      seconds;
-    var i = 4;
-    setInterval(function () {
-      minutes = parseInt(timer / 60, 10);
-      seconds = parseInt(timer % 60, 10);
+      var timer = duration, minutes, seconds;
+      var i = 4;
+      setInterval(function () {
+          minutes = parseInt(timer / 60, 10);
+          seconds = parseInt(timer % 60, 10);
 
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
 
-      //display.textContent = minutes + ":" + seconds;
-      i = i + 4;
-      $(".progress-bar")
-        .css("width", i + "%")
-        .text(seconds + "s");
+          //display.textContent = minutes + ":" + seconds;
+          i = i + 4;
+          $(".progress-bar").css("width", i + "%").text(seconds + "s");
 
-      if (--timer < 0) {
-        timer = duration;
-      }
-    }, 1000);
+          if (--timer < 0) {
+              timer = duration;
+          }
+      }, 1000);
   }
 </script>
 {% endblock %}

@@ -1,245 +1,139 @@
-{% extends "base.html" %} {% block mainContent %}
+{% extends "base.html" %}
 
-<!-- Main content -->
-<section class="content node-body">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card card-secondary h-60">
-        <div class="card-header">
-          <h3 class="card-title">Select Script</h3>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="nodeName">Honeynode Name</label>
-            <input
-              id="nodeName"
-              type="text"
-              class="form-control deployment"
-              name="nodeName"
-            />
+{% block mainContent %}
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-secondary h-60">
+            <div class="card-header">
+              <h3 class="card-title">Select Script</h3>
+
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="nodeName">Honeynode Name</label>
+                <input id="nodeName" type="text" class="form-control deployment" name="nodeName">
+              </div>
+              <div class="form-group">
+                <label for="deployScript">Honeypot</label>
+                <select id="deployScript" name="deployScript" class="form-control custom-select deployment">
+                  <option selected value="">Select one</option>
+                  <option value="cowrie">Cowrie</option>
+                  <option value="dionaea">Dionaea</option>
+                  <option value="drupot">Drupot</option>
+                  <option value="elastichoney">Elastichoney</option>
+                  <option value="shockpot">Shockpot</option>
+                  <!-- <option value="snort">Snort</option> -->
+                  <option value="sticky_elephant">Sticky Elephant</option>
+                  <option value="wordpot">Wordpot</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button id="generate" class="btn btn-outline-primary float-right" disabled="" onclick="callGenerateDeploymentCommandAPI()">Generate Command</button>
+            </div>
+            <!-- /.card-body -->
           </div>
-          <div class="form-group">
-            <label for="deployScript">Honeypot</label>
-            <select
-              id="deployScript"
-              name="deployScript"
-              class="form-control custom-select deployment"
-            >
-              <option selected value="">Select one</option>
-              <option value="cowrie">Cowrie</option>
-              <option value="dionaea">Dionaea</option>
-              <option value="drupot">Drupot</option>
-              <option value="elastichoney">Elastichoney</option>
-              <option value="shockpot">Shockpot</option>
-              <!-- <option value="snort">Snort</option> -->
-              <option value="sticky_elephant">Sticky Elephant</option>
-              <option value="wordpot">Wordpot</option>
-            </select>
+          <!-- /.card -->
+        </div>
+
+        <div class="col-md-6">
+          <div class="card card-secondary h-100">
+            <div class="card-header">
+              <h3 class="card-title">Deployment</h3>
+
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Virtual Machine</label>
+                <p style="margin:0px;">Download the virtual machine below and import it to your VMWare or VitualBox</p>
+                <a href="#" class="btn btn-info btn-sm" style="margin-top: 10px; margin-bottom: 10px;" onclick="downloadOva()">Download</a>
+                <p style="margin:0px;">The sudo user credentials of the Virtual Machine are:</p>
+                <p style="margin:0px;">Username: honeyids</p>
+                <p style="margin:0px;">Password: honeyid$</p>
+              </div>
+              <div class="form-group">
+                <label for="command">Deployment Command</label>
+                <p style="margin:0px;">To deploy, copy and paste the command below into the terminal of your machine</p>
+                <div class="form-group">
+                  <textarea class="form-control" id="target-command" rows="5" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">
+                    
+                  </textarea>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
           </div>
+          <!-- /.card -->
         </div>
-        <div class="card-footer">
-          <button
-            id="generate"
-            class="btn btn-outline-primary float-right"
-            disabled=""
-            onclick="callGenerateDeploymentCommandAPI()"
-          >
-            Generate Command
-          </button>
-        </div>
-        <!-- /.card-body -->
       </div>
-      <!-- /.card -->
-    </div>
+      
+      <div class="row">
+        <div class="col-md-6" style="margin-top: 25px; margin-bottom: 25px;">
+          <div class="card card-secondary h-100">
 
-    <div class="col-md-6">
-      <div class="card card-secondary h-100">
-        <div class="card-header">
-          <h3 class="card-title">Deployment</h3>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <label>Virtual Machine</label>
-            <p style="margin: 0px">
-              Download the virtual machine below and import it to your VMWare or
-              VitualBox
-            </p>
-            <a
-              href="#"
-              class="btn btn-info btn-sm"
-              style="margin-top: 10px; margin-bottom: 10px"
-              onclick="downloadOva()"
-              >Download</a
-            >
-            <p style="margin: 0px">
-              The sudo user credentials of the Virtual Machine are:
-            </p>
-            <p style="margin: 0px">Username: honeyids</p>
-            <p style="margin: 0px">Password: honeyid$</p>
-          </div>
-          <div class="form-group">
-            <label for="command">Deployment Command</label>
-            <p style="margin: 0px">
-              To deploy, copy and paste the command below into the terminal of
-              your machine
-            </p>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                id="target-command"
-                rows="5"
-                placeholder=""
-                readonly
-                style="
-                  height: auto;
-                  margin-top: 15px;
-                  margin-bottom: 0px;
-                  height: 90px;
-                  resize: none;
-                "
-              >
-              </textarea>
+            <div class="card-header">
+              <h3 class="card-title">Troubleshooting</h3>
             </div>
+
+            <div class="card-body">
+              <div class="form-group">
+                <label>Checking Connectivity With The C2 Server</label>
+                <p style="margin:0px;">
+                  Run the following ping command on the honey node to check if the honey node is able to reach the C2 server.
+                </p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">ping {{ web_server_ip }}</textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Checking The Status Of The Honey Node Processes</label>
+                <p style="margin:0px;">
+                  The following command will display the status of Snort, the honeypot process and Honeyagent when it is run on the honey node. 
+                  If everything works well, you should see their status being displayed as "RUNNING".
+                </p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo supervisorctl status all</textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="command">Restarting The Honey Node Processes</label>
+                <p style="margin:0px;">
+                  If any of the honeynode processes (Snort, Honeyagent and the honeypot process) does not have a status of "RUNNING", try running the following command on the honeynode to restart it. &#13;&#10;
+                  (Losing connectivity to the HPfeeds broker running on the C2 server may cause Snort and the honeypot process to stop running)
+                </p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo supervisorctl restart &lt;Process_Name&gt;</textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="command">Resolving Package Manager Issues During Deployment</label>
+                <p style="margin:0px;">
+                  If you encounter the following error when running the deployment scripts on the honey node: <br> <br>
+                  E: Could not get lock /var/lib/dpkg/lock-frontend - open (11: Resource temporarily unavailable)  <br>
+                  E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend),  <br>
+                  is another process using it?  <br><br>
+
+                  Run the commands shown below to remove the package locks and run the deployment command again.
+                </p>
+                <div class="form-group">
+                  <textarea class="form-control" rows="2" placeholder="" readonly style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 90px; resize: none;">sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#13;&#10;sudo rm /var/lib/dpkg/lock*&#13;&#10;sudo dpkg --configure -a
+                  </textarea>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
           </div>
+          <!-- /.card -->
         </div>
-        <!-- /.card-body -->
       </div>
-      <!-- /.card -->
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6" style="margin-top: 25px; margin-bottom: 25px">
-      <div class="card card-secondary h-100">
-        <div class="card-header">
-          <h3 class="card-title">Troubleshooting</h3>
-        </div>
-
-        <div class="card-body">
-          <div class="form-group">
-            <label>Checking Connectivity With The C2 Server</label>
-            <p style="margin: 0px">
-              Run the following ping command on the honey node to check if the
-              honey node is able to reach the C2 server.
-            </p>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                rows="2"
-                placeholder=""
-                readonly
-                style="
-                  height: auto;
-                  margin-top: 15px;
-                  margin-bottom: 0px;
-                  height: 90px;
-                  resize: none;
-                "
-              >
-ping {{ web_server_ip }}</textarea
-              >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Checking The Status Of The Honey Node Processes</label>
-            <p style="margin: 0px">
-              The following command will display the status of Snort, the
-              honeypot process and Honeyagent when it is run on the honey node.
-              If everything works well, you should see their status being
-              displayed as "RUNNING".
-            </p>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                rows="2"
-                placeholder=""
-                readonly
-                style="
-                  height: auto;
-                  margin-top: 15px;
-                  margin-bottom: 0px;
-                  height: 90px;
-                  resize: none;
-                "
-              >
-sudo supervisorctl status all</textarea
-              >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="command">Restarting The Honey Node Processes</label>
-            <p style="margin: 0px">
-              If any of the honeynode processes (Snort, Honeyagent and the
-              honeypot process) does not have a status of "RUNNING", try running
-              the following command on the honeynode to restart it. &#13;&#10;
-              (Losing connectivity to the HPfeeds broker running on the C2
-              server may cause Snort and the honeypot process to stop running)
-            </p>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                rows="2"
-                placeholder=""
-                readonly
-                style="
-                  height: auto;
-                  margin-top: 15px;
-                  margin-bottom: 0px;
-                  height: 90px;
-                  resize: none;
-                "
-              >
-sudo supervisorctl restart &lt;Process_Name&gt;</textarea
-              >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="command"
-              >Resolving Package Manager Issues During Deployment</label
-            >
-            <p style="margin: 0px">
-              If you encounter the following error when running the deployment
-              scripts on the honey node: <br />
-              <br />
-              E: Could not get lock /var/lib/dpkg/lock-frontend - open (11:
-              Resource temporarily unavailable) <br />
-              E: Unable to acquire the dpkg frontend lock
-              (/var/lib/dpkg/lock-frontend), <br />
-              is another process using it? <br /><br />
-
-              Run the commands shown below to remove the package locks and run
-              the deployment command again.
-            </p>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                rows="2"
-                placeholder=""
-                readonly
-                style="
-                  height: auto;
-                  margin-top: 15px;
-                  margin-bottom: 0px;
-                  height: 90px;
-                  resize: none;
-                "
-              >
-sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#13;&#10;sudo rm /var/lib/dpkg/lock*&#13;&#10;sudo dpkg --configure -a
-                  </textarea
-              >
-            </div>
-          </div>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-  </div>
-  <!-- Don't show for now -->
-  <!-- <div class="col-md-6">
+        <!-- Don't show for now -->
+        <!-- <div class="col-md-6">
           <div class="card card-secondary">
             <div class="card-header">
               <h3 class="card-title">Activate Honeypot</h3>
@@ -258,64 +152,53 @@ sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#1
           </div>
            /.card 
         </div> -->
-</section>
-<!-- /.content -->
-<style>
-  .node-body {
-    box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    -webkit-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    -moz-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
-    margin-bottom: 40px;
-    background-color: #fff;
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-</style>
-{% endblock %} {% block script %}
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block script %}
 <!-- auto textarea expand  -->
 <script src="dist/js/autosize.js"></script>
 <script>
-  autosize(document.querySelectorAll("textarea"));
+  autosize(document.querySelectorAll('textarea'));
 
-  $(".deployment").on("change keyup", function () {
-    if ($("#nodeName").val() != "" && $("#deployScript").val()) {
-      $("#generate").prop("disabled", false);
-    } else {
-      $("#generate").prop("disabled", "disabled");
-    }
+  $('.deployment').on('change keyup', function() {
+      if ($("#nodeName").val() != "" && $("#deployScript").val()) {
+          $('#generate').prop('disabled', false);  
+      } else {
+          $('#generate').prop('disabled', 'disabled');
+      }
   });
 
-  function callGenerateDeploymentCommandAPI() {
+  function callGenerateDeploymentCommandAPI(){
     var honeynodeType = document.getElementById("deployScript").value;
     var honeynodeName = document.getElementById("nodeName").value;
     var data = {
-      honeynode_name: honeynodeName,
-      honeypot_type: honeynodeType,
-    };
-    var dataJson = JSON.stringify(data);
+      'honeynode_name': honeynodeName,
+      'honeypot_type': honeynodeType
+    }
+    var dataJson = JSON.stringify(data); 
     console.log(honeynodeType);
     console.log(honeynodeName);
     //console.log(data)
-    console.log(dataJson);
+    console.log(dataJson)
     var myHeader = {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     };
 
     $.ajax({
       url: "/api/v1/deploy/generate_deployment_command",
       type: "POST",
       //contentType : 'text/json',
-      headers: myHeader,
+      headers:myHeader,
       data: dataJson,
-      success: function (result) {
-        console.log(result);
-        document.getElementById("target-command").innerHTML = result;
-        console.log("done");
+      success: function(result){
+        console.log(result)
+        document.getElementById("target-command").innerHTML=result
+        console.log("done")
       },
-      error: function (error) {
+      error: function(error){
         alert(`Error ${error}`);
-      },
+      }
     });
   }
 
@@ -335,9 +218,9 @@ sudo rm /var/lib/apt/lists/lock&#13;&#10;sudo rm /var/cache/apt/archives/lock&#1
   };
   */
 
-  function downloadOva() {
-    window.location = "/api/v1/deploy/honeyids-vm.ova";
-    console.log("ova download api call successful");
+  function downloadOva(){
+    window.location = "/api/v1/deploy/honeyids-vm.ova"
+    console.log("ova download api call successful")
   }
 </script>
 {% endblock %}

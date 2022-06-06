@@ -1,4 +1,4 @@
-Flask==2.1.0
+Flask==1.1.2
 Flask-MySQLdb==0.2.0
 gevent==20.9.0
 mysqlclient==2.0.1
