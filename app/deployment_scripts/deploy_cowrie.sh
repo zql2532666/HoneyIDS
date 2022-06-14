@@ -29,7 +29,7 @@ sudo dpkg --configure -a || true
 apt-get install -y python
 apt-get -y install python-dev git openssh-server supervisor authbind openssl python-virtualenv build-essential python-gmpy2 libgmp-dev libmpfr-dev libmpc-dev libssl-dev python-pip libffi-dev python3-pip curl
 
-pip install -U supervisor
+# pip install -U supervisor
 pip install configparser
 pip install requests
  
