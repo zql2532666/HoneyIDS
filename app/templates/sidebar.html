@@ -5,8 +5,8 @@
 
 <!-- Brand Logo -->
   <a href="index" class="brand-link">
-    <img style="margin-top:1px" src="../../dist/img/honeyids.png" alt="HoneyIDS" class="brand-image" style="opacity: .8">
-    <span style="color:#F0BA11; font-size: 120%;" class="brand-text font-weight-light">HoneyIDS</span>
+    <img style="margin-top:1px" src="../../dist/img/honey-ids-logo.png" alt="threatspan" class="brand-image" style="opacity: .8">
+    <span style="color:#FFF; font-size: 120%;" class="brand-text font-weight-light">THREATSPAN</span>
   </a>
 
   <!-- Sidebar -->
@@ -50,48 +50,33 @@
         <li class="nav-item">
           {{ nav_link('deploy', 'Deploy', 'fas fa-laptop-code', '', '') }}
         </li>
-        {{ checkDropdownNodes(request.endpoint) }}
-        <!-- <li class="nav-item has-treeview menu-open">
-          <a href="#" class="nav-link active"> -->
-            <i class="nav-icon fas fas fa-code-branch"></i>
-            <p>
-              Nodes
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
             <li class="nav-item">
-              {{ nav_link('nodes', 'Nodes Listing', 'far fa-circle', '', '') }}
+              {{ nav_link('nodes', 'Nodes', 'fas fas fa-code-branch') }}
             </li>
-            <li class="nav-item">
-              {{ nav_link('add_node', 'Add Node', 'far fa-circle', '', '') }}
-            </li>
-            <li class="nav-item">
-              {{ nav_link('kill_node', 'Deactivate Node', 'far fa-circle', '', '') }}
-            </li>
-          </ul>
         </li>
         {{ checkDropdownLogs(request.endpoint) }}
         <!-- <li class="nav-item has-treeview menu-open">
           <a href="#" class="nav-link active"> -->
             <i class="nav-icon fas fa-scroll"></i>
+        
             <p>
               Logs
               <i class="right fas fa-angle-left"></i>
+              
             </p>
           </a>
           <ul class="nav nav-treeview" style="margin-bottom: 250px">
             <li class="nav-item">
-              {{ nav_link('log', 'Honeypot Logs', 'far fa-circle', '', '') }}
+              {{ nav_link('log', 'Honeypot Logs', '	fa fa-flask', '', '') }}
             </li>
             <li class="nav-item">
-              {{ nav_link('snort_log', 'NIDS Logs', 'far fa-circle', '', '') }}
+              {{ nav_link('snort_log', 'NIDS Logs', 'fa fa-yelp', '', '') }}
             </li>
             <li class="nav-item">
-              {{ nav_link('session_log', 'Session Logs', 'far fa-circle', '', '') }}
+              {{ nav_link('session_log', 'Session Logs', 'fa fa-connectdevelop', '', '') }}
             </li>
             <li class="nav-item">
-              {{ nav_link('malware_log', 'Malware Logs', 'far fa-circle', '', '') }}
+              {{ nav_link('malware_log', 'Malware Logs', 'fa fa-ge', '', '') }}
             </li>
           </ul>
         </li>
@@ -100,3 +85,11 @@
     <!-- /.sidebar-menu -->
   </div>
   <!-- /.sidebar -->
+  <style>
+    .sidebar{
+      background-color: #2c2c2c !important; 
+    }
+    .brand-link{ 
+      background-color: #2c2c2c !important; 
+    }
+  </style>

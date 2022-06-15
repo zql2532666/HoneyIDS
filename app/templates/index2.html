@@ -1,108 +1,314 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block mainContent %}
+<style>
+  .modal {
+    overflow-y: auto;
+  }
+  .modal-body {
+    box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    -webkit-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    -moz-box-shadow: -8px 17px 53px -36px rgba(0, 0, 0, 0.88);
+    margin-bottom: 40px;
+    background-color: #fff;
+  }
 
-{% block mainContent %}
-    <style>
-      .modal {
-        overflow-y:auto;
-      }
-    </style>
-    
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Log Dataset</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="table-responsive">
-              <table id="modalTable" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Honeynode Name</th>
-                    <th>Attacker IP</th>
-                    <th>Attacker Source Port</th>
-                    <th>Honeynode IP</th>
-                    <th>Port Under Attack</th>
-                    <th>Raw Logs</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+  .toShow .nav-tabs {
+    margin-bottom: 20px !important;
+    background-color: #fff !important;
+    color: #b0c4de;
+    border-bottom: 1px solid #fff !important;
+    border-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+  }
+  .toShow .nav-tabs a {
+    color: #899197;
+    text-decoration: none;
+    background-color: transparent;
+    font-weight: bold;
+  }
+  .toShow .nav-link {
+    border: none !important;
+  }
+  .toShow .nav-link.active {
+    color: #565e64 !important;
+    background-color: #fff !important;
+    border: none !important;
+  }
+  .toShow .nav-link:focus,
+  .toShow .nav-tabs .nav-link:hover {
+    border: none !important;
+    color: #6c757d !important;
+  }
+  .toShow .table tr th {
+    color: #6c757d !important;
+  }
+  .toShow .table {
+    color: #6c757d !important;
+  }
+  .cardColor {
+    background-color: #6c757d !important;
+    color: #fff;
+    font-weight: bold;
+  }
+  .cardColor .card-title {
+    text-align: center !important;
+  }
+  .toShow .card-header {
+    border-bottom: none;
+    padding: 0.75rem 1.25rem;
+    position: relative;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+  div.dataTables_wrapper div.dataTables_info {
+    padding-top: 0.85em;
+    white-space: nowrap;
+    color: #6c757d;
+  }
+  .paginate-button a {
+    color: #6c757d !important;
+  }
+  div.dataTables_wrapper div.dataTables_length label {
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap;
+    color: #6c757d !important;
+  }
+  div.dataTables_wrapper div.dataTables_length select {
+    width: auto;
+    display: inline-block;
+    color: #6c757d !important;
+  }
+  div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
+    color: #6c757d !important;
+  }
+  .incident-time {
+    border-bottom: none !important;
+    position: relative;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+  }
+  .form-incedent {
+    color: #6c757d !important;
+  }
+  .btn-correlate {
+    background-color: #6c757d;
+    color: #fff;
+    font-weight: bold;
+  }
+  .cardColorIncident {
+    background-color: #6c757d !important;
+    color: #fff;
+    font-weight: bold;
+  }
+  .cardColorIncident .card-title {
+    text-align: center !important;
+  }
+</style>
+
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700"
+  rel="stylesheet"
+  type="text/css"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<link rel="stylesheet" href="css/style.css" />
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Log Dataset</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table id="modalTable" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Honeynode Name</th>
+                <th>Attacker IP</th>
+                <th>Attacker Source Port</th>
+                <th>Honeynode IP</th>
+                <th>Port Under Attack</th>
+                <th>Raw Logs</th>
+              </tr>
+            </thead>
+          </table>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Raw Log</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <textarea class="form-control" id="target-command" rows="10" placeholder="" readonly
-              style="height:auto; margin-top: 15px; margin-bottom: 0px; height: 500px; resize: none;">
-
-              </textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Raw Log</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea
+          class="form-control"
+          id="target-command"
+          rows="10"
+          placeholder=""
+          readonly
+          style="
+            height: auto;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            height: 500px;
+            resize: none;
+          "
+        >
+        </textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class = "col-md-4"></div>
-        <div class="col-md-4">
-          <div class="card card-secondary">
-            <div class="card-header">
-              <h3 class="card-title">Incident Time Window</h3>
-            </div>
-            <form id="correlationForm" method="POST">
-              <div class="card-body">
-                <div class="row">
-                  <div class="form-group col-md-12">
-                    <label for="datetimes">Date Time Range</label>
-                    <input id="dateRange" type="text" class="form-control" name="datetimes" />
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                <button id="submitbtn" class="btn btn-primary btn-sm">Correlate</button>
-              </div>
-            </form>
-          </div>
-          <!-- /.card -->
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card modal-body">
+        <div class="card-header cardColorIncident">
+          <h3 class="card-title incident-time">Incident Time Window</h3>
         </div>
+        <form id="correlationForm" class="form-incedent" method="POST">
+          <div class="card-body">
+            <div class="row">
+              <div class="form-group col-md-12">
+                <label for="datetimes">Date Time Range</label>
+                <input
+                  id="dateRange"
+                  type="text"
+                  class="form-control"
+                  name="datetimes"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <button id="submitbtn" class="btn btn-correlate btn-sm">
+              Correlate
+            </button>
+          </div>
+        </form>
       </div>
-      <!-- /.row -->
+      <!-- /.card -->
+    </div>
+  </div>
+  <!-- /.row -->
 
-      <div class="toShow" hidden>
+  <div class="toShow" hidden>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a
+          class="nav-item nav-link active"
+          id="nav-home-tab"
+          data-toggle="tab"
+          href="#nav-home"
+          role="tab"
+          aria-controls="nav-home"
+          aria-selected="true"
+          >Individual Attacker vs Individual Honeynode</a
+        >
+        <a
+          class="nav-item nav-link"
+          id="nav-profile-tab"
+          data-toggle="tab"
+          href="#nav-profile"
+          role="tab"
+          aria-controls="nav-profile"
+          aria-selected="false"
+        >
+          Individual Attacker vs Multiple Honeynodes</a
+        >
+        <a
+          class="nav-item nav-link"
+          id="nav-contact-tab"
+          data-toggle="tab"
+          href="#nav-contact"
+          role="tab"
+          aria-controls="nav-contact"
+          aria-selected="false"
+          >Multiple Attackers vs Individual Honeynode</a
+        >
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div
+        class="tab-pane fade show active"
+        id="nav-home"
+        role="tabpanel"
+        aria-labelledby="nav-home-tab"
+      >
         <div class="row">
           <div class="col-12">
-            <div class="card card-secondary">
-              <div class="card-header">
-                <h3 class="card-title">Individual Attacker vs Individual Honeynode</h3>
+            <div class="card modal-body">
+              <div class="card-header cardColor">
+                <h3 class="card-title">
+                  Individual Attacker vs Individual Honeynode
+                </h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div id="hide-column" style="margin-bottom: 20px;"></div>
+                <div id="hide-column" style="margin-bottom: 20px"></div>
                 <table id="rule2" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -118,17 +324,24 @@
           </div>
           <!-- /.col -->
         </div>
-        <!-- /.row -->
-
+      </div>
+      <div
+        class="tab-pane fade"
+        id="nav-profile"
+        role="tabpanel"
+        aria-labelledby="nav-profile-tab"
+      >
         <div class="row">
           <div class="col-12">
-            <div class="card card-secondary">
-              <div class="card-header">
-                <h3 class="card-title">Individual Attacker vs Multiple Honeynodes</h3>
+            <div class="card modal-body">
+              <div class="card-header cardColor">
+                <h3 class="card-title">
+                  Individual Attacker vs Multiple Honeynodes
+                </h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div id="hide-column" style="margin-bottom: 20px;"></div>
+                <div id="hide-column" style="margin-bottom: 20px"></div>
                 <table id="rule1" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -144,13 +357,20 @@
           </div>
           <!-- /.col -->
         </div>
-        <!-- /.row -->
-
+      </div>
+      <div
+        class="tab-pane fade"
+        id="nav-contact"
+        role="tabpanel"
+        aria-labelledby="nav-contact-tab"
+      >
         <div class="row">
           <div class="col-12">
-            <div class="card card-secondary">
-              <div class="card-header">
-                <h3 class="card-title">Multiple Attackers vs Individual Honeynode</h3>
+            <div class="card modal-body">
+              <div class="card-header cardColor">
+                <h3 class="card-title">
+                  Multiple Attackers vs Individual Honeynode
+                </h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -169,39 +389,57 @@
           </div>
           <!-- /.col -->
         </div>
-        <!-- /.row -->
       </div>
-      
-    </section>
-    <!-- /.content -->
-{% endblock %}
-{% block script%}
+    </div>
+
+    <!-- /.row -->
+
+    <!-- /.row -->
+
+    <!-- /.row -->
+  </div>
+</section>
+
+<!-- /.content -->
+{% endblock %} {% block script%}
 <!-- DataTables -->
 <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
 <script>
   var CustomRenders = {
     listToReadable: function (data, type, row, meta) {
       var tempData = "";
-      data.forEach(function(element) {
-        tempData += (element + "<br/>");
+      data.forEach(function (element) {
+        tempData += element + "<br/>";
       });
       return tempData;
     },
     modal: function (data, type, row, meta) {
-      return '<button type="button" onclick="populateModalTable(`' + JSON.stringify(data).replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Dataset" style="margin:auto;display:block">View Dataset</button>';
+      return (
+        '<button type="button" onclick="populateModalTable(`' +
+        JSON.stringify(data).replace(/"/g, "'") +
+        '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" title="View Dataset" style="margin:auto;display:block">View Dataset</button>'
+      );
     },
     raw_logs: function (data, type, row, meta) {
-      return '<button type="button" onclick="viewLog(`' + JSON.stringify(data).replace(/"/g, "'") + '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal2" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
-    }
+      return (
+        '<button type="button" onclick="viewLog(`' +
+        JSON.stringify(data).replace(/"/g, "'") +
+        '`)" class="deletebutton btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal2" title="View Raw Log" style="margin:auto;display:block">View Raw Log</button>'
+      );
+    },
   };
 
   function viewLog(input) {
     var obj = JSON.parse(input.replace(/'/g, '"'));
     var pretty = JSON.stringify(obj, null, "\t");
-    $('#target-command').val(pretty);
+    $("#target-command").val(pretty);
   }
 
   var table, table2, table3, modalTable;
@@ -209,177 +447,192 @@
   var rule2Data = [];
   var rule3Data = [];
   var modalData = [];
-  $(function() {
+  $(function () {
     $('input[name="datetimes"]').daterangepicker({
       timePicker: true,
       alwaysShowCalendars: true,
       timePickerSeconds: true,
-      startDate: moment().subtract(1,"day"),
+      startDate: moment().subtract(1, "day"),
       endDate: moment(),
       locale: {
-        format: 'YYYY-MM-DD HH:mm:ss'
+        format: "YYYY-MM-DD HH:mm:ss",
       },
       showDropdowns: true,
-        opens: 'center',
-        ranges: {
-          'Today': [moment().startOf('day'), moment().endOf('day')],
-          'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-          'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-          'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
-          'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
-        },
+      opens: "center",
+      ranges: {
+        Today: [moment().startOf("day"), moment().endOf("day")],
+        Yesterday: [
+          moment().subtract(1, "days").startOf("day"),
+          moment().subtract(1, "days").endOf("day"),
+        ],
+        "Last 7 Days": [
+          moment().subtract(6, "days").startOf("day"),
+          moment().endOf("day"),
+        ],
+        "Last 30 Days": [
+          moment().subtract(29, "days").startOf("day"),
+          moment().endOf("day"),
+        ],
+        "This Month": [
+          moment().startOf("month").startOf("day"),
+          moment().endOf("month").endOf("day"),
+        ],
+        "Last Month": [
+          moment().subtract(1, "month").startOf("month").startOf("day"),
+          moment().subtract(1, "month").endOf("month").endOf("day"),
+        ],
+      },
     });
-
   });
 
-  $("#correlationForm").submit(function(e) {
+  $("#correlationForm").submit(function (e) {
     $(".toShow").prop("hidden", false);
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
     var form = $(this);
-    
+
     $.ajax({
       type: "POST",
       url: "/api/v1/data_correlation/rule_1/datatables",
       data: form.serialize(), // serializes the form's elements.
-      success: function(data){
-          console.log("rule1");
-          console.log(data);
-          rule1Data = data.data;
-          table.clear().rows.add(rule1Data).draw();
-          rule1Data = [];
-      }
+      success: function (data) {
+        console.log("rule1");
+        console.log(data);
+        rule1Data = data.data;
+        table.clear().rows.add(rule1Data).draw();
+        rule1Data = [];
+      },
     });
 
     $.ajax({
       type: "POST",
       url: "/api/v1/data_correlation/rule_2/datatables",
       data: form.serialize(), // serializes the form's elements.
-      success: function(data){
-          console.log("rule2");
-          console.log(data);
-          rule2Data = data.data;
-          table2.clear().rows.add(rule2Data).draw();
-          rule2Data = [];
-      }
+      success: function (data) {
+        console.log("rule2");
+        console.log(data);
+        rule2Data = data.data;
+        table2.clear().rows.add(rule2Data).draw();
+        rule2Data = [];
+      },
     });
 
     $.ajax({
       type: "POST",
       url: "/api/v1/data_correlation/rule_3/datatables",
       data: form.serialize(), // serializes the form's elements.
-      success: function(data){
-          console.log("rule3");
-          console.log(data);
-          rule3Data = data.data;
-          table3.clear().rows.add(rule3Data).draw();
-          rule3Data = [];
-      }
+      success: function (data) {
+        console.log("rule3");
+        console.log(data);
+        rule3Data = data.data;
+        table3.clear().rows.add(rule3Data).draw();
+        rule3Data = [];
+      },
     });
-
   });
 
-  function populateModalTable(data){
-    console.log(data.replace(/'/g, '"').replaceAll("\"{","{").replaceAll("}\"","}"));
-    modalTable.clear().rows.add(JSON.parse(data.replace(/'/g, '"').replaceAll("\"{","{").replaceAll("}\"","}"))).draw();
+  function populateModalTable(data) {
+    console.log(
+      data.replace(/'/g, '"').replaceAll('"{', "{").replaceAll('}"', "}")
+    );
+    modalTable
+      .clear()
+      .rows.add(
+        JSON.parse(
+          data.replace(/'/g, '"').replaceAll('"{', "{").replaceAll('}"', "}")
+        )
+      )
+      .draw();
   }
 
-  table = $('#rule1').DataTable({
-    "language": {
-      "emptyTable": "No correlation for this rule"
+  table = $("#rule1").DataTable({
+    language: {
+      emptyTable: "No correlation for this rule",
     },
-    "lengthMenu": [ 5, 10, 25, 50, 100 ],
-    "pageLength": 5,
-    "ordering": true,
-    "responsive": true,
-    "autoWidth": false,
-    "data": rule1Data,
-    "columns": [
-      { "data": "attacker_ip" },
-      { "data": "honeynode_ip_list", "render": CustomRenders.listToReadable },
-      { "data": "honeynode_name_list", "render": CustomRenders.listToReadable },
-      { "data": "log_list", "render": CustomRenders.modal }
+    lengthMenu: [5, 10, 25, 50, 100],
+    pageLength: 5,
+    ordering: true,
+    responsive: true,
+    autoWidth: false,
+    data: rule1Data,
+    columns: [
+      { data: "attacker_ip" },
+      { data: "honeynode_ip_list", render: CustomRenders.listToReadable },
+      { data: "honeynode_name_list", render: CustomRenders.listToReadable },
+      { data: "log_list", render: CustomRenders.modal },
     ],
-    "columnDefs": [
-      { "className": "dt-center", "targets": "_all" },
-    ]
+    columnDefs: [{ className: "dt-center", targets: "_all" }],
   });
 
-  table2 = $('#rule2').DataTable({
-    "language": {
-      "emptyTable": "No correlation for this rule"
+  table2 = $("#rule2").DataTable({
+    language: {
+      emptyTable: "No correlation for this rule",
     },
-    "lengthMenu": [ 5, 10, 25, 50, 100 ],
-    "pageLength": 5,
-    "ordering": true,
-    "responsive": true,
-    "autoWidth": false,
-    "data": rule2Data,
-    "columns": [
-      { "data": "attacker_ip" },
-      { "data": "honeynode_ip" },
-      { "data": "honeynode_name" },
-      { "data": "log_list", "render": CustomRenders.modal },
+    lengthMenu: [5, 10, 25, 50, 100],
+    pageLength: 5,
+    ordering: true,
+    responsive: true,
+    autoWidth: false,
+    data: rule2Data,
+    columns: [
+      { data: "attacker_ip" },
+      { data: "honeynode_ip" },
+      { data: "honeynode_name" },
+      { data: "log_list", render: CustomRenders.modal },
     ],
-    "columnDefs": [
-      { "className": "dt-center", "targets": "_all" },
-    ]
+    columnDefs: [{ className: "dt-center", targets: "_all" }],
   });
 
-  table3 = $('#rule3').DataTable({
-    "language": {
-      "emptyTable": "No correlation for this rule"
+  table3 = $("#rule3").DataTable({
+    language: {
+      emptyTable: "No correlation for this rule",
     },
-    "lengthMenu": [ 5, 10, 25, 50, 100 ],
-    "pageLength": 5,
-    "ordering": true,
-    "responsive": true,
-    "autoWidth": false,
-    "data": rule3Data,
-    "columns": [
-      { "data": "attacker_ip_list", "render": CustomRenders.listToReadable },
-      { "data": "honeynode_ip" },
-      { "data": "honeynode_name" },
-      { "data": "log_list", "render": CustomRenders.modal },
+    lengthMenu: [5, 10, 25, 50, 100],
+    pageLength: 5,
+    ordering: true,
+    responsive: true,
+    autoWidth: false,
+    data: rule3Data,
+    columns: [
+      { data: "attacker_ip_list", render: CustomRenders.listToReadable },
+      { data: "honeynode_ip" },
+      { data: "honeynode_name" },
+      { data: "log_list", render: CustomRenders.modal },
     ],
-    "columnDefs": [
-      { "className": "dt-center", "targets": "_all" },
-    ]
+    columnDefs: [{ className: "dt-center", targets: "_all" }],
   });
 
-  modalTable = $('#modalTable').DataTable({
+  modalTable = $("#modalTable").DataTable({
     responsive: {
       details: {
-          display: $.fn.dataTable.Responsive.display.modal( {
-              header: function ( row ) {
-                  var data = row.data();
-                  return 'Details for '+data[0]+' '+data[1];
-              }
-          } ),
-          renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
-              tableClass: 'table'
-          } )
-      }
+        display: $.fn.dataTable.Responsive.display.modal({
+          header: function (row) {
+            var data = row.data();
+            return "Details for " + data[0] + " " + data[1];
+          },
+        }),
+        renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+          tableClass: "table",
+        }),
+      },
     },
-    "ordering": true,
-    "responsive": true,
-    "autoWidth": false,
-    "data": modalData,
-    "columns": [
-      { "data": "date" },
-      { "data": "honeynode_name" },
-      { "data": "source_ip" },
-      { "data": "source_port" },
-      { "data": "destination_ip" },
-      { "data": "destination_port" },
-      { "data": "raw_logs", "render": CustomRenders.raw_logs }
+    ordering: true,
+    responsive: true,
+    autoWidth: false,
+    data: modalData,
+    columns: [
+      { data: "date" },
+      { data: "honeynode_name" },
+      { data: "source_ip" },
+      { data: "source_port" },
+      { data: "destination_ip" },
+      { data: "destination_port" },
+      { data: "raw_logs", render: CustomRenders.raw_logs },
     ],
-    "columnDefs": [
-      { "className": "dt-center", "targets": "_all" },
-      { "width": '18%', "targets": 6 },
+    columnDefs: [
+      { className: "dt-center", targets: "_all" },
+      { width: "18%", targets: 6 },
     ],
   });
-
 </script>
 {% endblock %}
